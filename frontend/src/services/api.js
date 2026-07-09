@@ -1,9 +1,21 @@
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' }
 });
+
+const normalizeApiError = (payload) => {
+  if (!payload) return 'Unknown error occurred';
+  if (typeof payload === 'string') return payload;
+  if (typeof payload.error === 'string') return payload.error;
+  if (typeof payload.message === 'string') return payload.message;
+  if (payload.data) return normalizeApiError(payload.data);
+  if (payload.status && payload.statusText) return `${payload.status} ${payload.statusText}`;
+  return JSON.stringify(payload);
+};
 
 // Attach JWT token to every request
 api.interceptors.request.use((config) => {
@@ -12,14 +24,18 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 globally
+// Handle 401 globally and normalize errors for React
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
     }
-    return Promise.reject(error.response?.data || error);
+
+    const errorPayload = error.response?.data ?? error;
+    const normalizedError = normalizeApiError(errorPayload);
+
+    return Promise.reject({ error: normalizedError });
   }
 );
 

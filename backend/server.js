@@ -6,10 +6,10 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const logger = require('./config/logger');
 
-// Connect to MongoDB
+// Connect MongoDB
 connectDB();
 
-// Route files
+// Routes
 const authRoutes = require('./routes/auth.routes');
 const userRoutes = require('./routes/user.routes');
 const homeRoutes = require('./routes/home.routes');
@@ -27,20 +27,36 @@ const uploadRoutes = require('./routes/upload.routes');
 const settingsRoutes = require('./routes/settings.routes');
 const internshipRoutes = require('./routes/internship.routes');
 const internshipApplicationRoutes = require('./routes/internship-application.routes');
+const debugRoutes = require('./routes/debug.routes');
+
 
 const app = express();
 
-// Body parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Enable CORS
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended:true }));
+
 app.use(cors());
 
-// Serve static assets/uploads
-app.use('/uploads', express.static(path.join(__dirname, '../frontend/public/uploads')));
 
-// Mount routers
+// Health check route
+app.get('/', (req,res)=>{
+    res.status(200).json({
+        message:"Dr. Toshima Karki API is running 🚀",
+        status:"success",
+        environment: env.NODE_ENV
+    });
+});
+
+
+// Static uploads
+app.use('/uploads',
+    express.static(path.join(__dirname,'../frontend/public/uploads'))
+);
+
+
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/home', homeRoutes);
@@ -58,29 +74,40 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/internships', internshipRoutes);
 app.use('/api/internship-applications', internshipApplicationRoutes);
+app.use('/api/debug', debugRoutes);
 
-// Log requests middleware in development mode
-if (env.NODE_ENV === 'development') {
-  app.use((req, res, next) => {
-    logger.info(`${req.method} ${req.originalUrl}`);
-    next();
-  });
-}
 
-// Global error handler
+// Error handler
 app.use(errorHandler);
 
-const PORT = env.PORT;
 
-const server = app.listen(PORT, () => {
-  console.log(`Server running in ${env.NODE_ENV} mode on port ${PORT}`);
-  logger.info(`Server running in ${env.NODE_ENV} mode on port ${PORT}`);
+const PORT = env.PORT || 5050;
+
+
+const server = app.listen(PORT,()=>{
+    console.log(
+      `Server running in ${env.NODE_ENV} mode on port ${PORT}`
+    );
+
+    logger.info(
+      `Server running in ${env.NODE_ENV} mode on port ${PORT}`
+    );
 });
 
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.log(`Unhandled Rejection Error: ${err.message}`);
-  logger.error(`Unhandled Rejection Error: ${err.message}`);
-  // Close server & exit process
-  server.close(() => process.exit(1));
+
+// Handle errors
+process.on('unhandledRejection',(err)=>{
+
+    console.log(
+      `Unhandled Rejection Error: ${err.message}`
+    );
+
+    logger.error(
+      `Unhandled Rejection Error: ${err.message}`
+    );
+
+    server.close(()=>{
+        process.exit(1);
+    });
+
 });

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import api from '../../services/api';
 
 // Import CSS
 import './Dashboard.css';
@@ -78,7 +79,7 @@ export default function Dashboard() {
   // Fetch all dashboard and system configurations on mount or tab change
   useEffect(() => {
     loadAllSystemData();
-  }, [activeSection]);
+  }, [activeSection, /* re-run when auth user changes so protected data loads after login */ user]);
 
   const loadAllSystemData = async () => {
     setLoading(true);
@@ -101,8 +102,7 @@ export default function Dashboard() {
         if (latestInterviews?.success) setInterviews(latestInterviews.data);
 
         // Fetch internship stats for dashboard cards
-        const token = localStorage.getItem('token');
-        const statsRes = await fetch('http://localhost:5050/api/internships/stats', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => null);
+        const statsRes = await api.get('/internships/stats').catch(() => null);
         if (statsRes?.success) setInternshipStats(statsRes.data);
       } 
       else if (activeSection === 'homepage') {
@@ -154,17 +154,15 @@ export default function Dashboard() {
         if (res.success) setSettingsData(res.data);
       }
       else if (activeSection === 'internship-programs') {
-        const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5050/api/internships', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json());
+        const res = await api.get('/internships');
         if (res.success) setInternshipPrograms(res.data);
-        const statsRes = await fetch('http://localhost:5050/api/internships/stats', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => null);
+        const statsRes = await api.get('/internships/stats').catch(() => null);
         if (statsRes?.success) setInternshipStats(statsRes.data);
       }
       else if (activeSection === 'internship-applications') {
-        const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5050/api/internship-applications', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json());
+        const res = await api.get('/internship-applications');
         if (res.success) setInternshipApplications(res.data);
-        const statsRes = await fetch('http://localhost:5050/api/internships/stats', { headers: { Authorization: `Bearer ${token}` } }).then(r => r.json()).catch(() => null);
+        const statsRes = await api.get('/internships/stats').catch(() => null);
         if (statsRes?.success) setInternshipStats(statsRes.data);
       }
     } catch (err) {
@@ -421,11 +419,11 @@ export default function Dashboard() {
         if (currentEditItem._id) res = await userService.update(currentEditItem._id, currentEditItem);
         else res = await userService.create(currentEditItem);
       } else if (modalType === 'internship-program') {
-        const token = localStorage.getItem('token');
-        const url = currentEditItem._id ? `http://localhost:5050/api/internships/${currentEditItem._id}` : 'http://localhost:5050/api/internships';
-        const method = currentEditItem._id ? 'PUT' : 'POST';
-        const resp = await fetch(url, { method, headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: JSON.stringify(currentEditItem) });
-        res = await resp.json();
+        if (currentEditItem._id) {
+          res = await api.put(`/internships/${currentEditItem._id}`, currentEditItem);
+        } else {
+          res = await api.post('/internships', currentEditItem);
+        }
       }
 
       if (res?.success) {
@@ -2215,11 +2213,7 @@ export default function Dashboard() {
                                     <i className="fas fa-edit"></i>
                                   </button>
                                   <button className="btn-icon" title={prog.status === 'Open' ? 'Close' : 'Open'} onClick={async () => {
-                                    const token = localStorage.getItem('token');
-                                    await fetch(`http://localhost:5050/api/internships/${prog._id}/status`, {
-                                      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                                      body: JSON.stringify({ status: prog.status === 'Open' ? 'Closed' : 'Open' })
-                                    });
+                                    await api.patch(`/internships/${prog._id}/status`, { status: prog.status === 'Open' ? 'Closed' : 'Open' }).catch(() => null);
                                     loadAllSystemData();
                                     showFeedback(`Program ${prog.status === 'Open' ? 'closed' : 'opened'}!`);
                                   }}>
@@ -2227,8 +2221,7 @@ export default function Dashboard() {
                                   </button>
                                   <button className="btn-icon" title="Delete" style={{ color: '#dc3545' }} onClick={async () => {
                                     if (!window.confirm('Delete this internship program?')) return;
-                                    const token = localStorage.getItem('token');
-                                    await fetch(`http://localhost:5050/api/internships/${prog._id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+                                    await api.delete(`/internships/${prog._id}`).catch(() => null);
                                     loadAllSystemData();
                                     showFeedback('Program deleted.');
                                   }}>
@@ -2323,14 +2316,10 @@ export default function Dashboard() {
                               <td>{app.university}</td>
                               <td>{new Date(app.createdAt).toLocaleDateString()}</td>
                               <td>
-                                <select
+                                  <select
                                   value={app.status}
                                   onChange={async (e) => {
-                                    const token = localStorage.getItem('token');
-                                    await fetch(`http://localhost:5050/api/internship-applications/${app._id}/status`, {
-                                      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                                      body: JSON.stringify({ status: e.target.value })
-                                    });
+                                    await api.patch(`/internship-applications/${app._id}/status`, { status: e.target.value }).catch(() => null);
                                     loadAllSystemData();
                                     showFeedback(`Application status updated to ${e.target.value}`);
                                   }}
@@ -2352,8 +2341,7 @@ export default function Dashboard() {
                                   </button>
                                   <button className="btn-icon" title="Delete" style={{ color: '#dc3545' }} onClick={async () => {
                                     if (!window.confirm(`Delete application from ${app.fullName}?`)) return;
-                                    const token = localStorage.getItem('token');
-                                    await fetch(`http://localhost:5050/api/internship-applications/${app._id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+                                    await api.delete(`/internship-applications/${app._id}`).catch(() => null);
                                     loadAllSystemData();
                                     showFeedback('Application deleted.');
                                   }}>
@@ -2458,11 +2446,7 @@ export default function Dashboard() {
                             placeholder="Add internal notes about this applicant..."
                           />
                           <button className="btn btn-primary" style={{ marginTop: 8 }} onClick={async () => {
-                            const token = localStorage.getItem('token');
-                            await fetch(`http://localhost:5050/api/internship-applications/${viewingApplication._id}/notes`, {
-                              method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                              body: JSON.stringify({ notes: viewingApplication.adminNotes })
-                            });
+                            await api.post(`/internship-applications/${viewingApplication._id}/notes`, { notes: viewingApplication.adminNotes }).catch(() => null);
                             showFeedback('Notes saved!');
                           }}>
                             <i className="fas fa-save" style={{ marginRight: 6 }}></i> Save Notes
@@ -2523,11 +2507,7 @@ export default function Dashboard() {
                           <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
                             <button className="btn btn-outline" onClick={() => setEmailModalOpen(false)}>Cancel</button>
                             <button className="btn btn-primary" disabled={!emailForm.subject || !emailForm.body} onClick={async () => {
-                              const token = localStorage.getItem('token');
-                              await fetch(`http://localhost:5050/api/internship-applications/${viewingApplication._id}/email`, {
-                                method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-                                body: JSON.stringify(emailForm)
-                              });
+                              await api.post(`/internship-applications/${viewingApplication._id}/email`, emailForm).catch(() => null);
                               showFeedback('Email logged successfully!');
                               setEmailModalOpen(false);
                             }}>

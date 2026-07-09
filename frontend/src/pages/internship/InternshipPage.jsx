@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
+import api from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 
-const API = 'http://localhost:5050/api';
+// API base handled by shared `api` client
 
 const SKILLS_LIST = [
   'HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Express', 'MongoDB',
@@ -64,8 +65,7 @@ export default function InternshipPage() {
       try { setForm(JSON.parse(savedDraft)); } catch (e) { console.error('Failed to parse draft'); }
     }
 
-    fetch(`${API}/internships?status=Open`)
-      .then(r => r.json())
+    api.get('/internships', { params: { status: 'Open' } })
       .then(d => { if (d.success) setPrograms(d.data); })
       .catch(() => {})
       .finally(() => setLoading(false));

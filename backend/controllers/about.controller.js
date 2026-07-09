@@ -1,0 +1,37 @@
+const About = require('../models/About');
+
+// @desc    Get About page settings
+// @route   GET /api/about
+// @access  Public
+exports.getAboutSettings = async (req, res, next) => {
+  try {
+    let about = await About.findOne();
+    if (!about) {
+      // Create default settings if none exist
+      about = await About.create({});
+    }
+    res.status(200).json({ success: true, data: about });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// @desc    Update About page settings
+// @route   PUT /api/about
+// @access  Private/Editor/Admin
+exports.updateAboutSettings = async (req, res, next) => {
+  try {
+    let about = await About.findOne();
+    if (!about) {
+      about = await About.create(req.body);
+    } else {
+      about = await About.findByIdAndUpdate(about._id, req.body, {
+        new: true,
+        runValidators: true
+      });
+    }
+    res.status(200).json({ success: true, data: about });
+  } catch (err) {
+    next(err);
+  }
+};

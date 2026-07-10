@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import Loader from '../../components/common/Loader';
@@ -50,6 +51,7 @@ export default function Gallery() {
   const [loading, setLoading] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedImage, setSelectedImage] = useState(null);
   const topRef = useRef(null);
 
   useEffect(() => {
@@ -72,6 +74,19 @@ export default function Gallery() {
   const handlePage = (p) => {
     setCurrentPage(p);
     topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const selectedIndex = selectedImage ? filtered.findIndex(item => item._id === selectedImage._id) : -1;
+
+  const openImage = (item) => setSelectedImage(item);
+  const closeImage = () => setSelectedImage(null);
+  const showPrevious = () => {
+    if (selectedIndex <= 0) return;
+    setSelectedImage(filtered[selectedIndex - 1]);
+  };
+  const showNext = () => {
+    if (selectedIndex < 0 || selectedIndex >= filtered.length - 1) return;
+    setSelectedImage(filtered[selectedIndex + 1]);
   };
 
   return (
@@ -107,7 +122,7 @@ export default function Gallery() {
                   ) : pageItems.map(item => {
                     const title = lang === 'np' ? (item.titleNp || item.titleEn) : (item.titleEn || '');
                     return (
-                      <div key={item._id} className="card" style={{ cursor: 'pointer', overflow: 'hidden' }}>
+                      <div key={item._id} className="card" style={{ cursor: 'pointer', overflow: 'hidden' }} onClick={() => openImage(item)}>
                         <div style={{ height: 220, overflow: 'hidden' }}>
                           <img
                             src={item.mediaUrl || item.imageUrl}
@@ -141,6 +156,21 @@ export default function Gallery() {
         </section>
       </main>
       <Footer />
+      {selectedImage && createPortal(
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: 24 }} onClick={closeImage}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: 960, maxHeight: '90vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }} onClick={(e) => e.stopPropagation()}>
+            <button onClick={closeImage} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,0.2)', color: '#fff', border: 'none', borderRadius: '50%', width: 40, height: 40, cursor: 'pointer', fontSize: 20, zIndex: 1 }} aria-label="Close">×</button>
+            <button onClick={showPrevious} disabled={selectedIndex <= 0} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', color: '#fff', border: 'none', borderRadius: '50%', width: 44, height: 44, cursor: selectedIndex <= 0 ? 'not-allowed' : 'pointer', opacity: selectedIndex <= 0 ? 0.5 : 1, zIndex: 1 }} aria-label="Previous">‹</button>
+            <button onClick={showNext} disabled={selectedIndex >= filtered.length - 1} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', color: '#fff', border: 'none', borderRadius: '50%', width: 44, height: 44, cursor: selectedIndex >= filtered.length - 1 ? 'not-allowed' : 'pointer', opacity: selectedIndex >= filtered.length - 1 ? 0.5 : 1, zIndex: 1 }} aria-label="Next">›</button>
+            <img src={selectedImage.mediaUrl || selectedImage.imageUrl} alt={lang === 'np' ? (selectedImage.titleNp || selectedImage.titleEn) : (selectedImage.titleEn || '')} style={{ width: '100%', maxHeight: '80vh', objectFit: 'contain', borderRadius: 12 }} />
+            <div style={{ marginTop: 16, textAlign: 'center', color: '#fff', maxWidth: 700 }}>
+              <h3 style={{ marginBottom: 6 }}>{lang === 'np' ? (selectedImage.titleNp || selectedImage.titleEn) : (selectedImage.titleEn || '')}</h3>
+              <p style={{ color: 'rgba(255,255,255,0.7)' }}>{selectedImage.category}</p>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   );
 }

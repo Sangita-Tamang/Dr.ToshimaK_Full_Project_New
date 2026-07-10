@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
+import logoImg from '../../assets/images/image10.png';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -65,7 +66,7 @@ export default function Navbar() {
           {/* LOGO */}
           <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <img
-              src="/src/assets/images/image10.png"
+              src={logoImg}
               alt="Dr. Toshima Karki"
               style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }}
             />

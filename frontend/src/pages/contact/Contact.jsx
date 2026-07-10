@@ -48,7 +48,7 @@ export default function Contact() {
   };
 
   const CONTACT_INFO = [
-    { icon: 'fas fa-map-marker-alt', titleEn: 'Office Address', titleNp: 'कार्यालयको ठेगाना', infoEn: 'Singha Durbar, Kathmandu, Nepal', infoNp: 'सिंहदरबार, काठमाडौं, नेपाल' },
+    { icon: 'fas fa-map-marker-alt', titleEn: 'Office Address', titleNp: 'कार्यालयको ठेगाना', infoEn: 'Nakkhu, Lalitpur, Nepal', infoNp: 'नक्कु, ललितपुर, नेपाल' },
     { icon: 'fas fa-envelope', titleEn: 'Email Us', titleNp: 'हामीलाई इमेल गर्नुहोस्', infoEn: 'info@toshimakarki.gov.np', infoNp: 'info@toshimakarki.gov.np' },
     { icon: 'fas fa-phone-alt', titleEn: 'Call Us', titleNp: 'हामीलाई फोन गर्नुहोस्', infoEn: '+977 1 1234567', infoNp: '+९७७ १ १२३४५६७' },
     { icon: 'fas fa-clock', titleEn: 'Office Hours', titleNp: 'कार्यालय समय', infoEn: 'Sunday - Friday: 10 AM - 5 PM', infoNp: 'आइतबार - शुक्रबार: बिहान १० बजे देखि बेलुका ५ बजेसम्म' },
@@ -168,10 +168,10 @@ export default function Contact() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }} className="contact-bottom-grid">
               <div className="card" style={{ padding: 30 }}>
                 <h3 style={{ marginBottom: 16 }}>{t('Our Location', 'हाम्रो स्थान')}</h3>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 20 }}>{t('Singha Durbar, Kathmandu, Nepal', 'सिंहदरबार, काठमाडौं, नेपाल')}</p>
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 20 }}>{t('Nakkhu, Lalitpur, Nepal', 'नक्कु, ललितपुर, नेपाल')}</p>
                 <div style={{ background: 'var(--light-gray)', height: 200, borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
                   <i className="fas fa-map-marked-alt" style={{ fontSize: '2.5rem', marginRight: 12 }}></i>
-                  <span>{t('Singha Durbar, Kathmandu', 'सिंहदरबार, काठमाडौं')}</span>
+                  <span>{t('Nakkhu, Lalitpur', 'नक्कु, ललितपुर')}</span>
                 </div>
               </div>
 

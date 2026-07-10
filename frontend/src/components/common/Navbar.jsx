@@ -31,7 +31,7 @@ export default function Navbar() {
           <div style={{ display: 'flex', gap: 24, fontSize: '0.85rem', alignItems: 'center' }}>
             <span>
               <i className="fas fa-map-marker-alt" style={{ marginRight: 6 }}></i>
-              {t('Singha Durbar, Kathmandu, Nepal', 'सिंहदरबार, काठमाडौं, नेपाल')}
+              {t('Nakkhu, Lalitpur, Nepal', 'नक्कु, ललितपुर, नेपाल')}
             </span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <i className="fas fa-envelope"></i>

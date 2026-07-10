@@ -17,3 +17,48 @@
 {"level":"error","message":"ValidationError: InternshipApplication validation failed: positionId: Cast to ObjectId failed for value \"\" (type string) at path \"positionId\" because of \"BSONError\"\n    at Document.invalidate (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/document.js:3387:32)\n    at model.$set (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/document.js:1498:12)\n    at model.$set (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/document.js:1150:16)\n    at model.Document (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/document.js:180:12)\n    at model.Model (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/model.js:127:12)\n    at new model (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/model.js:4866:15)\n    at /Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/model.js:2791:20\n    at Array.map (<anonymous>)\n    at model.create (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/mongoose/lib/model.js:2779:34)\n    at exports.submitApplication (/Users/yuvraj/Downloads/Dr.TK_project/backend/controllers/internship-application.controller.js:8:53)","service":"dr-toshima-karki-api","timestamp":"2026-07-08 19:26:39"}
 {"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 07:25:57"}
 {"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 07:25:57"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 10:58:17"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 10:58:17"}
+{"level":"info","message":"New contact message received from tmgsangeeta0315@gmail.com with priority High","service":"dr-toshima-karki-api","timestamp":"2026-07-09 12:06:20"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 13:26:48"}
+{"level":"info","message":"MongoDB Connected: ac-pe6v828-shard-00-00.krvdcot.mongodb.net","service":"dr-toshima-karki-api","timestamp":"2026-07-09 13:26:50"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:04:24"}
+{"level":"info","message":"MongoDB Connected: ac-pe6v828-shard-00-00.krvdcot.mongodb.net","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:04:25"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:10:06"}
+{"level":"info","message":"MongoDB Connected: ac-pe6v828-shard-00-00.krvdcot.mongodb.net","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:10:07"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:13:33"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:13:33"}
+{"level":"error","message":"SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)\n    at JSON.parse (<anonymous>)\n    at parse (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/body-parser/lib/types/json.js:92:19)\n    at /Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/body-parser/lib/read.js:128:18\n    at AsyncResource.runInAsyncScope (node:async_hooks:227:14)\n    at invokeCallback (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/raw-body/index.js:238:16)\n    at done (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/raw-body/index.js:227:7)\n    at IncomingMessage.onEnd (/Users/yuvraj/Downloads/Dr.TK_project/backend/node_modules/raw-body/index.js:287:7)\n    at IncomingMessage.emit (node:events:509:28)\n    at endReadableNT (node:internal/streams/readable:1729:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:14:14"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:55"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:55"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:55"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:55"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:55"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:55"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:58"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:58"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:58"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:58"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:58"}
+{"level":"error","message":"Auth Middleware Error: jwt malformed","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:27:58"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:00"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:00"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:03"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:03"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:07"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:07"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:12"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:12"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:15"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:15"}
+{"level":"info","message":"Debug stats requested by admin@toshimakarki.gov.np","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:36:48"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:39:46"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:39:46"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:39:51"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-09 14:39:52"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 09:59:50"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-10 09:59:50"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:11"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:11"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:13"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:13"}

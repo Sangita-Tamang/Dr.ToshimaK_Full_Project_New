@@ -11,11 +11,11 @@ const SettingsSchema = new mongoose.Schema({
   },
   contactAddressEn: {
     type: String,
-    default: 'Singha Durbar, Kathmandu, Nepal'
+    default: 'Nakkhu, Lalitpur, Nepal'
   },
   contactAddressNp: {
     type: String,
-    default: 'सिंहदरबार, काठमाडौं, नेपाल'
+    default: 'नक्कु, ललितपुर, नेपाल'
   },
   contactEmail: {
     type: String,

@@ -34,7 +34,7 @@ const FAQ_DATA = [
   },
   {
     q: 'Where is the office located?',
-    a: 'Singha Durbar, Kathmandu, Nepal. Remote internships may be available for certain roles.'
+    a: 'Nakkhu, Lalitpur, Nepal. Remote internships may be available for certain roles.'
   }
 ];
 

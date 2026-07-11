@@ -270,20 +270,46 @@ export default function News() {
       <Navbar />
       <main>
         {/* HERO */}
-        <section className="hero-section" style={{ paddingBottom: 60 }}>
+        <section className="light-hero">
+          <div className="light-hero-bg" style={{ backgroundImage: `url(${img13})` }} />
           <div className="container">
-            <div className="hero-content" style={{ paddingBottom: 0 }}>
-              <span className="hero-tag">{t('LATEST NEWS', 'ताजा समाचार')}</span>
-              <h1 className="hero-title">{t('Stay Updated with Authentic News', 'प्रामाणिक समाचारसँग अद्यावधिक रहनुहोस्')}</h1>
-              <p className="hero-description">
-                {t('Read announcements, policy achievements, community programs and media publications related to my work and public service.', 'मेरो काम र सार्वजनिक सेवासँग सम्बन्धित घोषणाहरू, नीतिगत उपलब्धिहरू, सामुदायिक कार्यक्रमहरू र मिडिया प्रकाशनहरू पढ्नुहोस्।')}
+            <div className="light-hero-content">
+              <span className="light-hero-tag">{t('NEWS', 'समाचार')}</span>
+              <h1 className="light-hero-title">{t('Latest News', 'ताजा समाचार')}</h1>
+              <p className="light-hero-desc">
+                {t(
+                  "Stay informed with the latest news and media reports highlighting Dr. Toshima Karki's initiatives, public engagements, parliamentary activities, and healthcare reforms across Nepal.",
+                  'डा. तोसिमा कार्कीका पहलहरू, सार्वजनिक सहभागिता, संसदीय गतिविधिहरू र नेपालभरका स्वास्थ्य सुधारहरू हाइलाइट गर्ने ताजा समाचार र मिडिया रिपोर्टहरूसँग जानकारी रहनुहोस्।'
+                )}
               </p>
-            </div>
-            <div className="hero-image-container">
-              <img src={img13} alt="News" className="hero-portrait" />
             </div>
           </div>
         </section>
+
+        {/* Featured Article Card */}
+        {REAL_NEWS.length > 0 && (
+          <div className="container">
+            <div className="featured-card-overlap" style={{ display: 'grid', gridTemplateColumns: '0.8fr 1.2fr', minHeight: 280 }}>
+              <div style={{ overflow: 'hidden' }}>
+                <img src={REAL_NEWS[0].image} alt={REAL_NEWS[0].titleEn} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              <div style={{ padding: '36px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <span style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>{REAL_NEWS[0].category}</span>
+                <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.6rem', fontWeight: 700, color: 'var(--secondary)', lineHeight: 1.2, marginBottom: 12 }}>{t(REAL_NEWS[0].titleEn, REAL_NEWS[0].titleNp)}</h2>
+                <div style={{ display: 'flex', gap: 16, fontSize: '0.85rem', color: '#888', marginBottom: 14 }}>
+                  <span>📰 {t(REAL_NEWS[0].publisherEn, REAL_NEWS[0].publisherNp)}</span>
+                  <span>📅 {formatDate(REAL_NEWS[0].publishedDate)}</span>
+                </div>
+                <p style={{ color: '#555', fontSize: '0.95rem', lineHeight: 1.7, marginBottom: 20 }}>{t(REAL_NEWS[0].contentEn, REAL_NEWS[0].contentNp)}</p>
+                <div>
+                  <a href={REAL_NEWS[0].link} target="_blank" rel="noreferrer" className="btn btn-primary" style={{ fontSize: '0.9rem' }}>
+                    {t('Read Full Article', 'पूरा लेख पढ्नुहोस्')} →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <section className="section-padding bg-light">
           <div className="container">

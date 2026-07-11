@@ -1,16 +1,34 @@
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import { useLanguage } from '../../context/LanguageContext';
+import { useEffect } from 'react';
 import './About.css';
 
 import img4 from '../../assets/images/image4.png';
 import img5 from '../../assets/images/image5.png';
-import img10 from '../../assets/images/image10.png';
 import img6 from '../../assets/images/image6.png';
 import img3 from '../../assets/images/image3.png';
+import aboutHeroBg from '../../assets/images/about.hero.png';
 
 export default function About() {
   const { t } = useLanguage();
+
+  // Intersection Observer for animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-show');
+        }
+      });
+    }, { threshold: 0.25 });
+
+    document.querySelectorAll('.animate-hidden').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const atAGlance = [
     { icon: 'fas fa-stethoscope', title: t('Medical Professional', 'चिकित्सा पेशेवर'), desc: t('MBBS doctor dedicated to improving healthcare for all citizens of Nepal.', 'नेपालका सबै नागरिकको स्वास्थ्य सुधारमा समर्पित एमबीबीएस चिकित्सक।') },
@@ -65,28 +83,29 @@ export default function About() {
 
         {/* ── HERO ── */}
         <section className="about-hero">
-          <div className="about-hero-overlay"></div>
+          <div className="about-hero-bg">
+            <img src={aboutHeroBg} alt="" />
+          </div>
+          <div className="about-hero-gradient"></div>
           <div className="container about-hero-container">
-            <div className="about-hero-content">
+            <div className="about-hero-content animate-hidden fade-in-up">
               <span className="about-hero-tag">
                 {t('ABOUT DR. TOSHIMA KARKI', 'डा. तोसिमा कार्कीको बारेमा')}
               </span>
               <h1 className="about-hero-title">
-                {t('A life dedicated', 'जीवन समर्पित')}
-                <br />
-                <span className="hero-red">{t('to people and purpose.', 'जनता र उद्देश्यका लागि।')}</span>
+                {t('A Life Dedicated', 'जीवन समर्पित')}<br />
+                {t('to People', 'जनताका लागि')}<br />
+                {t('and Purpose', 'र उद्देश्यका लागि')}<span className="text-red">.</span>
               </h1>
               <p className="about-hero-sub">
                 {t(
-                  'A doctor by profession. A leader by responsibility.\nA human being by choice.\nMy journey is driven by compassion,\nguided by values, and anchored in service.',
-                  'पेशाले चिकित्सक। जिम्मेवारीले नेता।\nस्वेच्छाले एक इन्सान।\nमेरो यात्रा करुणाले प्रेरित,\nमूल्यहरूद्वारा निर्देशित, र सेवामा आधारित।'
+                  'A doctor by profession, a leader by responsibility, and a public servant driven by compassion, integrity, and service.',
+                  'पेशाले चिकित्सक, जिम्मेवारीले नेता, र करुणा, ईमानदारी र सेवाद्वारा प्रेरित सार्वजनिक सेवक।'
                 )}
               </p>
               <p className="about-hero-sig">— Dr. Toshima Karki</p>
             </div>
-            <div className="about-hero-img-wrap">
-              <img src={img10} alt="Dr. Toshima Karki" className="about-hero-img" />
-            </div>
+            <div></div> {/* Empty column for grid layout */}
           </div>
         </section>
 

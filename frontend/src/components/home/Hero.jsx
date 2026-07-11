@@ -1,37 +1,54 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import heroImg from '../../assets/images/image10.png';
+import { useEffect } from 'react';
+import heroBackground from '../../assets/images/home.hero.png';
 
 export default function Hero() {
   const { t } = useLanguage();
 
+  // Intersection Observer for animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-show');
+        }
+      });
+    }, { threshold: 0.25 });
+
+    document.querySelectorAll('.animate-hidden').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const title = t(
+    'Honoring the People\'s Trust Through Healthcare, Public Service, and Good Governance to Build a Prosperous Nepal.',
+    'जनताको विश्वासलाई सम्मान गर्दै, स्वास्थ्य, सेवा र सुशासनमार्फत समृद्ध नेपालको निर्माणमा निरन्तर समर्पित।'
+  );
+
+  const description = t(
+    'A lifetime of service rooted in dignity, compassion, and accountable leadership for every Nepali family.',
+    'हरि नेपाली परिवारको सम्मान, करुणा र उत्तरदायित्वपूर्ण नेतृत्वमा आधारित सेवाको दीर्घकालीन यात्रा।'
+  );
+
   return (
     <section className="hero-section">
-      <div className="container">
-        <div className="hero-content">
-          <span className="hero-tag">{t('LEADERSHIP. COMPASSION. COMMITMENT.', 'नेतृत्व। करुणा। प्रतिबद्धता।')}</span>
-          <h1 className="hero-title">
-            {t('Empowering Health & Leadership in Nepal', 'नेपालमा स्वास्थ्य र नेतृत्वको सशक्तिकरण')}
-          </h1>
-          <p className="hero-description">
-            {t(
-              'Dedicated to building a healthy, equitable and prosperous Nepal through healthcare reform, good governance and people-first leadership.',
-              'स्वास्थ्य सेवा सुधार, सुशासन र जनमुखी नेतृत्व मार्फत स्वस्थ, समतामूलक र समृद्ध नेपाल निर्माणमा समर्पित।'
-            )}
-          </p>
-          <div className="hero-buttons">
-            <Link to="/about" className="btn btn-primary">{t('Learn More About Me', 'मेरो बारेमा थप जान्नुहोस्')}</Link>
-            <a href="#explore-work" className="btn btn-outline">{t('Explore My Work', 'मेरो कामको अन्वेषण गर्नुहोस्')}</a>
-          </div>
-        </div>
+      <div className="hero-backdrop" aria-hidden="true">
+        <img src={heroBackground} alt="" className="hero-background" />
+        <div className="hero-overlay" />
+      </div>
 
-        <div className="hero-image-container">
-          <div style={{
-            position: 'absolute', top: '10%', right: 0, width: '90%', height: '80%',
-            background: 'radial-gradient(circle, rgba(200,16,46,0.08) 0%, rgba(255,255,255,0) 70%)',
-            zIndex: 1
-          }} />
-          <img src={heroImg} alt="Dr. Toshima Karki" className="hero-portrait" />
+      <div className="container hero-shell">
+        <div className="hero-content-panel animate-hidden fade-in-up">
+          <span className="hero-tag">{t('Official Website', 'आधिकारिक वेबसाइट')}</span>
+          <h1 className="hero-title">{title}</h1>
+          <p className="hero-description">{description}</p>
+          <div className="hero-buttons">
+            <Link to="/about" className="btn btn-primary">{t('Learn More', 'थप जानकारी')}</Link>
+            <a href="#explore-work" className="btn btn-outline">{t('Explore Work', 'काम अन्वेषण गर्नुहोस्')}</a>
+          </div>
         </div>
       </div>
     </section>

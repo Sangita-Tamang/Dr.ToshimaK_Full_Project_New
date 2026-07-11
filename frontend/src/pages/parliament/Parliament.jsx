@@ -5,7 +5,7 @@ import Footer from '../../components/common/Footer';
 import { useLanguage } from '../../context/LanguageContext';
 import './Parliament.css';
 
-import templeBg from '../../assets/images/temple_bg.jpg';
+import heroBg from '../../assets/images/Parliament.hero.png';
 import img1 from '../../assets/images/image1.png';
 import img2 from '../../assets/images/image2.png';
 import img3 from '../../assets/images/image13.png';
@@ -265,7 +265,7 @@ export default function Parliament() {
         )}
 
         {/* Hero Section - single background image only */}
-        <section className="parl-hero" style={{ backgroundImage: `url(${templeBg})` }}>
+        <section className="parl-hero" style={{ backgroundImage: `url(${heroBg})` }}>
           <div className="parl-hero-overlay"></div>
           <div className="container parl-hero-container">
             <div className="parl-hero-content animate-hidden fade-in-up">

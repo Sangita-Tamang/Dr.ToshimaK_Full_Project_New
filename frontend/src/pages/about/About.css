@@ -4,53 +4,113 @@
 /* HERO */
 .about-hero {
   position: relative;
-  min-height: 85vh;
-  background: #faf7f5;
+  min-height: 90vh;
   overflow: hidden;
   display: flex;
   align-items: center;
 }
-.about-hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.9) 60%, rgba(200,16,46,0.04) 100%);
+.about-hero-bg {
+  position: absolute;
+  inset: 0;
   z-index: 0;
 }
-.about-hero-container {
-  position: relative; z-index: 1;
-  display: flex; align-items: center;
-  justify-content: space-between;
-  gap: 40px; padding: 80px 0;
+.about-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
 }
-.about-hero-content { max-width: 520px; }
+.about-hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #0a1628 0%, #0d1b2a 35%, rgba(13, 27, 42, 0.7) 60%, rgba(13, 27, 42, 0) 100%);
+  z-index: 1;
+}
+.about-hero-container {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  width: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.about-hero-content {
+  max-width: 600px;
+  color: #fff;
+  padding-right: 0;
+  margin-right: auto;
+  text-align: left;
+}
 .about-hero-tag {
   display: inline-block;
-  color: var(--primary); font-weight: 700;
-  font-size: 0.78rem; letter-spacing: 2px;
-  text-transform: uppercase; margin-bottom: 16px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  position: relative;
+}
+.about-hero-tag::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--primary);
 }
 .about-hero-title {
-  font-size: 3.8rem; font-weight: 900;
-  color: #101828; line-height: 1.08; margin-bottom: 20px;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  margin-top: 20px;
+  color: #fff;
 }
-.hero-red { color: var(--primary); }
-.about-hero-sub {
-  font-size: 1.05rem; color: #475467;
-  line-height: 1.8; white-space: pre-line; margin-bottom: 20px;
+.about-hero-title {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  margin-top: 20px;
+  color: #fff;
 }
-.about-hero-sig {
-  font-family: var(--font-heading); font-style: italic;
-  font-weight: 700; font-size: 1.1rem;
+.about-hero-title .text-red {
   color: var(--primary);
 }
-.about-hero-img-wrap {
-  flex: 0 0 45%; position: relative;
-  display: flex; justify-content: flex-end;
+.about-hero-sub {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 24px;
+  max-width: 580px;
 }
-.about-hero-img {
-  width: 100%; max-width: 480px;
-  object-fit: cover;
-  border-radius: 24px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.12);
+.about-hero-sig {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--primary);
+  margin-top: 12px;
+}
+
+/* Animations */
+.animate-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+.fade-in-up {
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s ease-out;
+}
+.animate-show {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate(0, 0) !important;
 }
 
 /* STORY */
@@ -258,9 +318,15 @@
   .drives-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .about-hero-container { flex-direction: column; }
-  .about-hero-title { font-size: 2.5rem; }
-  .about-hero-img-wrap { display: none; }
+  .about-hero { min-height: 70vh; }
+  .about-hero-bg { opacity: 0.3; }
+  .about-hero-container { 
+    grid-template-columns: 1fr;
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  .about-hero-content { padding-right: 0; max-width: 100%; }
+  .about-hero-title { font-size: 2.2rem; }
   .about-story-grid { grid-template-columns: 1fr; }
   .about-journey-grid { grid-template-columns: 1fr; }
   .about-looking-grid { grid-template-columns: 1fr; }

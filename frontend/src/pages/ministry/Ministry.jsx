@@ -7,6 +7,8 @@ import api from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 import './Ministry.css';
 
+import ministryHeroBg from '../../assets/images/ministry.hero.png';
+
 import img1 from '../../assets/images/image1.png';
 import img2 from '../../assets/images/image2.png';
 import img3 from '../../assets/images/image3.png';
@@ -124,6 +126,23 @@ export default function Ministry() {
 
   const tt = (en, np) => lang === 'np' ? np : en;
 
+  // Intersection Observer for animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-show');
+        }
+      });
+    }, { threshold: 0.25 });
+
+    document.querySelectorAll('.animate-hidden').forEach(el => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -131,13 +150,15 @@ export default function Ministry() {
 
         {/* Hero Section */}
         <section className="min-hero">
-          <div className="min-hero-overlay"></div>
+          <div className="min-hero-bg">
+            <img src={ministryHeroBg} alt="" />
+          </div>
+          <div className="min-hero-gradient"></div>
           <div className="container min-hero-container">
-            <div className="min-hero-content">
+            <div className="min-hero-content animate-hidden fade-in-up">
               <span className="min-hero-tag">{t('MINISTRY OF HEALTH', 'स्वास्थ्य मन्त्रालय')}</span>
               <h1 className="min-hero-title">
                 {t('Leadership with Compassion.', 'करुणा र प्रतिबद्धताको नेतृत्व।')}
-                <br />
                 <span className="text-red">{t('Reform with Purpose.', 'उद्देश्य सहितको सुधार।')}</span>
               </h1>
               <p className="min-hero-desc">
@@ -145,16 +166,10 @@ export default function Ministry() {
               </p>
               <div className="min-hero-buttons">
                 <a href="#contributions" className="btn btn-primary">{t('Explore Ministry Work', 'मन्त्रालयको काम खोज्नुहोस्')} &rarr;</a>
-                <a href="#policies" className="btn btn-outline">{t('View Policies', 'नीतिहरू हेर्नुहोस्')} &rarr;</a>
+                <a href="#policies" className="btn btn-secondary">{t('View Policies', 'नीतिहरू हेर्नुहोस्')} &rarr;</a>
               </div>
             </div>
-            <div className="min-hero-img-box">
-              <img src={img4} alt="Dr. Toshima Karki" className="min-hero-img" />
-              <div className="min-hero-badge">
-                <span className="badge-title">{t('Ministry of Health & Population', 'स्वास्थ्य तथा जनसंख्या मन्त्रालय')}</span>
-                <span className="badge-sub">{t('Government of Nepal', 'नेपाल सरकार')}</span>
-              </div>
-            </div>
+            <div></div> {/* Empty column for grid layout */}
           </div>
         </section>
 

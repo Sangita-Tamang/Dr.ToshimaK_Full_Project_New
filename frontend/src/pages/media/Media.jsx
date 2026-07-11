@@ -167,17 +167,18 @@ export default function Media() {
       <Navbar />
       <main ref={topRef}>
         {/* HERO */}
-        <section className="hero-section" style={{ paddingBottom: 60 }}>
+        <section className="light-hero">
+          <div className="light-hero-bg" style={{ backgroundImage: `url(${img12})` }} />
           <div className="container">
-            <div className="hero-content" style={{ paddingBottom: 0 }}>
-              <span className="hero-tag">{t('SPEECHES & MEDIA COVERAGE', 'सम्बोधन तथा मिडिया कभरेज')}</span>
-              <h1 className="hero-title">{t('My Speeches. My Message. My Mission.', 'मेरो सम्बोधन। मेरो सन्देश। मेरो मिसन।')}</h1>
-              <p className="hero-description">
-                {t('Explore public addresses, press conferences, media interviews and coverage where I share my vision for a healthier, stronger and more equitable Nepal.', 'मैले स्वस्थ, बलियो र अधिक समतामूलक नेपालका लागि आफ्नो दृष्टिकोण साझा गरेका सार्वजनिक सम्बोधन, पत्रकार सम्मेलन र मिडिया अन्तर्वार्ताहरू अन्वेषण गर्नुहोस्।')}
+            <div className="light-hero-content">
+              <span className="light-hero-tag">{t('MEDIA', 'मिडिया')}</span>
+              <h1 className="light-hero-title">{t('Speeches & Media', 'सम्बोधन र मिडिया')}</h1>
+              <p className="light-hero-desc">
+                {t(
+                  'Explore public addresses, press conferences, media interviews and coverage where I share my vision for a healthier, stronger and more equitable Nepal.',
+                  'मैले स्वस्थ, बलियो र अधिक समतामूलक नेपालका लागि आफ्नो दृष्टिकोण साझा गरेका सार्वजनिक सम्बोधन, पत्रकार सम्मेलन र मिडिया अन्तर्वार्ताहरू अन्वेषण गर्नुहोस्।'
+                )}
               </p>
-            </div>
-            <div className="hero-image-container">
-              <img src={img12} alt="Media" className="hero-portrait" />
             </div>
           </div>
         </section>

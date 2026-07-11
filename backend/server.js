@@ -5,9 +5,42 @@ const env = require('./config/env');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const logger = require('./config/logger');
+const User = require('./models/User');
+
+const ensureDefaultAdmin = async () => {
+    try {
+        const defaultEmail = (process.env.ADMIN_EMAIL || 'admin@toshimakarki.gov.np').toLowerCase();
+        const defaultPassword = process.env.ADMIN_PASSWORD || 'password123';
+
+        const existingAdmin = await User.findOne({ role: 'admin' });
+        if (existingAdmin) {
+            return existingAdmin;
+        }
+
+        const existingByEmail = await User.findOne({ email: defaultEmail });
+        if (existingByEmail) {
+            existingByEmail.role = 'admin';
+            await existingByEmail.save();
+            return existingByEmail;
+        }
+
+        const adminUser = await User.create({
+            name: 'Administrator',
+            email: defaultEmail,
+            password: defaultPassword,
+            role: 'admin'
+        });
+
+        logger.info(`Default admin account ensured: ${adminUser.email}`);
+        return adminUser;
+    } catch (error) {
+        logger.error(`Admin bootstrap failed: ${error.message}`);
+        console.error(`Admin bootstrap failed: ${error.message}`);
+    }
+};
 
 // Connect MongoDB
-connectDB();
+connectDB().then(() => ensureDefaultAdmin());
 
 // Routes
 const authRoutes = require('./routes/auth.routes');

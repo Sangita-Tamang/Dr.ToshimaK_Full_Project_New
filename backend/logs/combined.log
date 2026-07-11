@@ -62,3 +62,10 @@
 {"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:11"}
 {"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:13"}
 {"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-10 10:03:13"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 11:44:11"}
+{"level":"info","message":"MongoDB Connected: localhost","service":"dr-toshima-karki-api","timestamp":"2026-07-10 11:44:11"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 11:51:43"}
+{"level":"info","message":"MongoDB Connected: ac-pe6v828-shard-00-00.krvdcot.mongodb.net","service":"dr-toshima-karki-api","timestamp":"2026-07-10 11:51:44"}
+{"level":"info","message":"Default admin account ensured: admin@toshimakarki.gov.np","service":"dr-toshima-karki-api","timestamp":"2026-07-10 11:51:45"}
+{"level":"info","message":"Server running in development mode on port 5050","service":"dr-toshima-karki-api","timestamp":"2026-07-10 12:07:41"}
+{"level":"info","message":"MongoDB Connected: ac-pe6v828-shard-00-00.krvdcot.mongodb.net","service":"dr-toshima-karki-api","timestamp":"2026-07-10 12:07:42"}

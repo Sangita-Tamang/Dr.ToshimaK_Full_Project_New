@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import Loader from '../../components/common/Loader';
@@ -45,7 +45,32 @@ export default function Party() {
     }
   }, [lang, partyData]);
 
-  const tt = (en, np) => (lang === 'np' ? np || en : en);
+  const tt = useCallback((en, np) => (lang === 'np' ? np || en : en), [lang]);
+
+  // Memoize fallback data to prevent recreating on every render
+  const fallbackPrinciples = useMemo(() => [
+    { titleEn: 'Transparency', titleNp: 'पारदर्शिता', descriptionEn: 'We believe in open communication and transparent governance at all levels.', descriptionNp: 'हामी सबै तहमा खुला संवाद र पारदर्शी शासनमा विश्वास गर्छौं।', icon: 'fas fa-shield-alt' },
+    { titleEn: 'Accountability', titleNp: 'जवाफदेहिता', descriptionEn: 'We are accountable to the people and committed to deliver on our promises.', descriptionNp: 'हामी जनताप्रति जवाफदेही छौं र हाम्रा प्रतिबद्धता पूरा गर्न समर्पित छौं।', icon: 'fas fa-users' },
+    { titleEn: 'Integrity', titleNp: 'इमान्दारिता', descriptionEn: 'We uphold the highest standards of integrity in all our actions.', descriptionNp: 'हामी हाम्रा सबै कार्यहरूमा उच्चतम इमान्दारिताको मापदण्ड कायम राख्छौं।', icon: 'fas fa-balance-scale' },
+    { titleEn: 'Inclusiveness', titleNp: 'समावेशिता', descriptionEn: 'We embrace diversity and ensure equal rights and opportunities for every citizen.', descriptionNp: 'हामी विविधतालाई अँगाल्छौं र हरेक नागरिकका लागि समान अधिकार र अवसर सुनिश्चित गर्छौं।', icon: 'fas fa-people-arrows' },
+    { titleEn: 'Innovation', titleNp: 'नवप्रवर्तन', descriptionEn: 'We encourage innovative ideas and modern solutions for national progress.', descriptionNp: 'हामी राष्ट्रिय प्रगतिका लागि नवीन विचार र आधुनिक समाधानलाई प्रोत्साहन गर्छौं।', icon: 'fas fa-lightbulb' },
+    { titleEn: 'Democracy', titleNp: 'लोकतन्त्र', descriptionEn: 'We strengthen democratic values and promote active citizen participation.', descriptionNp: 'हामी लोकतान्त्रिक मूल्यहरू सुदृढ गर्छौं र सक्रिय नागरिक सहभागितालाई प्रवर्द्धन गर्छौं।', icon: 'fas fa-flag' }
+  ], []);
+
+  const fallbackJourney = useMemo(() => [
+    { year: '2022', en: 'Elected as Member of the House of Representatives from Lalitpur Constituency No. 3.', np: 'ललितपुर निर्वाचन क्षेत्र नं. ३ बाट प्रतिनिधि सभा सदस्यमा निर्वाचित।' },
+    { year: '2023', en: 'Appointed as Minister of State for Health and Population.', np: 'स्वास्थ्य तथा जनसंख्या राज्यमन्त्रीमा नियुक्त।' },
+    { year: t('Present', 'हाल'), en: 'Continuing to serve the people through Parliament and contribute to nation-building with RSP.', np: 'संसदमार्फत जनताको सेवा जारी राखी आरएसपीसँग राष्ट्र निर्माणमा योगदान।' }
+  ], [t]);
+
+  const fallbackBullets = useMemo(() => [
+    { en: 'Advocating for healthcare reform', np: 'स्वास्थ्य सुधारका लागि वकालत' },
+    { en: 'Promoting good governance', np: 'सुशासन प्रवर्द्धन' },
+    { en: 'Ensuring social justice', np: 'सामाजिक न्याय सुनिश्चित' },
+    { en: 'Encouraging youth participation', np: 'युवा सहभागितालाई प्रोत्साहन' },
+    { en: 'Supporting economic prosperity', np: 'आर्थिक समृद्धिमा समर्थन' },
+    { en: 'Strengthening democratic values', np: 'लोकतान्त्रिक मूल्यहरू सुदृढ' }
+  ], []);
 
   if (loading) {
     return (
@@ -57,37 +82,12 @@ export default function Party() {
     );
   }
 
-  const hero = partyData.hero || {};
-  const about = partyData.about || {};
-  const principles = partyData.principles || [];
-  const role = partyData.role || {};
-  const journey = partyData.journey || [];
-  const website = partyData.officialWebsite || {};
-  const quote = partyData.quote || {};
-
-  const fallbackPrinciples = [
-    { titleEn: 'Transparency', titleNp: 'पारदर्शिता', descriptionEn: 'We believe in open communication and transparent governance at all levels.', descriptionNp: 'हामी सबै तहमा खुला संवाद र पारदर्शी शासनमा विश्वास गर्छौं।', icon: 'fas fa-shield-alt' },
-    { titleEn: 'Accountability', titleNp: 'जवाफदेहिता', descriptionEn: 'We are accountable to the people and committed to deliver on our promises.', descriptionNp: 'हामी जनताप्रति जवाफदेही छौं र हाम्रा प्रतिबद्धता पूरा गर्न समर्पित छौं।', icon: 'fas fa-users' },
-    { titleEn: 'Integrity', titleNp: 'इमान्दारिता', descriptionEn: 'We uphold the highest standards of integrity in all our actions.', descriptionNp: 'हामी हाम्रा सबै कार्यहरूमा उच्चतम इमान्दारिताको मापदण्ड कायम राख्छौं।', icon: 'fas fa-balance-scale' },
-    { titleEn: 'Inclusiveness', titleNp: 'समावेशिता', descriptionEn: 'We embrace diversity and ensure equal rights and opportunities for every citizen.', descriptionNp: 'हामी विविधतालाई अँगाल्छौं र हरेक नागरिकका लागि समान अधिकार र अवसर सुनिश्चित गर्छौं।', icon: 'fas fa-people-arrows' },
-    { titleEn: 'Innovation', titleNp: 'नवप्रवर्तन', descriptionEn: 'We encourage innovative ideas and modern solutions for national progress.', descriptionNp: 'हामी राष्ट्रिय प्रगतिका लागि नवीन विचार र आधुनिक समाधानलाई प्रोत्साहन गर्छौं।', icon: 'fas fa-lightbulb' },
-    { titleEn: 'Democracy', titleNp: 'लोकतन्त्र', descriptionEn: 'We strengthen democratic values and promote active citizen participation.', descriptionNp: 'हामी लोकतान्त्रिक मूल्यहरू सुदृढ गर्छौं र सक्रिय नागरिक सहभागितालाई प्रवर्द्धन गर्छौं।', icon: 'fas fa-flag' }
-  ];
-
-  const fallbackJourney = [
-    { year: '2022', en: 'Elected as Member of the House of Representatives from Lalitpur Constituency No. 3.', np: 'ललितपुर निर्वाचन क्षेत्र नं. ३ बाट प्रतिनिधि सभा सदस्यमा निर्वाचित।' },
-    { year: '2023', en: 'Appointed as Minister of State for Health and Population.', np: 'स्वास्थ्य तथा जनसंख्या राज्यमन्त्रीमा नियुक्त।' },
-    { year: t('Present', 'हाल'), en: 'Continuing to serve the people through Parliament and contribute to nation-building with RSP.', np: 'संसदमार्फत जनताको सेवा जारी राखी आरएसपीसँग राष्ट्र निर्माणमा योगदान।' }
-  ];
-
-  const fallbackBullets = [
-    { en: 'Advocating for healthcare reform', np: 'स्वास्थ्य सुधारका लागि वकालत' },
-    { en: 'Promoting good governance', np: 'सुशासन प्रवर्द्धन' },
-    { en: 'Ensuring social justice', np: 'सामाजिक न्याय सुनिश्चित' },
-    { en: 'Encouraging youth participation', np: 'युवा सहभागितालाई प्रोत्साहन' },
-    { en: 'Supporting economic prosperity', np: 'आर्थिक समृद्धिमा समर्थन' },
-    { en: 'Strengthening democratic values', np: 'लोकतान्त्रिक मूल्यहरू सुदृढ' }
-  ];
+  const hero = partyData?.hero || {};
+  const about = partyData?.about || {};
+  const principles = partyData?.principles || [];
+  const role = partyData?.role || {};
+  const journey = partyData?.journey || [];
+  const website = partyData?.officialWebsite || {};
 
   return (
     <>

@@ -1,320 +1,224 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
-import Loader from '../../components/common/Loader';
-import api from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 import './Ministry.css';
 
 import ministryHeroBg from '../../assets/images/ministry.hero.png';
-
 import img1 from '../../assets/images/image1.png';
 import img2 from '../../assets/images/image2.png';
 import img3 from '../../assets/images/image3.png';
 import img4 from '../../assets/images/image4.png';
 import img5 from '../../assets/images/image5.png';
 import img6 from '../../assets/images/image6.png';
+import img7 from '../../assets/images/image7.png';
 import img8 from '../../assets/images/image8.png';
-import img10 from '../../assets/images/image10.png';
-import img11 from '../../assets/images/image11.png';
-import img12 from '../../assets/images/image12.png';
-
-const STATS = [
-  { icon: 'fas fa-users-cog', val: '1M+', titleEn: 'Lives Impacted', titleNp: 'प्रभावित जीवन', descEn: 'Through health programs and initiatives.', descNp: 'विभिन्न स्वास्थ्य कार्यक्रम र पहलहरू मार्फत।' },
-  { icon: 'fas fa-hospital-user', val: '500K+', titleEn: 'Patients Supported', titleNp: 'सहयोग प्राप्त बिरामी', descEn: 'Across hospitals and health centers.', descNp: 'अस्पताल र स्वास्थ्य केन्द्रहरूमा।' },
-  { icon: 'fas fa-file-invoice', val: '20+', titleEn: 'Health Policies', titleNp: 'स्वास्थ्य नीतिहरू', descEn: 'Formulated and implemented.', descNp: 'तर्जुमा र कार्यान्वयन गरिएका।' },
-  { icon: 'fas fa-history', val: '15+', titleEn: 'Years of Service', titleNp: 'सेवाका वर्षहरू', descEn: 'In public health leadership and governance.', descNp: 'जनस्वास्थ्य नेतृत्व र सुशासनमा।' },
-  { icon: 'fas fa-map-marked-alt', val: '75+', titleEn: 'Districts Reached', titleNp: 'पुगेका जिल्लाहरू', descEn: 'Strengthening healthcare nationwide.', descNp: 'देशव्यापी स्वास्थ्य सेवा सुदृढीकरण गर्दै।' }
-];
 
 const CONTRIBUTIONS = [
   {
     id: '01',
-    categoryEn: 'POLICY AREA',
-    categoryNp: 'नीति क्षेत्र',
-    titleEn: 'Health Insurance Reform',
-    titleNp: 'स्वास्थ्य बीमा सुधार',
-    descEn: 'Expanding national health insurance coverage to ensure financial protection and universal healthcare access for all citizens.',
-    descNp: 'सबै नागरिकका लागि वित्तीय सुरक्षा र विश्वव्यापी स्वास्थ्य सेवा पहुँच सुनिश्चित गर्न राष्ट्रिय स्वास्थ्य बीमाको दायरा विस्तार।',
+    categoryEn: 'Emergency healthcare',
+    categoryNp: 'आपतकालीन स्वास्थ्य सेवा',
+    titleEn: 'National Trauma Policy & Emergency Healthcare Reform',
+    titleNp: 'राष्ट्रिय ट्रमा नीति र आपतकालीन स्वास्थ्य सेवा सुधार',
+    descEn: 'Calling for a national trauma policy and a coordinated emergency care system so that timely treatment is available when it matters most.',
+    descNp: 'समयमै उपचार उपलब्ध होस् भन्ने उद्देश्यले राष्ट्रिय ट्रमा नीति र समन्वित आपतकालीन सेवा प्रणालीका लागि आवाज।',
     image: img1,
-    url: 'https://english.headlinenepal.com/tag/Dr.%20Toshima%20Karki'
-  },
-  {
-    id: '02',
-    categoryEn: 'HEALTH REFORM',
-    categoryNp: 'स्वास्थ्य सुधार',
-    titleEn: 'Healthcare Affordability & Access',
-    titleNp: 'स्वास्थ्य सेवाको पहुँच र किफायतता',
-    descEn: 'Making healthcare affordable by reducing treatment costs and improving access to essential medical services across Nepal.',
-    descNp: 'उपचार खर्च घटाएर र नेपालभर आवश्यक चिकित्सा सेवाहरूमा पहुँच सुधार गरेर स्वास्थ्य सेवालाई किफायती बनाउने।',
-    image: img5,
-    url: 'https://nagariknews.nagariknetwork.com/politics/1437739-1717496669.html'
-  },
-  {
-    _id: 'c3',
-    id: '03',
-    categoryEn: 'NATIONAL INITIATIVE',
-    categoryNp: 'राष्ट्रिय पहल',
-    titleEn: 'Emergency & Trauma Care System',
-    titleNp: 'आपतकालीन र ट्रमा केयर प्रणाली',
-    descEn: 'Strengthening emergency response systems, ambulance services, and trauma care infrastructure nationwide.',
-    descNp: 'देशव्यापी रूपमा आपतकालीन चिकित्सा प्रतिक्रिया प्रणाली, एम्बुलेन्स सेवा र ट्रमा केयर पूर्वाधार सुदृढ गर्ने।',
-    image: img6,
     url: 'https://english.ratopati.com/story/63620/mp-karki-demands-immediate-formulation-of-national-trauma-policy'
   },
   {
+    id: '02',
+    categoryEn: 'Healthcare access',
+    categoryNp: 'स्वास्थ्य पहुँच',
+    titleEn: 'Healthcare Accessibility & Affordability',
+    titleNp: 'स्वास्थ्य सेवाको पहुँच र किफायतता',
+    descEn: 'Advocating for people-centred healthcare that reduces financial barriers and brings essential services closer to every community.',
+    descNp: 'आर्थिक बाधा घटाउँदै अत्यावश्यक सेवा हरेक समुदायसम्म पुर्‍याउने जनकेन्द्रित स्वास्थ्य सेवाको वकालत।',
+    image: img2,
+    url: 'https://hr.parliament.gov.np/en/video/21055'
+  },
+  {
+    id: '03',
+    categoryEn: 'Public systems',
+    categoryNp: 'सार्वजनिक प्रणाली',
+    titleEn: 'Public Healthcare System Improvement',
+    titleNp: 'सार्वजनिक स्वास्थ्य प्रणाली सुधार',
+    descEn: 'Strengthening public hospitals, frontline services, and accountable systems that can deliver reliable care throughout Nepal.',
+    descNp: 'नेपालभर भरपर्दो सेवा दिन सक्ने सार्वजनिक अस्पताल, अग्रपङ्क्तिका सेवा र उत्तरदायी प्रणाली सुदृढ गर्ने पहल।',
+    image: img3,
+    url: 'https://hr.parliament.gov.np/index.php/en/video/21282'
+  },
+  {
     id: '04',
-    categoryEn: 'REGULATORY REFORM',
-    categoryNp: 'नियमनकारी सुधार',
-    titleEn: 'Medicine & Drug Regulation Reform',
-    titleNp: 'औषधि र ड्रग नियमन सुधार',
-    descEn: 'Ensuring safe, high-quality medicines through strict regulation and improved pharmaceutical supply systems.',
-    descNp: 'कडा नियमन र सुधारिएको औषधि आपूर्ति प्रणाली मार्फत सुरक्षित, उच्च गुणस्तरीय औषधिहरू सुनिश्चित गर्ने।',
-    image: img12,
-    url: 'https://ekantipur.com/news/2024/06/11/it-is-necessary-for-the-government-to-immediately-bring-nepal-hospital-operation-act-dr-karki-30-37.html'
+    categoryEn: 'Patient safety',
+    categoryNp: 'बिरामी सुरक्षा',
+    titleEn: 'Medicine Regulation & Patient Safety',
+    titleNp: 'औषधि नियमन र बिरामी सुरक्षा',
+    descEn: 'Bringing medical insight to the standards, oversight, and safeguards that protect patients and promote confidence in care.',
+    descNp: 'बिरामीको सुरक्षा र स्वास्थ्य सेवाप्रति विश्वास बढाउने मापदण्ड, अनुगमन र सुरक्षाका उपायमा चिकित्सकीय दृष्टिकोण।',
+    image: img4,
+    url: 'https://hr.parliament.gov.np/en/video/18557'
   },
   {
     id: '05',
-    categoryEn: 'RURAL HEALTH',
-    categoryNp: 'ग्रामीण स्वास्थ्य',
-    titleEn: 'Rural Healthcare Development',
-    titleNp: 'ग्रामीण स्वास्थ्य सेवा विकास',
-    descEn: 'Bringing healthcare to remote communities through mobile clinics, telemedicine, and rural health centers.',
-    descNp: 'मोबाइल क्लिनिक, टेलिमेडिसिन र ग्रामीण स्वास्थ्य केन्द्रहरू मार्फत दुर्गम समुदायमा स्वास्थ्य सेवा पुर्‍याउने।',
-    image: img2,
-    url: 'https://nagariknews.nagariknetwork.com/amp/health/1056251-1673949836.html'
+    categoryEn: 'Evidence-led policy',
+    categoryNp: 'प्रमाणमा आधारित नीति',
+    titleEn: 'Medical Expertise in Healthcare Policy',
+    titleNp: 'स्वास्थ्य नीतिमा चिकित्सकीय विशेषज्ञता',
+    descEn: 'Championing practical, evidence-informed health policy shaped by clinical experience and the realities faced by patients.',
+    descNp: 'क्लिनिकल अनुभव र बिरामीले भोग्ने वास्तविकतामा आधारित व्यावहारिक, प्रमाणमुखी स्वास्थ्य नीतिको समर्थन।',
+    image: img5,
+    url: 'https://www.youtube.com/watch?v=iNo5kzZUKZs'
   },
   {
     id: '06',
-    categoryEn: 'PANDEMIC RESPONSE',
-    categoryNp: 'महामारी नियन्त्रण',
-    titleEn: 'COVID-19 Response',
-    titleNp: 'कोभिड-१९ नियन्त्रण पहल',
-    descEn: 'Coordinated national response including vaccination, awareness, and hospital preparedness during the pandemic.',
-    descNp: 'महामारीको समयमा खोप, जनचेतना र अस्पतालको पूर्वतयारी सहितको एकीकृत राष्ट्रिय प्रयासको नेतृत्व।',
+    categoryEn: 'Public advocacy',
+    categoryNp: 'जनस्वास्थ्य पैरवी',
+    titleEn: 'Public Health Advocacy',
+    titleNp: 'जनस्वास्थ्य पैरवी',
+    descEn: 'Keeping public health, prevention, and the dignity of patients at the centre of national conversations and public action.',
+    descNp: 'राष्ट्रिय बहस र सार्वजनिक कार्यको केन्द्रमा जनस्वास्थ्य, रोकथाम र बिरामीको सम्मानलाई राख्ने निरन्तर प्रयास।',
+    image: img6,
+    url: 'https://www.youtube.com/watch?v=B85s2EoC9v0'
+  },
+  {
+    id: '07',
+    categoryEn: 'House of Representatives',
+    categoryNp: 'प्रतिनिधि सभा',
+    titleEn: 'Parliamentary Healthcare Discussions',
+    titleNp: 'संसदीय स्वास्थ्य छलफल',
+    descEn: 'Raising health-sector priorities in parliamentary debate and connecting public concerns with accountable policy action.',
+    descNp: 'संसदीय छलफलमा स्वास्थ्य क्षेत्रका प्राथमिकता उठाउँदै जनचासोलाई उत्तरदायी नीतिगत कामसँग जोड्ने प्रयास।',
+    image: img7,
+    url: 'https://hr.parliament.gov.np/en/video/22715'
+  },
+  {
+    id: '08',
+    categoryEn: 'Looking ahead',
+    categoryNp: 'भावी दृष्टि',
+    titleEn: 'Healthcare Transformation Vision',
+    titleNp: 'स्वास्थ्य सेवा रूपान्तरणको दृष्टि',
+    descEn: 'A long-term vision for a fairer, stronger healthcare system—built through reform, public dialogue, and service to people.',
+    descNp: 'सुधार, सार्वजनिक संवाद र जनसेवाबाट निर्माण हुने थप न्यायपूर्ण र बलियो स्वास्थ्य प्रणालीको दीर्घकालीन दृष्टि।',
     image: img8,
-    url: 'https://www.onlinekhabar.com/2024/06/1490373/government-should-set-healthcare-fees-tosima-karki'
+    url: 'https://english.nepalnews.com/s/politics/toshima-karki-advocates-transformation-of-rastriya-swatantra-party/'
   }
 ];
 
-const PROGRAMS = [
-  { titleEn: 'Universal Health Coverage Expansion Program', titleNp: 'विश्वव्यापी स्वास्थ्य पहुँच विस्तार कार्यक्रम' },
-  { titleEn: 'Rural Health Access Mission', titleNp: 'ग्रामीण स्वास्थ्य पहुँच अभियान' },
-  { titleEn: 'Emergency Response Modernization Project', titleNp: 'आपतकालीन सेवा आधुनिकीकरण आयोजना' },
-  { titleEn: 'Maternal & Child Health Improvement Program', titleNp: 'मातृ तथा बाल स्वास्थ्य सुधार कार्यक्रम' },
-  { titleEn: 'Digital Health Transformation Initiative', titleNp: 'डिजिटल स्वास्थ्य रूपान्तरण पहल' }
-];
-
-const POLICIES = [
-  { titleEn: 'National Health Insurance Act Reform', titleNp: 'राष्ट्रिय स्वास्थ्य बीमा ऐन सुधार' },
-  { titleEn: 'Public Health Emergency Preparedness Policy', titleNp: 'जनस्वास्थ्य आपतकालीन पूर्वतयारी नीति' },
-  { titleEn: 'Drug Regulation Improvement Framework', titleNp: 'औषधि नियमन सुधार खाका' },
-  { titleEn: 'Rural Healthcare Expansion Strategy', titleNp: 'ग्रामीण स्वास्थ्य सेवा विस्तार रणनीति' },
-  { titleEn: 'Health Workforce Development Plan', titleNp: 'स्वास्थ्य जनशक्ति विकास योजना' }
-];
-
-const UPDATES = [
-  { titleEn: 'Govt. Expands Health Insurance Coverage to 7 More Districts', titleNp: 'सरकारद्वारा थप ७ जिल्लामा स्वास्थ्य बीमा विस्तार', date: 'May 12, 2024' },
-  { titleEn: 'New Emergency Hotline 102 Now Nationwide', titleNp: 'नयाँ आपतकालीन हटलाइन १०२ अब देशव्यापी उपलब्ध', date: 'April 28, 2024' },
-  { titleEn: 'Mobile Health Camps Reach Remote Villages in Dolpa', titleNp: 'डोल्पाका दुर्गम गाउँहरूमा पुग्यो मोबाइल स्वास्थ्य शिविर', date: 'April 15, 2024' }
-];
+const CARDS_PER_PAGE = 4;
 
 export default function Ministry() {
   const { t, lang } = useLanguage();
-  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const tt = (en, np) => (lang === 'np' ? np : en);
+  const totalPages = Math.ceil(CONTRIBUTIONS.length / CARDS_PER_PAGE);
+  const visibleContributions = CONTRIBUTIONS.slice(
+    (currentPage - 1) * CARDS_PER_PAGE,
+    currentPage * CARDS_PER_PAGE
+  );
 
-  const tt = (en, np) => lang === 'np' ? np : en;
-
-  // Intersection Observer for animations
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-show');
-        }
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('animate-show');
       });
-    }, { threshold: 0.25 });
+    }, { threshold: 0.15 });
 
-    document.querySelectorAll('.animate-hidden').forEach(el => {
-      observer.observe(el);
-    });
-
+    const elements = document.querySelectorAll('.ministry-page .animate-hidden');
+    elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
-  }, []);
+  }, [currentPage]);
+
+  const changePage = (page) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+    setCurrentPage(page);
+    document.getElementById('contributions')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <>
       <Navbar />
       <main className="ministry-page">
-
-        {/* Hero Section */}
         <section className="min-hero">
-          <div className="min-hero-bg">
-            <img src={ministryHeroBg} alt="" />
+          <div className="min-hero-bg" aria-hidden="true">
+            <img src={ministryHeroBg} alt="" loading="eager" decoding="async" fetchPriority="high" />
           </div>
-          <div className="min-hero-gradient"></div>
+          <div className="min-hero-gradient" aria-hidden="true" />
+
           <div className="container min-hero-container">
             <div className="min-hero-content animate-hidden fade-in-up">
-              <span className="min-hero-tag">{t('MINISTRY OF HEALTH', 'स्वास्थ्य मन्त्रालय')}</span>
+              <span className="min-hero-tag">{t('Public Health Leadership', 'जनस्वास्थ्य नेतृत्व')}</span>
               <h1 className="min-hero-title">
-                {t('Leadership with Compassion.', 'करुणा र प्रतिबद्धताको नेतृत्व।')}
-                <span className="text-red">{t('Reform with Purpose.', 'उद्देश्य सहितको सुधार।')}</span>
+                <span>{t('Leadership with Compassion', 'करुणासहितको नेतृत्व')}</span>
+                <span className="text-red">{t('Reform with Purpose', 'उद्देश्यसहितको सुधार')}</span>
               </h1>
               <p className="min-hero-desc">
-                {t('Dedicated to building an equitable, accessible, and people-centered healthcare system through policy reform, innovation, and compassionate governance.', 'नीतिगत सुधार, नवीनता र करुणापूर्ण सुशासन मार्फत समतामूलक, पहुँचयोग्य र जनमुखी स्वास्थ्य प्रणाली निर्माणमा समर्पित।')}
+                {t(
+                  'Dedicated to an equitable, accessible, and people-centred healthcare system through informed public leadership and accountable reform.',
+                  'जानकारीपूर्ण सार्वजनिक नेतृत्व र उत्तरदायी सुधारमार्फत समतामूलक, पहुँचयोग्य र जनकेन्द्रित स्वास्थ्य प्रणाली निर्माणमा समर्पित।'
+                )}
               </p>
-              <div className="min-hero-buttons">
-                <a href="#contributions" className="btn btn-primary">{t('Explore Ministry Work', 'मन्त्रालयको काम खोज्नुहोस्')} &rarr;</a>
-                <a href="#policies" className="btn btn-secondary">{t('View Policies', 'नीतिहरू हेर्नुहोस्')} &rarr;</a>
-              </div>
             </div>
-            <div></div> {/* Empty column for grid layout */}
           </div>
         </section>
 
-        {/* Stats Row */}
-        <section className="min-stats-section">
-          <div className="container min-stats-grid">
-            {STATS.map((stat, i) => (
-              <div key={i} className="min-stat-card">
-                <div className="min-stat-icon-wrapper">
-                  <i className={stat.icon}></i>
-                </div>
-                <div className="min-stat-info">
-                  <h3>{stat.val}</h3>
-                  <strong className="stat-label">{tt(stat.titleEn, stat.titleNp)}</strong>
-                  <p className="stat-desc">{tt(stat.descEn, stat.descNp)}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <section className="min-contributions-section section-padding" id="contributions">
+          <div className="container">
+            <header className="min-section-header animate-hidden fade-in-up">
+              <span>{t('Public service in action', 'कार्यमा सार्वजनिक सेवा')}</span>
+              <h2>{t('Our Key Contributions', 'हाम्रा प्रमुख योगदानहरू')}</h2>
+              <p>{t('Parliamentary speeches and public discussions on building a stronger, safer, and more accessible healthcare system.', 'बलियो, सुरक्षित र थप पहुँचयोग्य स्वास्थ्य प्रणाली निर्माणसम्बन्धी संसदीय सम्बोधन र सार्वजनिक छलफलहरू।')}</p>
+            </header>
 
-        {/* Main Layout Grid */}
-        <section className="min-content-section section-padding" id="contributions">
-          <div className="container min-layout-grid">
-            
-            {/* Left Column: Key Contributions */}
-            <div className="min-contributions-col">
-              <div className="section-header">
-                <h2>{t('Our Key Contributions', 'हाम्रा प्रमुख योगदानहरू')}</h2>
-                <div className="header-line"></div>
-              </div>
-
-              {loading ? <Loader /> : (
-                <div className="min-contributions-list">
-                  {CONTRIBUTIONS.map((item, i) => {
-                    const isEven = i % 2 !== 0;
-                    return (
-                      <div key={item.id} className="min-contrib-card">
-                        <div className={`min-contrib-inner ${isEven ? 'row-reverse' : ''}`}>
-                          <div className="min-contrib-img">
-                            <img src={item.image} alt={tt(item.titleEn, item.titleNp)} />
-                            {item.id === '02' && (
-                              <div className="contrib-overlay-badge">
-                                <span>{t('Quality Service', 'गुणस्तरीय सेवा')}</span>
-                                <span>{t('Affordable Care', 'सुलभ उपचार')}</span>
-                                <span>{t('Accessible for All', 'सबैका लागि पहुँच')}</span>
-                              </div>
-                            )}
-                            {item.id === '06' && (
-                              <div className="contrib-overlay-badge dark">
-                                <span>{t('Get Vaccinated.', 'खोप लगाउनुहोस्।')}</span>
-                                <span>{t('Stay Protected.', 'सुरक्षित रहनुहोस्।')}</span>
-                                <span>{t('Stay Safe.', 'सजग रहनुहोस्।')}</span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="min-contrib-body">
-                            <div className="min-contrib-header-row">
-                              <span className="contrib-tag">{tt(item.categoryEn, item.categoryNp)}</span>
-                              <span className="contrib-num">{item.id}</span>
-                            </div>
-                            <h3 className="contrib-title">{tt(item.titleEn, item.titleNp)}</h3>
-                            <p className="contrib-desc">{tt(item.descEn, item.descNp)}</p>
-                            <a href={item.url} target="_blank" rel="noopener noreferrer" className="contrib-link">
-                              {t('Read Full Article', 'पूरा लेख पढ्नुहोस्')} <i className="fas fa-external-link-alt"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* Right Column: Widgets */}
-            <div className="min-widgets-col" id="policies">
-              
-              {/* Major Health Programs Widget */}
-              <div className="min-widget-card">
-                <h3>{t('MAJOR HEALTH PROGRAMS', 'प्रमुख स्वास्थ्य कार्यक्रमहरू')}</h3>
-                <div className="widget-line"></div>
-                <ul className="widget-list">
-                  {PROGRAMS.map((p, idx) => (
-                    <li key={idx}>
-                      <span className="widget-num-bullet">{idx + 1}</span>
-                      <span className="widget-item-title">{tt(p.titleEn, p.titleNp)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button className="widget-btn">{t('View All Programs', 'सबै कार्यक्रमहरू हेर्नुहोस्')} &rarr;</button>
-              </div>
-
-              {/* Policy Highlights Widget */}
-              <div className="min-widget-card">
-                <h3>{t('POLICY HIGHLIGHTS', 'नीतिगत विशेषताहरू')}</h3>
-                <div className="widget-line"></div>
-                <ul className="widget-list">
-                  {POLICIES.map((p, idx) => (
-                    <li key={idx}>
-                      <span className="widget-num-bullet secondary"><i className="fas fa-file-signature"></i></span>
-                      <span className="widget-item-title">{tt(p.titleEn, p.titleNp)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <button className="widget-btn">{t('View All Policies', 'सबै नीतिहरू हेर्नुहोस्')} &rarr;</button>
-              </div>
-
-              {/* Latest Updates Widget */}
-              <div className="min-widget-card">
-                <h3>{t('LATEST UPDATES', 'पछिल्ला अपडेटहरू')}</h3>
-                <div className="widget-line"></div>
-                <div className="widget-updates-list">
-                  {UPDATES.map((u, idx) => (
-                    <div key={idx} className="widget-update-item">
-                      <span className="update-date">{u.date}</span>
-                      <h4 className="update-title">{tt(u.titleEn, u.titleNp)}</h4>
+            <div className="min-contributions-list">
+              {visibleContributions.map((item, index) => (
+                <article key={item.id} className={`min-contrib-card animate-hidden fade-in-up ${index % 2 ? 'is-reversed' : ''}`}>
+                  <div className="min-contrib-image">
+                    <img src={item.image} alt={tt(item.titleEn, item.titleNp)} loading="lazy" />
+                  </div>
+                  <div className="min-contrib-body">
+                    <div className="min-contrib-meta">
+                      <span>{tt(item.categoryEn, item.categoryNp)}</span>
+                      <strong>{item.id}</strong>
                     </div>
-                  ))}
-                </div>
-                <button className="widget-btn">{t('View All Updates', 'सबै अपडेटहरू हेर्नुहोस्')} &rarr;</button>
-              </div>
-
+                    <h3>{tt(item.titleEn, item.titleNp)}</h3>
+                    <p>{tt(item.descEn, item.descNp)}</p>
+                    <a href={item.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary min-contrib-link">
+                      {t('More', 'थप')} <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </article>
+              ))}
             </div>
 
+            {totalPages > 1 && (
+              <nav className="min-pagination" aria-label={t('Contribution pages', 'योगदान पृष्ठहरू')}>
+                {Array.from({ length: totalPages }, (_, index) => {
+                  const page = index + 1;
+                  return (
+                    <button
+                      key={page}
+                      type="button"
+                      className={page === currentPage ? 'is-active' : ''}
+                      onClick={() => changePage(page)}
+                      aria-current={page === currentPage ? 'page' : undefined}
+                    >
+                      {page}
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  className="min-pagination-next"
+                  onClick={() => changePage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  {t('Next', 'अर्को')} <span aria-hidden="true">→</span>
+                </button>
+              </nav>
+            )}
           </div>
         </section>
-
-        {/* Bottom Banner */}
-        <section className="min-bottom-banner">
-          <div className="container min-banner-content">
-            <div className="banner-text">
-              <i className="fas fa-heartbeat banner-icon"></i>
-              <div>
-                <h2>{t('Building a Healthier Nepal Together', 'सँगै स्वस्थ नेपाल निर्माण गरौँ')}</h2>
-                <p>{t('Your health, our responsibility. Let\'s continue this journey toward a stronger, healthier, and more equitable Nepal.', 'तपाईंको स्वास्थ्य, हाम्रो जिम्मेवारी। बलियो, स्वस्थ र अधिक समतामूलक नेपालतर्फको यो यात्रा जारी राखौं।')}</p>
-              </div>
-            </div>
-            <div className="banner-actions">
-              <Link to="/contact" className="btn btn-secondary">{t('Contact Ministry', 'मन्त्रालयमा सम्पर्क')}</Link>
-              <a href="#" className="btn btn-outline-white">{t('Download Reports', 'प्रतिवेदन डाउनलोड')}</a>
-            </div>
-          </div>
-        </section>
-
       </main>
       <Footer />
     </>

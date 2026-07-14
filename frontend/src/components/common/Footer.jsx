@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { NAV_LINKS, SOCIAL_LINKS } from '../../utils/constants';
+import logoImg from '../../assets/images/logo.png';
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -11,14 +12,18 @@ export default function Footer() {
         <div className="footer-grid">
           {/* Brand */}
           <div className="footer-brand">
-            <h2>{t('Dr. Toshima Karki', 'डा. तोषिमा कार्की')}</h2>
+            <Link to="/" className="footer-brand-heading">
+              <img src={logoImg} className="footer-logo" alt="Dr. Toshima Karki" />
+              <h2>{t('Dr. Toshima Karki', 'डा. तोषिमा कार्की')}</h2>
+            </Link>
             <p>{t('Dedicated to building a healthier, stronger and more prosperous Nepal through leadership and service.', 'नेतृत्व र सेवा मार्फत स्वस्थ, सशक्त र समृद्ध नेपालको लागि समर्पित।')}</p>
             <div className="footer-socials">
-              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noreferrer"><i className="fab fa-facebook-f"></i></a>
-              <a href={SOCIAL_LINKS.twitter} target="_blank" rel="noreferrer"><i className="fab fa-twitter"></i></a>
-              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer"><i className="fab fa-instagram"></i></a>
-              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer"><i className="fab fa-youtube"></i></a>
-              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer"><i className="fab fa-linkedin-in"></i></a>
+              <a className="social-facebook" href={SOCIAL_LINKS.facebookPersonal} target="_blank" rel="noreferrer" aria-label="Facebook Personal" title="Facebook Personal"><i className="fa-brands fa-facebook-f"></i></a>
+              <a className="social-facebook" href={SOCIAL_LINKS.facebookSecretariat} target="_blank" rel="noreferrer" aria-label="Facebook Secretariat" title="Facebook Secretariat"><i className="fa-brands fa-facebook-f"></i></a>
+              <a className="social-linkedin" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
+              <a className="social-youtube" href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><i className="fa-brands fa-youtube"></i></a>
+              <a className="social-x" href={SOCIAL_LINKS.twitter} target="_blank" rel="noreferrer" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932Zm-1.29 19.493h2.04L6.486 3.24H4.298L17.61 20.646Z" /></svg></a>
+              <a className="social-tiktok" href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok"><i className="fa-brands fa-tiktok"></i></a>
             </div>
           </div>
 

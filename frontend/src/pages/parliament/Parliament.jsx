@@ -265,7 +265,19 @@ export default function Parliament() {
         )}
 
         {/* Hero Section - single background image only */}
-        <section className="parl-hero" style={{ backgroundImage: `url(${heroBg})` }}>
+        <section className="parl-hero">
+          <div className="parl-hero-bg" aria-hidden="true">
+            <img
+              src={heroBg}
+              alt=""
+              loading="eager"
+              fetchPriority="high"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = img1;
+              }}
+            />
+          </div>
           <div className="parl-hero-overlay"></div>
           <div className="container parl-hero-container">
             <div className="parl-hero-content animate-hidden fade-in-up">
@@ -273,25 +285,18 @@ export default function Parliament() {
                 <i className="fas fa-landmark"></i> {t('PARLIAMENTARY WORK', 'संसदीय गतिविधि')}
               </span>
               <h1 className="parl-title">
-                {t('Legislating for a Healthier, Stronger Nepal', 'स्वस्थ, बलियो नेपालको लागि विधायन')}
+                {lang === 'np' ? (
+                  'स्वस्थ, बलियो नेपालको लागि विधायन'
+                ) : (
+                  <>
+                    <span>Legislating for a</span>
+                    <span>Healthier, Stronger Nepal</span>
+                  </>
+                )}
               </h1>
               <p className="parl-desc">
                 {t('Representing the voice of the people in the Parliament of Nepal and advocating for policies that bring real change.', 'नेपालको संसदमा जनताको आवाजको प्रतिनिधित्व गर्दै र वास्तविक परिवर्तन ल्याउने नीतिहरूको वकालत गर्दै।')}
               </p>
-              <div className="parl-hero-stats">
-                <div className="parl-hero-stat">
-                  <span className="stat-num">10+</span>
-                  <span className="stat-label">{t('Major Speeches', 'प्रमुख भाषणहरू')}</span>
-                </div>
-                <div className="parl-hero-stat">
-                  <span className="stat-num">5+</span>
-                  <span className="stat-label">{t('Bills Supported', 'समर्थित विधेयक')}</span>
-                </div>
-                <div className="parl-hero-stat">
-                  <span className="stat-num">2</span>
-                  <span className="stat-label">{t('Terms in Office', 'सेवाका कार्यकाल')}</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -331,7 +336,14 @@ export default function Parliament() {
                     <div className="parl-card-bg-num">{item.id}</div>
                     <div className={`parl-card-inner ${isEven ? 'row-reverse' : ''}`}>
                       <div className="parl-card-img">
-                        <img src={item.img} alt={tt(item.title, item.titleNp)} />
+                        <img
+                          src={item.img}
+                          alt={tt(item.title, item.titleNp)}
+                          onError={(event) => {
+                            event.currentTarget.onerror = null;
+                            event.currentTarget.src = img10;
+                          }}
+                        />
                       </div>
                       <div className="parl-card-content">
                         <span className="parl-card-tag">{tt(item.tag, item.tagNp)}</span>

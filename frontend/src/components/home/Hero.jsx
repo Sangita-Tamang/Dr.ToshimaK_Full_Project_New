@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useEffect } from 'react';
 import heroBackground from '../../assets/images/home.hero.png';
+import OptimizedImage from '../common/OptimizedImage';
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -36,7 +37,14 @@ export default function Hero() {
   return (
     <section className="hero-section">
       <div className="hero-backdrop" aria-hidden="true">
-        <img src={heroBackground} alt="" className="hero-background" />
+        <OptimizedImage 
+          src={heroBackground} 
+          alt="" 
+          className="hero-background" 
+          lazy={false}
+          objectFit="cover"
+          objectPosition="center top"
+        />
         <div className="hero-overlay" />
       </div>
 

@@ -49,6 +49,7 @@ const homeRoutes = require('./routes/home.routes');
 const aboutRoutes = require('./routes/about.routes');
 const ministryRoutes = require('./routes/ministry.routes');
 const parliamentRoutes = require('./routes/parliament.routes');
+const partyRoutes = require('./routes/party.routes');
 const newsRoutes = require('./routes/news.routes');
 const blogRoutes = require('./routes/blog.routes');
 const mediaRoutes = require('./routes/media.routes');
@@ -61,6 +62,7 @@ const settingsRoutes = require('./routes/settings.routes');
 const internshipRoutes = require('./routes/internship.routes');
 const internshipApplicationRoutes = require('./routes/internship-application.routes');
 const debugRoutes = require('./routes/debug.routes');
+const engagementRoutes = require('./routes/engagement.routes');
 
 
 const app = express();
@@ -96,6 +98,7 @@ app.use('/api/home', homeRoutes);
 app.use('/api/about', aboutRoutes);
 app.use('/api/ministry', ministryRoutes);
 app.use('/api/parliament', parliamentRoutes);
+app.use('/api/party', partyRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/media', mediaRoutes);
@@ -108,6 +111,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/internships', internshipRoutes);
 app.use('/api/internship-applications', internshipApplicationRoutes);
 app.use('/api/debug', debugRoutes);
+app.use('/api/engagements', engagementRoutes);
 
 
 // Error handler

@@ -1,101 +1,152 @@
-/* ── ABOUT PAGE ── */
-.about-page { background: #fcfcfc; }
+/* =========================
+   GLOBAL SAFETY (prevents the
+   text-clipped-at-edge bug you saw
+   on mobile — a stray horizontal
+   scroll shifts content left)
+========================= */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
 
-/* HERO */
+/* =========================
+   ABOUT PAGE HERO
+========================= */
+
 .about-hero {
   position: relative;
-  min-height: 90vh;
+  min-height: 86vh;
+  max-height: 920px;
   overflow: hidden;
   display: flex;
   align-items: center;
+  background: #1a1f2e;
+  isolation: isolate; /* keeps this hero's own stacking context so a
+                          global header/nav can never render on top of
+                          or "inside" this section */
 }
+
+/* BACKGROUND */
 .about-hero-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
 }
+
 .about-hero-bg img {
+  display: block;      /* removes inline-image gap and any accidental
+                           collapse if width/height attrs are missing */
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: right center;
+  /* Keep the portrait high in the frame so the head is never cropped. */
+  object-position: 72% 18%;
 }
+
+/* OVERLAY */
 .about-hero-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, #0a1628 0%, #0d1b2a 35%, rgba(13, 27, 42, 0.7) 60%, rgba(13, 27, 42, 0) 100%);
   z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(26, 31, 46, 0.95) 0%,
+    rgba(26, 31, 46, 0.80) 40%,
+    rgba(26, 31, 46, 0.35) 75%,
+    rgba(26, 31, 46, 0.15) 100%
+  );
 }
+
+/* CONTENT CONTAINER */
 .about-hero-container {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
   width: 100%;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  display: flex;
+  align-items: center;
+  padding: 80px 0;
 }
+
 .about-hero-content {
-  max-width: 600px;
-  color: #fff;
-  padding-right: 0;
-  margin-right: auto;
+  max-width: 520px;
+  color: white;
   text-align: left;
 }
+
+/* LABEL */
 .about-hero-tag {
   display: inline-block;
-  color: var(--primary);
+  color: #d7193f;
+  font-size: 0.8rem;
   font-weight: 700;
-  font-size: 0.85rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 20px;
   position: relative;
 }
+
 .about-hero-tag::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: -10px;
   left: 0;
   width: 60px;
   height: 3px;
-  background: var(--primary);
+  background: #d7193f;
 }
+
+/* TITLE */
 .about-hero-title {
-  font-size: clamp(2.5rem, 4vw, 4rem);
-  font-weight: 700;
+  font-size: clamp(2.3rem, 4vw, 3.5rem);
   line-height: 1.15;
-  margin-bottom: 24px;
-  margin-top: 20px;
-  color: #fff;
-}
-.about-hero-title {
-  font-size: clamp(2.5rem, 4vw, 4rem);
   font-weight: 700;
-  line-height: 1.15;
-  margin-bottom: 24px;
-  margin-top: 20px;
-  color: #fff;
+  color: white;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
+
 .about-hero-title .text-red {
-  color: var(--primary);
+  color: #d7193f;
 }
+
+/* DESCRIPTION */
 .about-hero-sub {
+  max-width: 500px;
   font-size: 1.05rem;
   line-height: 1.7;
-  color: rgba(255,255,255,0.85);
-  margin-bottom: 24px;
-  max-width: 580px;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 25px;
 }
+
+/* SIGNATURE */
 .about-hero-sig {
-  font-family: var(--font-heading);
+  font-size: 1.1rem;
   font-style: italic;
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: var(--primary);
-  margin-top: 12px;
+  font-weight: 600;
+  color: #d7193f;
+}
+
+/* HERO BADGE — matches the "Member of Parliament" pill shown
+   in the desktop sample, bottom-right of the hero photo.
+   If your JSX doesn't already render an element with this
+   class inside .about-hero, add one:
+   <span class="about-hero-badge"><i class="..."></i> Member of Parliament</span> */
+.about-hero-badge {
+  position: absolute;
+  z-index: 3;
+  right: 40px;
+  bottom: 40px;
+  background: var(--primary, #d7193f);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(200, 16, 46, 0.35);
 }
 
 /* Animations */
@@ -117,7 +168,8 @@
 .about-story-grid {
   display: grid;
   grid-template-columns: 1.3fr 1fr 1.1fr;
-  gap: 40px; align-items: start;
+  gap: 40px;
+  align-items: start;
 }
 .about-story-text p { color: #475467; line-height: 1.75; margin-bottom: 16px; }
 .about-story-img { position: relative; }
@@ -311,26 +363,131 @@
   font-size: 0.85rem; margin-top: 12px;
 }
 
-/* RESPONSIVE */
+/* =========================================================
+   RESPONSIVE — TABLET / LAPTOP (grid reflow only, no hero
+   duplication happens here; hero rules live in the single
+   768px block below)
+========================================================= */
 @media (max-width: 1100px) {
   .about-story-grid { grid-template-columns: 1fr 1fr; }
   .about-at-a-glance { grid-column: 1 / -1; }
   .drives-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* =========================================================
+   RESPONSIVE — MOBILE (single consolidated breakpoint)
+   iPhone 14 Pro Max reference: 430 x 932
+   This is the ONLY @media(max-width:768px) block for
+   .about-hero — the duplicate/conflicting block has been
+   removed and merged in here.
+========================================================= */
 @media (max-width: 768px) {
-  .about-hero { min-height: 70vh; }
-  .about-hero-bg { opacity: 0.3; }
-  .about-hero-container { 
-    grid-template-columns: 1fr;
-    padding-top: 80px;
-    padding-bottom: 80px;
+
+  /* HERO — bottom-aligned content over image, dark gradient
+     rising from the bottom so text stays readable, image
+     kept fully visible (this is the part that was flattening
+     to solid navy before) */
+  .about-hero {
+    min-height: clamp(560px, 74svh, 680px) !important;
+    height: auto !important;
+    align-items: center;
   }
-  .about-hero-content { padding-right: 0; max-width: 100%; }
-  .about-hero-title { font-size: 2.2rem; }
-  .about-story-grid { grid-template-columns: 1fr; }
-  .about-journey-grid { grid-template-columns: 1fr; }
-  .about-looking-grid { grid-template-columns: 1fr; }
-  .impact-grid { grid-template-columns: repeat(2, 1fr); }
-  .drives-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .about-hero-bg {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .about-hero-bg img {
+    object-position: 82% 12% !important;
+  }
+
+  .about-hero-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(26, 31, 46, 0.15) 0%,
+      rgba(26, 31, 46, 0.50) 40%,
+      rgba(26, 31, 46, 0.90) 80%,
+      rgba(26, 31, 46, 0.97) 100%
+    );
+  }
+
+  .about-hero-container {
+    min-height: auto !important;
+    padding: 78px 24px 40px !important;
+    align-items: center;
+  }
+
+  .about-hero-content {
+    max-width: 100%;
+  }
+
+  .about-hero-tag {
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    margin-bottom: 15px;
+  }
+
+  .about-hero-title {
+    font-size: 34px;
+    line-height: 1.15;
+    margin-top: 18px;
+    margin-bottom: 16px;
+  }
+
+  .about-hero-sub {
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+
+  .about-hero-sig {
+    font-size: 1rem;
+  }
+
+  /* Badge moves up top-right on mobile so it doesn't collide
+     with the bottom-anchored text block */
+  .about-hero-badge {
+    top: 100px;
+    right: 20px;
+    bottom: auto;
+    font-size: 0.75rem;
+    padding: 8px 14px;
+  }
+
+  /* PAGE SECTIONS */
+  .about-story-grid { grid-template-columns: 1fr; gap: 32px; }
+  .about-journey-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-looking-grid { grid-template-columns: 1fr; gap: 32px; }
+  .impact-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .drives-grid { grid-template-columns: 1fr; gap: 16px; }
   .about-looking-img { display: none; }
+  .glance-item { flex-direction: column; align-items: flex-start; }
+  .journey-item, .focus-item { flex-direction: column; align-items: flex-start; }
+  .looking-tags { gap: 10px; }
+  .about-quote-banner { padding: 60px 0; }
+  .about-quote-inner blockquote { font-size: 1.5rem; }
+}
+
+/* SMALLER MOBILE — fine-tuning only, no hero duplication */
+@media (max-width: 430px) {
+  .about-hero {
+    min-height: clamp(540px, 72svh, 640px) !important;
+  }
+
+  .about-hero-container {
+    padding: 70px 20px 34px !important;
+  }
+
+  .about-hero-bg img {
+    object-position: 80% 10% !important;
+  }
+
+  .about-hero-title {
+    font-size: 32px;
+  }
+
+  .about-hero-sub {
+    font-size: 14px;
+  }
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
+import defaultLogo from '../../assets/images/logo.png';
 
 // Import CSS
 import './Dashboard.css';
@@ -20,6 +21,7 @@ import newsService from '../../services/newsService';
 import blogService from '../../services/blogService';
 import mediaService from '../../services/mediaService';
 import contactService from '../../services/contactService';
+import engagementService from '../../services/engagementService';
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
@@ -43,6 +45,7 @@ export default function Dashboard() {
   const [gallery, setGallery] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [interviews, setInterviews] = useState([]);
+  const [engagements, setEngagements] = useState([]);
   const [usersList, setUsersList] = useState([]);
 
   // Internship States
@@ -144,7 +147,11 @@ export default function Dashboard() {
       else if (activeSection === 'interviews') {
         const res = await contactService.getInterviews();
         if (res.success) setInterviews(res.data);
-      } 
+      }
+      else if (activeSection === 'engagements') {
+        const res = await engagementService.getAll();
+        if (res.success) setEngagements(res.data);
+      }
       else if (activeSection === 'users') {
         const res = await userService.getAll();
         if (res.success) setUsersList(res.data);
@@ -249,6 +256,7 @@ export default function Dashboard() {
     { id: 'media', icon: 'fas fa-photo-video', label: 'Media Coverage' },
     { id: 'gallery', icon: 'fas fa-images', label: 'Gallery Albums' },
     { id: 'contacts', icon: 'fas fa-envelope', label: 'Contact Messages', badge: analytics?.pendingContacts },
+    { id: 'engagements', icon: 'fas fa-calendar-check', label: 'Public Engagements' },
     { id: 'interviews', icon: 'fas fa-microphone-alt', label: 'Interview Requests', badge: analytics?.pendingInterviews, badgeGreen: true },
     { id: 'internship-programs', icon: 'fas fa-graduation-cap', label: 'Internship Programs' },
     { id: 'internship-applications', icon: 'fas fa-file-alt', label: 'Applications', badge: internshipStats?.pendingApplications },
@@ -385,6 +393,7 @@ export default function Dashboard() {
       else if (type === 'blog') res = await blogService.delete(id);
       else if (type === 'media') res = await mediaService.delete(id);
       else if (type === 'gallery') res = await galleryService.delete(id);
+      else if (type === 'engagement') res = await engagementService.delete(id);
       else if (type === 'user') res = await userService.delete(id);
 
       if (res?.success) {
@@ -415,6 +424,9 @@ export default function Dashboard() {
       } else if (modalType === 'gallery') {
         if (currentEditItem._id) res = await galleryService.update(currentEditItem._id, currentEditItem);
         else res = await galleryService.create(currentEditItem);
+      } else if (modalType === 'engagement') {
+        if (currentEditItem._id) res = await engagementService.update(currentEditItem._id, currentEditItem);
+        else res = await engagementService.create(currentEditItem);
       } else if (modalType === 'user') {
         if (currentEditItem._id) res = await userService.update(currentEditItem._id, currentEditItem);
         else res = await userService.create(currentEditItem);
@@ -435,6 +447,31 @@ export default function Dashboard() {
       setError('Failed to save record. Please check field requirements.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleToggleEngagementPublish = async (item) => {
+    try {
+      const res = await engagementService.update(item._id, { isPublished: !item.isPublished });
+      if (res.success) {
+        showFeedback(item.isPublished ? 'Engagement unpublished.' : 'Engagement published!');
+        loadAllSystemData();
+      }
+    } catch {
+      setError('Failed to update publish status.');
+    }
+  };
+
+  const handleToggleEngagementStatus = async (item) => {
+    const newStatus = item.status === 'upcoming' ? 'completed' : 'upcoming';
+    try {
+      const res = await engagementService.update(item._id, { status: newStatus });
+      if (res.success) {
+        showFeedback(`Engagement marked as ${newStatus}.`);
+        loadAllSystemData();
+      }
+    } catch {
+      setError('Failed to update status.');
     }
   };
 
@@ -481,7 +518,7 @@ export default function Dashboard() {
       {/* ── SIDEBAR ── */}
       <aside className={`admin-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div className="admin-sidebar-header">
-          <img src={settingsData?.logo || '/image/image4.png'} alt="Dr. Toshima Karki" />
+          <img src={settingsData?.logo || defaultLogo} alt="Dr. Toshima Karki" />
           {!isSidebarCollapsed && (
             <div className="admin-brand-info">
               <div className="admin-brand-name">Dr. Toshima Karki</div>
@@ -1934,6 +1971,115 @@ export default function Dashboard() {
               )}
 
               {/* ──────────────────────────────────────────────────────── */}
+              {/* 📅 PUBLIC ENGAGEMENT MANAGER */}
+              {/* ──────────────────────────────────────────────────────── */}
+              {activeSection === 'engagements' && (
+                <div>
+                  <div className="cms-toolbar">
+                    <div className="cms-search-bar">
+                      <i className="fas fa-search"></i>
+                      <input
+                        type="text"
+                        placeholder="Search engagements..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                    </div>
+                    <div className="cms-filters">
+                      <select className="cms-select" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+                        <option value="All">All Statuses</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                      </select>
+                      <button className="btn btn-primary" onClick={() => openCreateModal('engagement')}>
+                        <i className="fas fa-plus"></i> Add Engagement
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="admin-table-wrap">
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Preview</th>
+                          <th>Title</th>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Location</th>
+                          <th>Status</th>
+                          <th>Published</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {engagements
+                          .filter(e =>
+                            e.title?.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                            (filterStatus === 'All' || e.status === filterStatus)
+                          )
+                          .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                          .map(item => (
+                            <tr key={item._id}>
+                              <td>
+                                {item.image ? (
+                                  <img src={item.image} alt="" style={{ width: 50, height: 40, borderRadius: 2, objectFit: 'cover' }} />
+                                ) : (
+                                  <div style={{ width: 50, height: 40, background: '#EAECEE', borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <i className="fas fa-calendar" style={{ color: '#95A5A6' }}></i>
+                                  </div>
+                                )}
+                              </td>
+                              <td style={{ fontWeight: 600, color: 'var(--secondary)' }}>{item.title}</td>
+                              <td>{new Date(item.date).toLocaleDateString()}</td>
+                              <td>{item.startTime}{item.endTime ? ` – ${item.endTime}` : ''}</td>
+                              <td style={{ maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.location}</td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className="badge-tag"
+                                  style={{
+                                    background: item.status === 'upcoming' ? 'rgba(200,16,46,0.1)' : '#EAECEE',
+                                    color: item.status === 'upcoming' ? 'var(--primary)' : '#5D6D7E',
+                                    border: 'none',
+                                    cursor: 'pointer'
+                                  }}
+                                  onClick={() => handleToggleEngagementStatus(item)}
+                                  title="Click to toggle status"
+                                >
+                                  {item.status}
+                                </button>
+                              </td>
+                              <td>
+                                <button
+                                  type="button"
+                                  className={`badge-tag ${item.isPublished ? 'badge-green' : ''}`}
+                                  style={{
+                                    background: item.isPublished ? 'rgba(39,174,96,0.12)' : '#EAECEE',
+                                    color: item.isPublished ? '#27AE60' : '#5D6D7E',
+                                    border: 'none',
+                                    cursor: 'pointer'
+                                  }}
+                                  onClick={() => handleToggleEngagementPublish(item)}
+                                  title="Click to publish/unpublish"
+                                >
+                                  {item.isPublished ? 'Published' : 'Draft'}
+                                </button>
+                              </td>
+                              <td>
+                                <div className="action-btn-group">
+                                  <button className="icon-btn edit" onClick={() => openEditModal('engagement', item)}><i className="fas fa-edit"></i></button>
+                                  <button className="icon-btn delete" onClick={() => handleDeleteItem('engagement', item._id)}><i className="fas fa-trash"></i></button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* ──────────────────────────────────────────────────────── */}
               {/* 📩 CONTACT MESSAGES LOGS */}
               {/* ──────────────────────────────────────────────────────── */}
               {activeSection === 'contacts' && (
@@ -3079,19 +3225,19 @@ export default function Dashboard() {
                   <div className="bilingual-grid">
                     <div className="form-group">
                       <label>Caption / Title (English)</label>
-                      <input 
-                        type="text" 
-                        value={currentEditItem.titleEn || ''} 
-                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, titleEn: e.target.value })} 
-                        required 
+                      <input
+                        type="text"
+                        value={currentEditItem.titleEn || ''}
+                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, titleEn: e.target.value })}
+                        required
                       />
                     </div>
                     <div className="form-group">
                       <label>Caption / Title (Nepali)</label>
-                      <input 
-                        type="text" 
-                        value={currentEditItem.titleNp || ''} 
-                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, titleNp: e.target.value })} 
+                      <input
+                        type="text"
+                        value={currentEditItem.titleNp || ''}
+                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, titleNp: e.target.value })}
                       />
                     </div>
                   </div>
@@ -3099,9 +3245,9 @@ export default function Dashboard() {
                   <div className="bilingual-grid">
                     <div className="form-group">
                       <label>Album Category</label>
-                      <select 
-                        className="cms-select" 
-                        value={currentEditItem.category || 'Ministry'} 
+                      <select
+                        className="cms-select"
+                        value={currentEditItem.category || 'Ministry'}
                         onChange={(e) => setCurrentEditItem({ ...currentEditItem, category: e.target.value })}
                       >
                         <option value="Ministry">Ministry</option>
@@ -3117,9 +3263,9 @@ export default function Dashboard() {
                     <div className="form-group">
                       <label>Image Upload</label>
                       <div className="image-upload-zone">
-                        <input 
-                          type="file" 
-                          accept="image/*" 
+                        <input
+                          type="file"
+                          accept="image/*"
                           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0 }}
                           onChange={(e) => handleFileUpload(e, (url) => setCurrentEditItem({ ...currentEditItem, mediaUrl: url }))}
                         />
@@ -3131,7 +3277,110 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* 5. USER ACCOUNT FORM */}
+              {/* 5. ENGAGEMENT FORM */}
+              {modalType === 'engagement' && (
+                <div>
+                  <div className="form-group">
+                    <label>Engagement Title</label>
+                    <input
+                      type="text"
+                      value={currentEditItem.title || ''}
+                      onChange={(e) => setCurrentEditItem({ ...currentEditItem, title: e.target.value })}
+                      required
+                    />
+                  </div>
+
+                  <div className="bilingual-grid">
+                    <div className="form-group">
+                      <label>Date</label>
+                      <input
+                        type="date"
+                        value={currentEditItem.date ? new Date(currentEditItem.date).toISOString().split('T')[0] : ''}
+                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, date: e.target.value })}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Status</label>
+                      <select
+                        className="cms-select"
+                        value={currentEditItem.status || 'upcoming'}
+                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, status: e.target.value })}
+                      >
+                        <option value="upcoming">Upcoming</option>
+                        <option value="completed">Completed</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="bilingual-grid">
+                    <div className="form-group">
+                      <label>Start Time</label>
+                      <input
+                        type="time"
+                        value={currentEditItem.startTime || ''}
+                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, startTime: e.target.value })}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>End Time</label>
+                      <input
+                        type="time"
+                        value={currentEditItem.endTime || ''}
+                        onChange={(e) => setCurrentEditItem({ ...currentEditItem, endTime: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Location</label>
+                    <input
+                      type="text"
+                      value={currentEditItem.location || ''}
+                      onChange={(e) => setCurrentEditItem({ ...currentEditItem, location: e.target.value })}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Description</label>
+                    <textarea
+                      rows="4"
+                      value={currentEditItem.description || ''}
+                      onChange={(e) => setCurrentEditItem({ ...currentEditItem, description: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="bilingual-grid">
+                    <div className="form-group">
+                      <label>Event Image</label>
+                      <div className="image-upload-zone">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', opacity: 0 }}
+                          onChange={(e) => handleFileUpload(e, (url) => setCurrentEditItem({ ...currentEditItem, image: url }))}
+                        />
+                        <p><i className="fas fa-cloud-upload-alt"></i> {isUploading ? 'Uploading...' : 'Choose event image'}</p>
+                        {currentEditItem.image && <img src={currentEditItem.image} className="image-upload-preview" alt="" />}
+                      </div>
+                    </div>
+                    <div className="form-group" style={{ justifyContent: 'center' }}>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={currentEditItem.isPublished || false}
+                          onChange={(e) => setCurrentEditItem({ ...currentEditItem, isPublished: e.target.checked })}
+                        />
+                        Publish on Contact Page
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 6. USER ACCOUNT FORM */}
               {modalType === 'internship-program' && (
                 <div>
                   <div className="admin-card" style={{ marginBottom: 16 }}>

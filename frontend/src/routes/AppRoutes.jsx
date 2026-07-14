@@ -4,6 +4,7 @@ import About from '../pages/about/About';
 import Ministry from '../pages/ministry/Ministry';
 import HealthContributions from '../pages/health/HealthContributions';
 import Parliament from '../pages/parliament/Parliament';
+import Party from '../pages/party/Party';
 import News from '../pages/news/News';
 import Blog from '../pages/blog/Blog';
 import BlogDetails from '../pages/blog/BlogDetails';
@@ -31,6 +32,7 @@ export default function AppRoutes() {
       <Route path="/ministry" element={<Ministry />} />
       <Route path="/health-contributions" element={<HealthContributions />} />
       <Route path="/parliament" element={<Parliament />} />
+      <Route path="/party" element={<Party />} />
       <Route path="/news" element={<News />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:id" element={<BlogDetails />} />

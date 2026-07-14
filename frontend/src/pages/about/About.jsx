@@ -84,7 +84,12 @@ export default function About() {
         {/* ── HERO ── */}
         <section className="about-hero">
           <div className="about-hero-bg">
-            <img src={aboutHeroBg} alt="" />
+            <img
+              src={aboutHeroBg}
+              alt=""
+              loading="eager"
+              fetchpriority="high"
+            />
           </div>
           <div className="about-hero-gradient"></div>
           <div className="container about-hero-container">

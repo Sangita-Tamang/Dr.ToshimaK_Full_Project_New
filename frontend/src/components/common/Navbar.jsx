@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import logoImg from '../../assets/images/image10.png';
+import { SOCIAL_LINKS } from '../../utils/constants';
+import logoImg from '../../assets/images/logo.png';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [parliamentDropdownOpen, setParliamentDropdownOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const [mobileParliamentDropdownOpen, setMobileParliamentDropdownOpen] = useState(false);
+  const [languageMenuOpen, setLanguageMenuOpen] = useState(false);
+  const [logoPreviewOpen, setLogoPreviewOpen] = useState(false);
+  const languageSelectorRef = useRef(null);
   const { pathname } = useLocation();
   const { lang, toggleLanguage, t } = useLanguage();
 
@@ -17,19 +23,49 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!logoPreviewOpen) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setLogoPreviewOpen(false);
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [logoPreviewOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (languageSelectorRef.current && !languageSelectorRef.current.contains(event.target)) {
+        setLanguageMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Close menus on route change
   useEffect(() => {
     setMenuOpen(false);
     setDropdownOpen(false);
+    setParliamentDropdownOpen(false);
     setMobileDropdownOpen(false);
+    setMobileParliamentDropdownOpen(false);
+    setLanguageMenuOpen(false);
   }, [pathname]);
+
+  const selectLanguage = (newLanguage) => {
+    toggleLanguage(newLanguage);
+    setLanguageMenuOpen(false);
+  };
 
   return (
     <>
       {/* TOP BAR */}
       <div className="top-bar">
         <div className="container">
-          <div style={{ display: 'flex', gap: 24, fontSize: '0.85rem', alignItems: 'center' }}>
+          <div className="top-bar-contact">
             <span>
               <i className="fas fa-map-marker-alt" style={{ marginRight: 6 }}></i>
               {t('Nakkhu, Lalitpur, Nepal', 'नक्कु, ललितपुर, नेपाल')}
@@ -40,11 +76,12 @@ export default function Navbar() {
             </span>
           </div>
           <div className="top-bar-socials">
-            <a href="#"><i className="fab fa-facebook-f"></i></a>
-            <a href="#"><i className="fab fa-twitter"></i></a>
-            <a href="#"><i className="fab fa-instagram"></i></a>
-            <a href="#"><i className="fab fa-youtube"></i></a>
-            <a href="#"><i className="fab fa-linkedin-in"></i></a>
+            <a className="social-facebook" href={SOCIAL_LINKS.facebookPersonal} target="_blank" rel="noreferrer" aria-label="Facebook Personal" title="Facebook Personal"><i className="fa-brands fa-facebook-f"></i></a>
+            <a className="social-facebook" href={SOCIAL_LINKS.facebookSecretariat} target="_blank" rel="noreferrer" aria-label="Facebook Secretariat" title="Facebook Secretariat"><i className="fa-brands fa-facebook-f"></i></a>
+            <a className="social-linkedin" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
+            <a className="social-youtube" href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><i className="fa-brands fa-youtube"></i></a>
+            <a className="social-x" href={SOCIAL_LINKS.twitter} target="_blank" rel="noreferrer" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932Zm-1.29 19.493h2.04L6.486 3.24H4.298L17.61 20.646Z" /></svg></a>
+            <a className="social-tiktok" href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok"><i className="fa-brands fa-tiktok"></i></a>
           </div>
         </div>
       </div>
@@ -62,27 +99,25 @@ export default function Navbar() {
           transition: '0.3s ease',
         }}
       >
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 80 }}>
+        <div className="container header-inner">
           {/* LOGO */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <img
-              src={logoImg}
-              alt="Dr. Toshima Karki"
-              style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }}
-            />
-            <div>
-              <div style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '1.15rem', color: 'var(--secondary)', textTransform: 'uppercase', lineHeight: 1.2 }}>
+          <div className="site-brand">
+            <button className="logo-preview-trigger" type="button" onClick={() => setLogoPreviewOpen(true)} aria-label="View Dr. Toshima Karki logo" aria-haspopup="dialog">
+              <img src={logoImg} alt="Dr. Toshima Karki" className="site-logo" />
+            </button>
+            <Link to="/" className="site-brand-copy">
+              <div className="site-brand-name">
                 {t('Dr. Toshima Karki', 'डा. तोषिमा कार्की')}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <div className="site-brand-subtitle">
                 {t('Official Website', 'आधिकारिक वेबसाइट')}
               </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
 
           {/* DESKTOP NAV */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 40 }} className="desktop-nav-container">
-            <ul style={{ display: 'flex', listStyle: 'none', gap: 32, alignItems: 'center', margin: 0, padding: 0 }} className="desktop-nav">
+          <nav className="desktop-nav-container">
+            <ul className="desktop-nav">
               <li>
                 <Link
                   to="/"
@@ -140,7 +175,11 @@ export default function Navbar() {
                   {t('Ministry', 'मन्त्रालय')}
                 </Link>
               </li>
-              <li>
+              <li
+                style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}
+                onMouseEnter={() => setParliamentDropdownOpen(true)}
+                onMouseLeave={() => setParliamentDropdownOpen(false)}
+              >
                 <Link
                   to="/parliament"
                   style={{
@@ -151,12 +190,40 @@ export default function Navbar() {
                     padding: '8px 0',
                     display: 'inline-flex',
                     alignItems: 'center',
+                    gap: 6,
                     borderBottom: pathname === '/parliament' ? '2px solid var(--primary)' : '2px solid transparent',
                     transition: 'all 0.2s ease',
                   }}
                   className="nav-link-hover"
                 >
-                  {t('Parliament', 'संसद')}
+                  {t('Parliament', 'संसद')} <i className="fas fa-chevron-down" style={{ fontSize: '0.75rem' }}></i>
+                </Link>
+                {parliamentDropdownOpen && (
+                  <ul className="nav-dropdown">
+                    <li>
+                      <Link to="/parliament">{t('Mini Parliament', 'लघु संसद')}</Link>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
+              <li>
+                <Link
+                  to="/party"
+                  style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontWeight: 500,
+                    fontSize: '16px',
+                    color: pathname === '/party' ? 'var(--primary)' : 'var(--secondary)',
+                    padding: '8px 0',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    borderBottom: pathname === '/party' ? '2px solid var(--primary)' : '2px solid transparent',
+                    transition: 'all 0.2s ease',
+                  }}
+                  className="nav-link-hover"
+                >
+                  {t('Political Party', 'राजनीतिक पार्टी')}
                 </Link>
               </li>
  
@@ -241,52 +308,27 @@ export default function Navbar() {
                 </Link>
               </li>
             </ul>
- 
-            {/* LANGUAGE SELECTOR */}
-            <div className="language-selector" style={{ display: 'inline-flex', alignItems: 'center', gap: 2, fontSize: '15px', marginLeft: 12 }}>
-              <i className="fas fa-globe" style={{ color: 'var(--text-muted)', marginRight: 6 }}></i>
-              <button
-                onClick={() => toggleLanguage('en')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                  color: lang === 'en' ? 'var(--primary)' : 'var(--text-muted)',
-                  padding: '4px 0',
-                  width: '32px',
-                  textAlign: 'center',
-                  fontFamily: 'var(--font-heading)',
-                  transition: 'color 0.2s ease',
-                  display: 'inline-block',
-                }}
-              >
-                EN
-              </button>
-              <span style={{ color: 'var(--border-color)', userSelect: 'none', padding: '0 2px' }}>|</span>
-              <button
-                onClick={() => toggleLanguage('np')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                  color: lang === 'np' ? 'var(--primary)' : 'var(--text-muted)',
-                  padding: '4px 0',
-                  width: '32px',
-                  textAlign: 'center',
-                  fontFamily: 'var(--font-heading)',
-                  transition: 'color 0.2s ease',
-                  display: 'inline-block',
-                }}
-              >
-                NP
-              </button>
-            </div>
           </nav>
 
+          {/* LANGUAGE SELECTOR */}
+          <div className="desktop-language-selector">
+            <div className="language-selector" ref={languageSelectorRef} onMouseEnter={() => setLanguageMenuOpen(true)} onMouseLeave={() => setLanguageMenuOpen(false)}>
+              <button className="language-toggle" onClick={() => setLanguageMenuOpen((isOpen) => !isOpen)} aria-label="Select language" aria-expanded={languageMenuOpen}>
+                <span className={lang === 'en' ? 'active' : ''}>EN</span>
+                <span className="language-divider">/</span>
+                <span className={lang === 'np' ? 'active' : ''}>ने</span>
+              </button>
+              {languageMenuOpen && (
+                <div className="language-popover" role="menu">
+                  <button className={lang === 'en' ? 'active' : ''} onClick={() => selectLanguage('en')} role="menuitem">English</button>
+                  <button className={lang === 'np' ? 'active' : ''} onClick={() => selectLanguage('np')} role="menuitem">नेपाली</button>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* CTA BUTTON + HAMBURGER */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div className="header-actions">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.4rem', color: 'var(--secondary)' }}
@@ -317,48 +359,66 @@ export default function Navbar() {
                   {t('Ministry', 'मन्त्रालय')}
                 </Link>
               </li>
+              <li className="mobile-nav-item has-submenu">
+                <div className="mobile-nav-item-row">
+                  <Link to="/parliament" className="mobile-nav-main-link">
+                    {t('Parliament', 'संसद')}
+                  </Link>
+                  <button
+                    type="button"
+                    className="mobile-submenu-toggle"
+                    onClick={() => setMobileParliamentDropdownOpen(!mobileParliamentDropdownOpen)}
+                    aria-label={t('Toggle Parliament submenu', 'संसद उपमेनु खोल्नुहोस्')}
+                    aria-expanded={mobileParliamentDropdownOpen}
+                  >
+                    <i className={`fas fa-chevron-${mobileParliamentDropdownOpen ? 'up' : 'down'}`}></i>
+                  </button>
+                </div>
+                {mobileParliamentDropdownOpen && (
+                  <ul className="mobile-submenu">
+                    <li>
+                      <Link to="/parliament">{t('Mini Parliament', 'लघु संसद')}</Link>
+                    </li>
+                  </ul>
+                )}
+              </li>
+
               <li style={{ marginBottom: 12 }}>
-                <Link to="/parliament" style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, color: pathname === '/parliament' ? 'var(--primary)' : 'var(--secondary)', display: 'block', padding: '8px 0' }}>
-                  {t('Parliament', 'संसद')}
+                <Link to="/party" style={{ fontFamily: 'var(--font-heading)', fontWeight: 500, color: pathname === '/party' ? 'var(--primary)' : 'var(--secondary)', display: 'block', padding: '8px 0' }}>
+                  {t('Political Party', 'राजनीतिक पार्टी')}
                 </Link>
               </li>
 
               {/* MOBILE DROPDOWN */}
-              <li style={{ marginBottom: 12 }}>
-                <button
-                  onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
-                  style={{
-                    fontFamily: 'var(--font-heading)',
-                    fontWeight: 500,
-                    color: ['/news', '/media', '/blog'].includes(pathname) ? 'var(--primary)' : 'var(--secondary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    padding: '8px 0',
-                    background: 'none',
-                    border: 'none',
-                    textAlign: 'left',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <span>{t('News & Media', 'समाचार र मिडिया')}</span>
-                  <i className={`fas fa-chevron-${mobileDropdownOpen ? 'up' : 'down'}`} style={{ fontSize: '0.8rem' }}></i>
-                </button>
+              <li className="mobile-nav-item has-submenu">
+                <div className="mobile-nav-item-row">
+                  <Link to="/news" className="mobile-nav-main-link">
+                    {t('News & Media', 'समाचार र मिडिया')}
+                  </Link>
+                  <button
+                    type="button"
+                    className="mobile-submenu-toggle"
+                    onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+                    aria-label={t('Toggle News and Media submenu', 'समाचार र मिडिया उपमेनु खोल्नुहोस्')}
+                    aria-expanded={mobileDropdownOpen}
+                  >
+                    <i className={`fas fa-chevron-${mobileDropdownOpen ? 'up' : 'down'}`}></i>
+                  </button>
+                </div>
                 {mobileDropdownOpen && (
-                  <ul style={{ listStyle: 'none', paddingLeft: 16, marginTop: 8, borderLeft: '2px solid var(--border-color)' }}>
-                    <li style={{ marginBottom: 8 }}>
-                      <Link to="/news" style={{ display: 'block', padding: '6px 0', color: pathname === '/news' ? 'var(--primary)' : 'var(--secondary)' }}>
+                  <ul className="mobile-submenu">
+                    <li>
+                      <Link to="/news">
                         {t('News', 'समाचार')}
                       </Link>
                     </li>
-                    <li style={{ marginBottom: 8 }}>
-                      <Link to="/media" style={{ display: 'block', padding: '6px 0', color: pathname === '/media' ? 'var(--primary)' : 'var(--secondary)' }}>
+                    <li>
+                      <Link to="/media">
                         {t('Media Coverage', 'मिडिया कभरेज')}
                       </Link>
                     </li>
-                    <li style={{ marginBottom: 8 }}>
-                      <Link to="/blog" style={{ display: 'block', padding: '6px 0', color: pathname === '/blog' ? 'var(--primary)' : 'var(--secondary)' }}>
+                    <li>
+                      <Link to="/blog">
                         {t('Blog', 'ब्लग')}
                       </Link>
                     </li>
@@ -378,40 +438,36 @@ export default function Navbar() {
                 </Link>
               </li>
 
-              {/* MOBILE LANGUAGE SELECTOR */}
-              <li style={{ padding: '12px 0', borderTop: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: 12 }}>
-                <i className="fas fa-globe" style={{ color: 'var(--text-muted)' }}></i>
-                <button
-                  onClick={() => toggleLanguage('en')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontWeight: lang === 'en' ? '700' : '400',
-                    color: lang === 'en' ? 'var(--primary)' : 'var(--secondary)',
-                  }}
-                >
-                  English
-                </button>
-                <span style={{ color: 'var(--border-color)' }}>|</span>
-                <button
-                  onClick={() => toggleLanguage('np')}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontWeight: lang === 'np' ? '700' : '400',
-                    color: lang === 'np' ? 'var(--primary)' : 'var(--secondary)',
-                    fontFamily: 'var(--font-body)',
-                  }}
-                >
-                  नेपाली
-                </button>
+              <li className="mobile-language-row">
+                <div className="language-selector" ref={languageSelectorRef} onMouseEnter={() => setLanguageMenuOpen(true)} onMouseLeave={() => setLanguageMenuOpen(false)}>
+                  <button className="language-toggle" onClick={() => setLanguageMenuOpen((isOpen) => !isOpen)} aria-label="Select language" aria-expanded={languageMenuOpen}>
+                    <span className={lang === 'en' ? 'active' : ''}>EN</span>
+                    <span className="language-divider">/</span>
+                    <span className={lang === 'np' ? 'active' : ''}>ने</span>
+                  </button>
+                  {languageMenuOpen && (
+                    <div className="language-popover" role="menu">
+                      <button className={lang === 'en' ? 'active' : ''} onClick={() => selectLanguage('en')} role="menuitem">English</button>
+                      <button className={lang === 'np' ? 'active' : ''} onClick={() => selectLanguage('np')} role="menuitem">नेपाली</button>
+                    </div>
+                  )}
+                </div>
               </li>
             </ul>
           </div>
         )}
       </header>
+
+      {logoPreviewOpen && (
+        <div className="logo-lightbox" role="presentation" onMouseDown={() => setLogoPreviewOpen(false)}>
+          <div className="logo-lightbox-dialog" role="dialog" aria-modal="true" aria-label="Dr. Toshima Karki logo preview" onMouseDown={(event) => event.stopPropagation()}>
+            <button className="logo-lightbox-close" type="button" onClick={() => setLogoPreviewOpen(false)} aria-label="Close logo preview">
+              <i className="fas fa-times"></i>
+            </button>
+            <img src={logoImg} alt="Dr. Toshima Karki full logo" />
+          </div>
+        </div>
+      )}
 
       {/* Dropdown CSS and Micro-animations */}
       <style>{`

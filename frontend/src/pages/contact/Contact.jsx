@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import Modal from '../../components/common/Modal';
+import OptimizedImage from '../../components/common/OptimizedImage';
+import EngagementCalendar from '../../components/contact/EngagementCalendar';
 import contactService from '../../services/contactService';
+import engagementService from '../../services/engagementService';
 import { useLanguage } from '../../context/LanguageContext';
+import './Contact.css';
 
 export default function Contact() {
   const { t, lang } = useLanguage();
@@ -19,8 +23,62 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+  const [engagement, setEngagement] = useState(null);
+  const [engagementLoading, setEngagementLoading] = useState(true);
+  const [engagementError, setEngagementError] = useState('');
+  const contactFormRef = useRef(null);
 
   const tt = (en, np) => lang === 'np' ? np : en;
+
+  const fetchEngagement = useCallback(async () => {
+    setEngagementLoading(true);
+    setEngagementError('');
+    try {
+      const res = await engagementService.getUpcoming();
+      setEngagement(res?.success ? res.data : null);
+      if (!res?.success) {
+        setEngagementError(t('Unable to load the upcoming engagement. Please try again.', 'आगामी कार्यक्रम लोड गर्न सकिएन। कृपया पुनः प्रयास गर्नुहोस्।'));
+      }
+    } catch {
+      setEngagement(null);
+      setEngagementError(t('Unable to load the upcoming engagement. Please try again.', 'आगामी कार्यक्रम लोड गर्न सकिएन। कृपया पुनः प्रयास गर्नुहोस्।'));
+    } finally {
+      setEngagementLoading(false);
+    }
+  }, [t]);
+
+  useEffect(() => {
+    fetchEngagement();
+  }, [fetchEngagement]);
+
+  const formatEngagementDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString(lang === 'np' ? 'ne-NP' : 'en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      // Engagements are date-based rather than timezone-based. Rendering in UTC
+      // prevents a visitor in another timezone seeing the preceding calendar day.
+      timeZone: 'UTC'
+    });
+  };
+
+  const formatEngagementTime = (time) => {
+    if (!time) return '';
+    const [hours, minutes] = time.split(':').map(Number);
+    if (Number.isNaN(hours) || Number.isNaN(minutes)) return time;
+    const suffix = hours >= 12 ? 'PM' : 'AM';
+    return `${((hours + 11) % 12) + 1}:${String(minutes).padStart(2, '0')} ${suffix}`;
+  };
+
+  const handleRequestToAttend = () => {
+    const subject = engagement
+      ? t(`Request to Attend: ${engagement.title}`, `सहभागिताको अनुरोध: ${engagement.title}`)
+      : t('Request to Attend Public Engagement', 'सार्वजनिक कार्यक्रममा सहभागिताको अनुरोध');
+    setForm((prev) => ({ ...prev, subject }));
+    contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +166,7 @@ export default function Contact() {
               </div>
 
               {/* Form */}
-              <div className="card" style={{ padding: 40 }}>
+              <div className="card" style={{ padding: 40 }} ref={contactFormRef}>
                 <h3 style={{ marginBottom: 24 }}>{t('Send a Message', 'सन्देश पठाउनुहोस्')}</h3>
                 <form onSubmit={handleContactSubmit}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }} className="contact-form-grid">
@@ -164,14 +222,92 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* Upcoming Public Engagement */}
+            <div className="engagement-section">
+              <div className="engagement-section-header">
+                <h2>{t('Upcoming Public Engagement', 'आगामी सार्वजनिक कार्यक्रम')}</h2>
+                <p>{t('Join Dr. Toshima Karki at the next public engagement event.', 'अर्को सार्वजनिक कार्यक्रममा डा. तोशिमा कार्कीसँग सहभागी हुनुहोस्।')}</p>
+              </div>
+
+              {engagementLoading ? (
+                <div className="card engagement-empty">
+                  <i className="fas fa-spinner fa-spin" style={{ fontSize: '2rem' }}></i>
+                  <p>{t('Loading engagement details...', 'कार्यक्रम विवरण लोड हुँदै...')}</p>
+                </div>
+              ) : !engagement ? (
+                <div className="card engagement-empty">
+                  <i className={engagementError ? 'fas fa-exclamation-circle' : 'fas fa-calendar-times'}></i>
+                  <p>{engagementError || t('No upcoming public engagements available.', 'कुनै आगामी सार्वजनिक कार्यक्रम उपलब्ध छैन।')}</p>
+                  {engagementError && (
+                    <button type="button" className="btn btn-outline engagement-retry" onClick={fetchEngagement}>
+                      {t('Try Again', 'फेरि प्रयास गर्नुहोस्')}
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="engagement-grid">
+                  <div className="card engagement-details-card">
+                    {engagement.image && (
+                      <div className="engagement-image-wrap">
+                        <OptimizedImage
+                          src={engagement.image}
+                          alt={engagement.title}
+                          lazy={false}
+                          style={{ height: '100%' }}
+                        />
+                      </div>
+                    )}
+                    <div className="engagement-details-body">
+                      <h3>{engagement.title}</h3>
+                      <div className="engagement-meta">
+                        <div className="engagement-meta-item">
+                          <i className="fas fa-calendar-alt"></i>
+                          <div>
+                            <strong>{t('Date', 'मिति')}</strong>
+                            {formatEngagementDate(engagement.date)}
+                          </div>
+                        </div>
+                        <div className="engagement-meta-item">
+                          <i className="fas fa-clock"></i>
+                          <div>
+                            <strong>{t('Time', 'समय')}</strong>
+                            {formatEngagementTime(engagement.startTime)}{engagement.endTime ? ` – ${formatEngagementTime(engagement.endTime)}` : ''}
+                          </div>
+                        </div>
+                        <div className="engagement-meta-item">
+                          <i className="fas fa-map-marker-alt"></i>
+                          <div>
+                            <strong>{t('Location', 'स्थान')}</strong>
+                            {engagement.location}
+                          </div>
+                        </div>
+                      </div>
+                      {engagement.description && (
+                        <p className="engagement-description">{engagement.description}</p>
+                      )}
+                      <button type="button" className="btn btn-primary" onClick={handleRequestToAttend}>
+                        {t('Request to Attend', 'सहभागिताको अनुरोध गर्नुहोस्')}
+                      </button>
+                    </div>
+                  </div>
+                  <EngagementCalendar engagementDate={engagement.date} />
+                </div>
+              )}
+            </div>
+
             {/* Bottom Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }} className="contact-bottom-grid">
               <div className="card" style={{ padding: 30 }}>
                 <h3 style={{ marginBottom: 16 }}>{t('Our Location', 'हाम्रो स्थान')}</h3>
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 20 }}>{t('Nakkhu, Lalitpur, Nepal', 'नक्कु, ललितपुर, नेपाल')}</p>
-                <div style={{ background: 'var(--light-gray)', height: 200, borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-                  <i className="fas fa-map-marked-alt" style={{ fontSize: '2.5rem', marginRight: 12 }}></i>
-                  <span>{t('Nakkhu, Lalitpur', 'नक्कु, ललितपुर')}</span>
+                <div className="contact-location-map">
+                  <iframe
+                    title={t('Map of the Nakkhu, Lalitpur office', 'नक्कु, ललितपुर कार्यालयको नक्सा')}
+                    src="https://www.google.com/maps?q=Nakkhu%2C%20Lalitpur%2C%20Nepal&z=15&output=embed"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
                 </div>
               </div>
 

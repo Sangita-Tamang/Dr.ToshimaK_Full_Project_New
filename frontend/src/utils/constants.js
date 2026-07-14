@@ -12,11 +12,12 @@ export const NAV_LINKS = [
 ];
 
 export const SOCIAL_LINKS = {
-  facebook: 'https://facebook.com/toshimakarki',
-  twitter: 'https://twitter.com',
-  instagram: 'https://instagram.com',
-  youtube: 'https://youtube.com',
-  linkedin: 'https://linkedin.com',
+  facebookPersonal: 'https://www.facebook.com/share/1AZap7x28S/',
+  facebookSecretariat: 'https://www.facebook.com/share/1JehU2Mjcu/',
+  linkedin: 'https://www.linkedin.com/in/dr-toshima-karki-471511166/',
+  youtube: 'https://www.youtube.com/@Dr.Toshima_Karki_Secretariat',
+  twitter: 'https://x.com/ToshimaKarkiDr',
+  tiktok: 'https://www.tiktok.com/@drtoshimakarki?lang=en',
 };
 
 // Real CMS categories for Dr. Toshima Karki

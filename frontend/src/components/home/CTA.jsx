@@ -18,22 +18,22 @@ export default function CTA() {
       <div className="container">
         <div className="internship-banner">
           <div>
-            <span style={{ color: 'var(--primary)', fontWeight: 700, textTransform: 'uppercase', fontSize: '0.85rem' }}>
+            <span style={{ color: 'var(--primary)', fontWeight: 700, textTransform: 'uppercase', fontSize: '0.85rem', display: 'block', marginBottom: '8px' }}>
               {t('Make a Difference.', 'सकारात्मक परिवर्तन ल्याउनुहोस्।')}
             </span>
             <h2>{t('Apply for an Internship', 'इन्टर्नशिपका लागि आवेदन दिनुहोस्')}</h2>
             <p>{t('Join our team and contribute to meaningful change in healthcare and public service.', 'हाम्रो टोलीमा सामेल हुनुहोस् र स्वास्थ्य सेवा तथा जनसेवामा अर्थपूर्ण योगदान दिनुहोस्।')}</p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
+            <div className="internship-benefits">
               {benefits.map((item) => (
-                <div key={item.en} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <i className="fas fa-check-circle" style={{ color: 'var(--primary)' }}></i>
-                  <span style={{ fontSize: '0.9rem' }}>{tt(item.en, item.np)}</span>
+                <div key={item.en} className="internship-benefit">
+                  <i className="fas fa-check-circle" style={{ color: 'var(--primary)', fontSize: '1.1rem', flexShrink: 0 }}></i>
+                  <span>{tt(item.en, item.np)}</span>
                 </div>
               ))}
             </div>
           </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Link to="/internship" className="btn btn-primary" style={{ padding: '16px 36px', fontSize: '1.05rem' }}>
+            <Link to="/internship" className="btn btn-primary" style={{ padding: '16px 36px', fontSize: '1.05rem', whiteSpace: 'nowrap' }}>
               {t('Apply Now', 'अहिले नै आवेदन दिनुहोस्')}
             </Link>
           </div>

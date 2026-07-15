@@ -117,6 +117,11 @@ export default function Ministry() {
     currentPage * CARDS_PER_PAGE
   );
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {

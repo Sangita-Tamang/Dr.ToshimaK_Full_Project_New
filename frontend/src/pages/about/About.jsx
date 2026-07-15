@@ -13,6 +13,11 @@ import aboutHeroBg from '../../assets/images/about.hero.png';
 export default function About() {
   const { t } = useLanguage();
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Intersection Observer for animations
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {

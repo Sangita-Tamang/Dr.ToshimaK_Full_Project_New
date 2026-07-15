@@ -3,16 +3,25 @@
 
 /* ===================== HERO ===================== */
 .party-hero-v2 {
-  background-color: #f0f4f8;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
   position: relative;
   overflow: hidden;
   min-height: 620px;
   display: flex;
   align-items: center;
+}
+
+/* Hero background image */
+.party-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.party-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Very transparent overlay - background image clearly visible */
@@ -21,10 +30,10 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(100deg, rgba(255, 255, 255, 0.75) 15%, rgba(255, 255, 255, 0.35) 45%, rgba(255, 255, 255, 0.05) 70%, transparent 100%);
-  z-index: 0;
+  z-index: 1;
 }
 
-.party-hero-v2 .container { position: relative; z-index: 2; }
+.party-hero-v2 .container { position: relative; z-index: 3; }
 
 /* red diagonal corner accent, bottom-left */
 .hero-corner {
@@ -35,7 +44,7 @@
   height: 380px;
   background: var(--primary);
   clip-path: polygon(0 100%, 0 30%, 70% 100%);
-  z-index: 1;
+  z-index: 2;
   opacity: 0.95;
 }
 
@@ -44,7 +53,7 @@
   position: absolute;
   top: 28px;
   right: 32px;
-  z-index: 1;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
@@ -90,6 +99,110 @@
   align-items: center; 
   gap: 10px;
   padding: 14px 28px;
+
+/* ===================== MOBILE RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .party-hero-v2 {
+    min-height: 550px;
+  }
+  
+  .party-page .section-padding {
+    padding: 50px 0;
+  }
+  
+  .hero-copy-v2 {
+    max-width: 100%;
+  }
+  
+  .hero-copy-v2 h1 {
+    font-size: 1.875rem;
+    margin-bottom: 16px;
+  }
+  
+  .hero-copy-v2 p {
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-cta-group .hero-cta {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+  }
+  
+  .hero-dots,
+  .hero-corner {
+    display: none;
+  }
+  
+  .hero-eyebrow {
+    font-size: 0.7rem;
+  }
+  
+  /* Party sections mobile */
+  .split-grid,
+  .about-split,
+  .role-split {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .principles-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .journey-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .role-photo img {
+    border-radius: var(--radius-lg);
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 375px) {
+  .party-hero-v2 {
+    min-height: 500px;
+  }
+  
+  .hero-copy-v2 h1 {
+    font-size: 1.65rem;
+  }
+  
+  .hero-copy-v2 p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .principles-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .principles-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .split-grid,
+  .about-split,
+  .role-split {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .journey-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
   font-size: 0.9rem;
   font-weight: 700;
   border-radius: 8px;

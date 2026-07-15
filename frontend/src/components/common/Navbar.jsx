@@ -100,20 +100,22 @@ export default function Navbar() {
         }}
       >
         <div className="container header-inner">
-          {/* LOGO */}
+          {/* LOGO - Left Column */}
           <div className="site-brand">
             <button className="logo-preview-trigger" type="button" onClick={() => setLogoPreviewOpen(true)} aria-label="View Dr. Toshima Karki logo" aria-haspopup="dialog">
               <img src={logoImg} alt="Dr. Toshima Karki" className="site-logo" />
             </button>
-            <Link to="/" className="site-brand-copy">
-              <div className="site-brand-name">
-                {t('Dr. Toshima Karki', 'डा. तोषिमा कार्की')}
-              </div>
-              <div className="site-brand-subtitle">
-                {t('Official Website', 'आधिकारिक वेबसाइट')}
-              </div>
-            </Link>
           </div>
+
+          {/* TEXT - Center Column */}
+          <Link to="/" className="site-brand-copy">
+            <div className="site-brand-name">
+              {t('Dr. Toshima Karki', 'डा. तोषिमा कार्की')}
+            </div>
+            <div className="site-brand-subtitle">
+              {t('Official Website', 'आधिकारिक वेबसाइट')}
+            </div>
+          </Link>
 
           {/* DESKTOP NAV */}
           <nav className="desktop-nav-container">
@@ -331,9 +333,23 @@ export default function Navbar() {
           <div className="header-actions">
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.4rem', color: 'var(--secondary)' }}
+              style={{ 
+                display: 'none', 
+                background: 'transparent', 
+                border: 'none', 
+                cursor: 'pointer', 
+                fontSize: '1.2rem', 
+                color: '#000',
+                width: '44px',
+                height: '44px',
+                borderRadius: 'var(--radius-md)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease'
+              }}
               className="hamburger-btn"
               aria-label="Toggle menu"
+              aria-expanded={menuOpen}
             >
               <i className={menuOpen ? 'fas fa-times' : 'fas fa-bars'}></i>
             </button>
@@ -518,7 +534,11 @@ export default function Navbar() {
         }
         @media (max-width: 992px) {
           .desktop-nav-container { display: none !important; }
-          .hamburger-btn { display: block !important; }
+          .desktop-language-selector { display: none !important; }
+          .hamburger-btn { display: inline-flex !important; }
+        }
+        @media (min-width: 993px) {
+          .mobile-nav-panel { display: none !important; }
         }
       `}</style>
     </>

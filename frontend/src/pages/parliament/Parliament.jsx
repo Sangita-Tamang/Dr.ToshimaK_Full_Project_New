@@ -208,6 +208,11 @@ export default function Parliament() {
   // Sidebar always shows current page's items
   const sidebarItems = pageItems;
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Re-run animations when page changes
   useEffect(() => {
     const timer = setTimeout(() => {

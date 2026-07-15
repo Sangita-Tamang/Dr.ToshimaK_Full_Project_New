@@ -1,4 +1,47 @@
 /* =========================
+   ABOUT PAGE RESPONSIVE OVERRIDES
+========================= */
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .about-hero {
+    min-height: 70vh !important;
+  }
+  
+  .about-hero-container {
+    padding: 50px 0 !important;
+  }
+  
+  .about-hero-content {
+    padding-top: 60px;
+  }
+  
+  .about-hero-bg img {
+    object-position: 65% top !important;
+  }
+  
+  .about-hero-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(26, 31, 46, 0.85) 0%,
+      rgba(26, 31, 46, 0.90) 50%,
+      rgba(26, 31, 46, 0.85) 100%
+    ) !important;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 375px) {
+  .about-hero {
+    min-height: 65vh !important;
+  }
+  
+  .about-hero-title {
+    font-size: 1.75rem !important;
+  }
+}
+
+/* =========================
    GLOBAL SAFETY (prevents the
    text-clipped-at-edge bug you saw
    on mobile — a stray horizontal

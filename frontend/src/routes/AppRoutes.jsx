@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { useAuth } from '../context/AuthContext';
+import ScrollToTop from '../components/common/ScrollToTop';
 
 // Loading component for lazy-loaded routes
 const PageLoader = () => (
@@ -48,32 +49,35 @@ function ProtectedRoute({ children }) {
 
 export default function AppRoutes() {
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/ministry" element={<Ministry />} />
-        <Route path="/health-contributions" element={<HealthContributions />} />
-        <Route path="/parliament" element={<Parliament />} />
-        <Route path="/party" element={<Party />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogDetails />} />
-        <Route path="/media" element={<Media />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/interview" element={<Interview />} />
-        <Route path="/internship" element={<InternshipPage />} />
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Suspense>
+    <>
+      <ScrollToTop />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/ministry" element={<Ministry />} />
+          <Route path="/health-contributions" element={<HealthContributions />} />
+          <Route path="/parliament" element={<Parliament />} />
+          <Route path="/party" element={<Party />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:id" element={<BlogDetails />} />
+          <Route path="/media" element={<Media />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/interview" element={<Interview />} />
+          <Route path="/internship" element={<InternshipPage />} />
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+    </>
   );
 }

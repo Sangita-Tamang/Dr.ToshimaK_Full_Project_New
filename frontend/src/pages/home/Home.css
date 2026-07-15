@@ -1,0 +1,426 @@
+/* ========================================
+   HOME PAGE RESPONSIVE STYLES
+   ======================================== */
+
+/* Hero Section Responsive */
+.hero-section {
+  position: relative;
+  min-height: 72vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.hero-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.hero-content-panel {
+  width: min(100%, 520px);
+  color: #fff;
+  text-align: left;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 3.5vw, 3.3rem);
+  line-height: 1.12;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 18px;
+  max-width: 520px;
+}
+
+.hero-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 480px;
+  margin-bottom: 28px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 14px;
+}
+
+/* Explore Work Grid */
+.grid-explore {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(200, 16, 46, 0.08);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  margin-bottom: 20px;
+  font-size: 1.25rem;
+}
+
+/* Internship Banner */
+.internship-banner {
+  background: linear-gradient(135deg, var(--secondary) 0%, #1D3557 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.internship-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.internship-benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ========================================
+   TABLET BREAKPOINT (768px)
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Hero Section Mobile */
+  .hero-section {
+    min-height: 70vh;
+    padding: 40px 0;
+  }
+  
+  .hero-shell {
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 80px;
+  }
+  
+  .hero-content-panel {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+  }
+  
+  .hero-tag {
+    font-size: 0.7rem;
+    padding: 6px 12px;
+    letter-spacing: 1.2px;
+    margin-bottom: 16px;
+  }
+  
+  .hero-title {
+    font-size: 1.875rem;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  
+  .hero-description {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 24px;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    font-size: 0.95rem;
+  }
+  
+  /* Explore Work Mobile */
+  .grid-explore {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-body h3 {
+    font-size: 1.1rem;
+  }
+  
+  .card-body p {
+    font-size: 0.875rem;
+  }
+  
+  /* Internship Banner Mobile */
+  .internship-banner {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    gap: 24px;
+    text-align: left;
+  }
+  
+  .internship-banner h2 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  
+  .internship-banner p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .internship-benefits {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .internship-benefit span {
+    font-size: 0.85rem;
+  }
+  
+  .internship-banner > div:last-child {
+    justify-content: flex-start;
+  }
+  
+  .internship-banner .btn {
+    width: 100%;
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ========================================
+   MOBILE BREAKPOINT (480px)
+   ======================================== */
+
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 65vh;
+    padding: 30px 0;
+  }
+  
+  .hero-shell {
+    padding-top: 60px;
+  }
+  
+  .hero-tag {
+    font-size: 0.65rem;
+    padding: 5px 10px;
+  }
+  
+  .hero-title {
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+  
+  .hero-description {
+    font-size: 0.875rem;
+  }
+  
+  .card-body {
+    padding: 18px;
+  }
+  
+  .card-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+  
+  .internship-banner {
+    padding: 28px 20px;
+  }
+  
+  .internship-banner h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================================
+   EXTRA SMALL MOBILE (320px - 375px)
+   ======================================== */
+
+@media (max-width: 375px) {
+  .hero-section {
+    min-height: 60vh;
+  }
+  
+  .hero-shell {
+    padding-top: 50px;
+  }
+  
+  .hero-title {
+    font-size: 1.65rem;
+  }
+  
+  .hero-description {
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero-buttons .btn {
+    font-size: 0.875rem;
+    padding: 12px 20px;
+    min-height: 44px;
+  }
+  
+  .card-img-container {
+    height: 180px;
+  }
+  
+  .card-body {
+    padding: 16px;
+  }
+  
+  .card-body h3 {
+    font-size: 1rem;
+  }
+  
+  .card-body p {
+    font-size: 0.8rem;
+  }
+  
+  .internship-banner {
+    padding: 24px 18px;
+  }
+  
+  .internship-banner h2 {
+    font-size: 1.35rem;
+  }
+  
+  .internship-benefit span {
+    font-size: 0.8rem;
+  }
+}
+
+/* ========================================
+   LARGE MOBILE (iPhone 14 Pro Max - 430px)
+   ======================================== */
+
+@media (min-width: 415px) and (max-width: 480px) {
+  .hero-section {
+    min-height: 70vh;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-description {
+    font-size: 0.925rem;
+  }
+  
+  .hero-buttons .btn {
+    padding: 13px 24px;
+    font-size: 0.925rem;
+  }
+  
+  .internship-benefits {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+}
+
+/* ========================================
+   LAPTOP BREAKPOINT (1024px+)
+   ======================================== */
+
+@media (min-width: 1024px) {
+  .hero-section {
+    min-height: 75vh;
+    max-height: 760px;
+  }
+  
+  .hero-buttons {
+    flex-direction: row;
+  }
+  
+  .grid-explore {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  
+  .internship-benefits {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ========================================
+   LARGE DESKTOP (1440px+)
+   ======================================== */
+
+@media (min-width: 1440px) {
+  .grid-explore {
+    gap: 32px;
+  }
+  
+  .internship-banner {
+    padding: 70px 60px;
+  }
+}
+
+/* ========================================
+   EXTRA LARGE DESKTOP (1920px+)
+   ======================================== */
+
+@media (min-width: 1920px) {
+  .hero-section {
+    max-height: 800px;
+  }
+}
+
+/* ========================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ======================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .hero-buttons .btn {
+    min-height: 50px;
+    padding: 14px 28px;
+  }
+  
+  .card {
+    -webkit-tap-highlight-color: rgba(200, 16, 46, 0.1);
+  }
+  
+  .card:hover {
+    transform: none;
+  }
+  
+  .card:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ========================================
+   PREVENT HORIZONTAL SCROLL
+   ======================================== */
+
+.hero-section,
+.grid-explore,
+.internship-banner {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.hero-backdrop img,
+.hero-background {
+  max-width: 100%;
+}

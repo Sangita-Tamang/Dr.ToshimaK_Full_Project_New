@@ -1,0 +1,589 @@
+/* ========================================
+   PAGES RESPONSIVE STYLES
+   About, Ministry, Parliament, Party, News, Media, Gallery, Contact
+   Mobile-first: 320px to 1920px+
+   ======================================== */
+
+/* ========================================
+   ABOUT, MINISTRY, PARLIAMENT PAGE HEROES
+   ======================================== */
+
+.about-hero,
+.min-hero,
+.parl-hero {
+  min-height: 75vh !important;
+  max-height: none;
+}
+
+.about-hero-container,
+.min-hero-container,
+.parl-hero-container {
+  padding: 60px 0;
+}
+
+.about-hero-content,
+.min-hero-content,
+.parl-hero-content {
+  max-width: 100%;
+}
+
+.about-hero-title,
+.min-hero-title,
+.parl-title {
+  font-size: clamp(1.875rem, 5vw, 3.5rem);
+  line-height: 1.2;
+}
+
+.about-hero-sub,
+.min-hero-desc,
+.parl-desc {
+  font-size: clamp(0.875rem, 2vw, 1.05rem);
+  line-height: 1.65;
+}
+
+/* ========================================
+   PARTY PAGE HERO
+   ======================================== */
+
+.party-hero-v2 {
+  min-height: clamp(500px, 70vh, 700px);
+}
+
+.hero-copy-v2 h1 {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+}
+
+.hero-copy-v2 p {
+  font-size: clamp(0.875rem, 2vw, 1.05rem);
+}
+
+/* ========================================
+   SECTION LAYOUTS - SPLIT GRIDS
+   ======================================== */
+
+.split-grid,
+.about-split,
+.role-split,
+.journey-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(24px, 5vw, 40px);
+  align-items: start;
+}
+
+/* ========================================
+   PRINCIPLES/CARDS GRIDS
+   ======================================== */
+
+.principles-grid,
+.contributions-grid,
+.timeline-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 4vw, 30px);
+}
+
+.principle-card,
+.contribution-card,
+.timeline-card {
+  padding: clamp(20px, 4vw, 30px);
+}
+
+/* ========================================
+   STATS/METRICS
+   ======================================== */
+
+.stats-card,
+.parl-hero-stats,
+.min-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(12px, 3vw, 20px);
+  padding: clamp(20px, 4vw, 30px);
+}
+
+.stat-block,
+.stat-item {
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: clamp(12px, 3vw, 16px);
+  border-right: none !important;
+}
+
+.stat-num,
+.stat-info h3 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.stat-label,
+.stat-desc,
+.stat-info p {
+  font-size: clamp(0.7rem, 2vw, 0.875rem);
+}
+
+/* ========================================
+   NEWS/MEDIA/GALLERY GRIDS
+   ======================================== */
+
+.news-grid,
+.media-grid,
+.gallery-grid,
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 4vw, 28px);
+}
+
+.news-card,
+.media-card,
+.gallery-item,
+.blog-card {
+  width: 100%;
+}
+
+/* ========================================
+   CONTACT PAGE FORMS
+   ======================================== */
+
+.contact-form-grid,
+.contact-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 3vw, 24px);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  font-size: 16px; /* Prevents zoom on iOS */
+  padding: clamp(12px, 3vw, 14px) clamp(14px, 3vw, 16px);
+}
+
+/* ========================================
+   BUTTONS & CTAs
+   ======================================== */
+
+.hero-cta-group,
+.hero-buttons,
+.min-hero-buttons,
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 2vw, 14px);
+  width: 100%;
+}
+
+.btn,
+.hero-cta,
+button[class*="btn"] {
+  width: 100%;
+  min-height: 48px;
+  padding: clamp(12px, 3vw, 14px) clamp(20px, 4vw, 28px);
+  font-size: clamp(0.875rem, 2vw, 0.95rem);
+  justify-content: center;
+  text-align: center;
+}
+
+/* ========================================
+   IMAGES & MEDIA
+   ======================================== */
+
+.role-photo img,
+.about-img img,
+.featured-img img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+.card-img-container {
+  height: clamp(200px, 40vw, 260px);
+}
+
+/* ========================================
+   PAGINATION
+   ======================================== */
+
+.parl-pagination,
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(6px, 2vw, 10px);
+  justify-content: center;
+}
+
+.page-btn {
+  min-width: clamp(36px, 8vw, 44px);
+  min-height: clamp(36px, 8vw, 44px);
+  padding: clamp(6px, 2vw, 10px);
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+/* ========================================
+   DECORATIVE ELEMENTS ON MOBILE
+   ======================================== */
+
+.hero-dots,
+.hero-corner {
+  display: none;
+}
+
+/* ========================================
+   TABLET BREAKPOINT (768px)
+   ======================================== */
+
+@media (min-width: 768px) {
+  /* Split grids to 2 columns */
+  .split-grid,
+  .about-split,
+  .role-split {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  
+  /* Principles/cards to 2 columns */
+  .principles-grid,
+  .contributions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  /* News/media grids to 2 columns */
+  .news-grid,
+  .media-grid,
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  /* Gallery to 3 columns */
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Stats to 3 or 4 columns */
+  .stats-card,
+  .parl-hero-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .stat-block,
+  .stat-item {
+    border-right: 1px solid var(--border-color);
+  }
+  
+  .stat-block:last-child,
+  .stat-item:last-child {
+    border-right: none;
+  }
+  
+  /* Buttons horizontal */
+  .hero-cta-group,
+  .hero-buttons,
+  .min-hero-buttons {
+    flex-direction: row;
+    width: auto;
+  }
+  
+  .btn,
+  .hero-cta {
+    width: auto;
+  }
+  
+  /* Contact form 2 columns */
+  .contact-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Show decorative elements */
+  .hero-dots,
+  .hero-corner {
+    display: block;
+  }
+  
+  /* Journey grid specific */
+  .journey-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ========================================
+   LAPTOP BREAKPOINT (1024px)
+   ======================================== */
+
+@media (min-width: 1024px) {
+  .about-hero,
+  .min-hero,
+  .parl-hero {
+    min-height: 80vh !important;
+  }
+  
+  .party-hero-v2 {
+    min-height: 650px;
+  }
+  
+  /* Principles/cards to 3 columns */
+  .principles-grid,
+  .contributions-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  
+  /* News/media to 3 columns */
+  .news-grid,
+  .media-grid,
+  .blog-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Stats to 4 columns */
+  .stats-card {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Timeline cards specific */
+  .timeline-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========================================
+   LARGE DESKTOP (1440px+)
+   ======================================== */
+
+@media (min-width: 1440px) {
+  .about-hero,
+  .min-hero,
+  .parl-hero {
+    max-height: 850px;
+  }
+  
+  .party-hero-v2 {
+    min-height: 700px;
+  }
+  
+  .about-hero-content,
+  .min-hero-content,
+  .parl-hero-content {
+    max-width: 600px;
+  }
+  
+  .hero-copy-v2 {
+    max-width: 650px;
+  }
+}
+
+/* ========================================
+   MOBILE SPECIFIC (< 768px)
+   ======================================== */
+
+@media (max-width: 767px) {
+  /* Hero heights */
+  .about-hero,
+  .min-hero,
+  .parl-hero {
+    min-height: 70vh !important;
+  }
+  
+  .party-hero-v2 {
+    min-height: 550px;
+  }
+  
+  /* Hero content positioning */
+  .about-hero-container,
+  .min-hero-container,
+  .parl-hero-container {
+    padding: 50px 0;
+    align-items: flex-start;
+  }
+  
+  .about-hero-content,
+  .min-hero-content,
+  .parl-hero-content {
+    padding-top: 60px;
+  }
+  
+  /* Hero tags smaller */
+  .about-hero-tag,
+  .min-hero-tag,
+  .parl-tag,
+  .hero-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    padding: 5px 12px;
+  }
+  
+  /* Section padding reduced */
+  .party-page .section-padding,
+  .section-padding {
+    padding: clamp(40px, 10vw, 60px) 0;
+  }
+  
+  /* Vision/mission cards stack */
+  .vision-mission {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Role list 1 column */
+  .role-list,
+  .role-list-cols {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  /* Journey timeline adjustments */
+  .journey-timeline {
+    padding-left: 20px;
+  }
+  
+  .journey-item {
+    padding-left: 20px;
+  }
+  
+  /* Website card full width */
+  .website-card {
+    text-align: center;
+  }
+  
+  /* Parliament sidebar hide on mobile */
+  .parl-sidebar {
+    display: none;
+  }
+  
+  .parl-layout {
+    display: block;
+  }
+  
+  .parl-cards {
+    width: 100%;
+  }
+  
+  /* Ministry contributions full width cards */
+  .min-contributions {
+    padding: 0;
+  }
+  
+  /* Filter tabs scroll */
+  .filter-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start;
+    padding-bottom: 10px;
+  }
+  
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-tab {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+}
+
+/* ========================================
+   EXTRA SMALL MOBILE (< 375px)
+   ======================================== */
+
+@media (max-width: 374px) {
+  .about-hero,
+  .min-hero,
+  .parl-hero {
+    min-height: 65vh !important;
+  }
+  
+  .party-hero-v2 {
+    min-height: 500px;
+  }
+  
+  .about-hero-title,
+  .min-hero-title,
+  .parl-title {
+    font-size: 1.75rem;
+  }
+  
+  .hero-copy-v2 h1 {
+    font-size: 1.65rem;
+  }
+  
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  .stats-card,
+  .parl-hero-stats {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  
+  .principle-card,
+  .contribution-card {
+    padding: 18px;
+  }
+}
+
+/* ========================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ======================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  .btn,
+  .hero-cta,
+  .page-btn {
+    min-height: 48px;
+  }
+  
+  .card:hover,
+  .principle-card:hover,
+  .contribution-card:hover {
+    transform: none;
+  }
+  
+  .card:active {
+    transform: scale(0.98);
+  }
+  
+  a,
+  button,
+  .card,
+  .filter-tab {
+    -webkit-tap-highlight-color: rgba(200, 16, 46, 0.1);
+  }
+}
+
+/* ========================================
+   PREVENT HORIZONTAL SCROLL
+   ======================================== */
+
+.about-hero,
+.min-hero,
+.parl-hero,
+.party-hero-v2,
+.party-section,
+.news-grid,
+.media-grid,
+.gallery-grid {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   ACCESSIBILITY - REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .fade-in-up,
+  .card {
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,379 @@
+/* ========================================
+   RESPONSIVE UTILITIES & BREAKPOINTS
+   Mobile-first approach: 320px to 1920px+
+   ======================================== */
+
+:root {
+  /* Breakpoint values */
+  --bp-xs: 320px;
+  --bp-sm: 375px;
+  --bp-md: 480px;
+  --bp-tablet: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1440px;
+  --bp-xxl: 1920px;
+  
+  /* Fluid spacing */
+  --spacing-xs: clamp(8px, 2vw, 12px);
+  --spacing-sm: clamp(12px, 3vw, 16px);
+  --spacing-md: clamp(16px, 4vw, 24px);
+  --spacing-lg: clamp(24px, 5vw, 40px);
+  --spacing-xl: clamp(40px, 6vw, 60px);
+  --spacing-xxl: clamp(60px, 8vw, 100px);
+  
+  /* Fluid typography */
+  --text-xs: clamp(0.75rem, 1.5vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 2vw, 0.95rem);
+  --text-base: clamp(0.95rem, 2.5vw, 1rem);
+  --text-lg: clamp(1rem, 3vw, 1.125rem);
+  --text-xl: clamp(1.125rem, 3.5vw, 1.25rem);
+  --text-2xl: clamp(1.25rem, 4vw, 1.5rem);
+  --text-3xl: clamp(1.5rem, 5vw, 2rem);
+  --text-4xl: clamp(1.75rem, 6vw, 2.5rem);
+  --text-5xl: clamp(2rem, 7vw, 3rem);
+  --text-6xl: clamp(2.5rem, 8vw, 4rem);
+  
+  /* Container widths */
+  --container-xs: 100%;
+  --container-sm: 540px;
+  --container-md: 720px;
+  --container-tablet: 960px;
+  --container-lg: 1140px;
+  --container-xl: 1320px;
+  --container-max: 1400px;
+}
+
+/* ========================================
+   BASE RESPONSIVE STYLES
+   ======================================== */
+
+/* Prevent horizontal scroll */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+body {
+  font-size: var(--text-base);
+  padding: 0;
+  margin: 0;
+}
+
+/* Container responsive behavior */
+.container {
+  width: 100%;
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Section padding responsive */
+.section-padding {
+  padding-top: clamp(40px, 10vw, 80px);
+  padding-bottom: clamp(40px, 10vw, 80px);
+}
+
+/* ========================================
+   TYPOGRAPHY RESPONSIVE
+   ======================================== */
+
+h1 { font-size: var(--text-6xl); line-height: 1.1; }
+h2 { font-size: var(--text-5xl); line-height: 1.2; }
+h3 { font-size: var(--text-4xl); line-height: 1.2; }
+h4 { font-size: var(--text-3xl); line-height: 1.3; }
+h5 { font-size: var(--text-2xl); line-height: 1.3; }
+h6 { font-size: var(--text-xl); line-height: 1.4; }
+
+p { font-size: var(--text-base); line-height: 1.6; }
+
+/* ========================================
+   BUTTON RESPONSIVE
+   ======================================== */
+
+.btn {
+  min-height: 44px; /* Touch-friendly minimum */
+  padding: clamp(10px, 3vw, 12px) clamp(20px, 5vw, 26px);
+  font-size: var(--text-sm);
+  width: auto;
+}
+
+/* Stack buttons on mobile */
+.btn-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   GRID RESPONSIVE
+   ======================================== */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+}
+
+/* ========================================
+   CARD RESPONSIVE
+   ======================================== */
+
+.card {
+  width: 100%;
+}
+
+.card-img-container {
+  height: clamp(180px, 40vw, 220px);
+}
+
+.card-body {
+  padding: var(--spacing-md);
+}
+
+/* ========================================
+   STATS BAR RESPONSIVE
+   ======================================== */
+
+.stats-bar {
+  grid-template-columns: 1fr;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+}
+
+.stat-item {
+  padding: var(--spacing-sm) 0;
+  border-right: none !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+/* ========================================
+   UTILITIES
+   ======================================== */
+
+/* Hide on mobile */
+.hide-mobile {
+  display: none;
+}
+
+/* Show only on mobile */
+.show-mobile {
+  display: block;
+}
+
+/* Text alignment */
+.text-center-mobile {
+  text-align: center;
+}
+
+/* Full width on mobile */
+.full-width-mobile {
+  width: 100%;
+}
+
+/* ========================================
+   BREAKPOINT: 375px (Small Mobile)
+   ======================================== */
+
+@media (min-width: 375px) {
+  .container {
+    max-width: var(--container-xs);
+  }
+}
+
+/* ========================================
+   BREAKPOINT: 480px (Mobile)
+   ======================================== */
+
+@media (min-width: 480px) {
+  .container {
+    max-width: var(--container-sm);
+  }
+  
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .btn-group {
+    flex-wrap: nowrap;
+  }
+}
+
+/* ========================================
+   BREAKPOINT: 768px (Tablet)
+   ======================================== */
+
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-md);
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+  
+  .section-padding {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 30px;
+  }
+  
+  .stat-item {
+    border-right: 1px solid var(--border-color);
+    border-bottom: none;
+  }
+  
+  .stat-item:nth-child(2n) {
+    border-right: none;
+  }
+  
+  .hide-mobile {
+    display: block;
+  }
+  
+  .show-mobile {
+    display: none;
+  }
+  
+  .text-center-mobile {
+    text-align: left;
+  }
+  
+  .full-width-mobile {
+    width: auto;
+  }
+}
+
+/* ========================================
+   BREAKPOINT: 1024px (Laptop)
+   ======================================== */
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-tablet);
+  }
+  
+  .section-padding {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .stats-bar {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    padding: 30px 40px;
+  }
+  
+  .stat-item:nth-child(2n) {
+    border-right: 1px solid var(--border-color);
+  }
+  
+  .stat-item:last-child {
+    border-right: none;
+  }
+}
+
+/* ========================================
+   BREAKPOINT: 1440px (Large Desktop)
+   ======================================== */
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: var(--container-lg);
+  }
+  
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ========================================
+   BREAKPOINT: 1920px (Extra Large)
+   ======================================== */
+
+@media (min-width: 1920px) {
+  .container {
+    max-width: var(--container-max);
+  }
+}
+
+/* ========================================
+   TOUCH-FRIENDLY INTERACTIONS
+   ======================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Touch devices */
+  .btn {
+    min-height: 48px;
+    padding: 14px 28px;
+  }
+  
+  a, button, .card {
+    -webkit-tap-highlight-color: rgba(200, 16, 46, 0.1);
+  }
+  
+  /* Remove hover effects on touch */
+  .card:hover {
+    transform: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

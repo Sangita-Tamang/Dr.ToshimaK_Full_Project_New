@@ -42,6 +42,7 @@ export default function Hero() {
           alt="" 
           className="hero-background" 
           lazy={false}
+          priority={true}
           objectFit="cover"
           objectPosition="center top"
         />

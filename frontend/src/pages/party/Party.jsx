@@ -13,6 +13,11 @@ export default function Party() {
   const [partyData, setPartyData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const loadPartyData = async () => {
       try {
@@ -94,10 +99,16 @@ export default function Party() {
       <Navbar />
       <main className="party-page">
         {/* ===================== HERO ===================== */}
-        <section
-          className="party-hero-v2 section-padding"
-          style={{ backgroundImage: `url(${partyHeroBg})` }}
-        >
+        <section className="party-hero-v2 section-padding">
+          <div className="party-hero-bg" aria-hidden="true">
+            <img 
+              src={partyHeroBg} 
+              alt="" 
+              loading="eager" 
+              fetchPriority="high"
+              decoding="async"
+            />
+          </div>
           <span className="hero-dots" aria-hidden="true">
             {Array.from({ length: 15 }).map((_, i) => <span key={i} />)}
           </span>

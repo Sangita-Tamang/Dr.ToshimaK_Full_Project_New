@@ -1,511 +1,994 @@
-/* Parliamentary Work Page Styles */
+/* ========================================
+   PARLIAMENT SECTION - PREMIUM GOVERNMENT STYLE
+   Red + White Theme
+   ======================================== */
 
-.parliament-page {
-  background-color: #fcfcfc;
-}
-
-/* Sticky Breadcrumb (reusable style, similar to HealthContributions) */
-.sticky-breadcrumb {
-  position: sticky;
-  top: 70px;
-  z-index: 100;
-  background-color: #f8f9fa;
-  padding: 12px 0;
-  border-bottom: 1px solid #eaeaea;
-  font-size: 0.9rem;
-}
-.sticky-breadcrumb .container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.sticky-breadcrumb a {
-  color: #555;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.sticky-breadcrumb a:hover {
-  color: var(--primary);
-}
-.sticky-breadcrumb .separator {
-  color: #aaa;
-  font-size: 0.8rem;
-}
-.sticky-breadcrumb .current {
-  color: var(--primary);
-  font-weight: 500;
+/* Container */
+.parliament-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-/* Hero Section */
-.parl-hero {
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
+.parliament-hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 85vh;
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: #fff;
+  background: #030A16;
 }
-.parl-hero-bg {
+
+.parliament-hero-backdrop {
   position: absolute;
   inset: 0;
   z-index: 0;
 }
-.parl-hero-bg img {
+
+.parliament-hero-background {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-}
-.parl-hero-overlay {
-  display: none;
-}
-.parl-hero-container {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  min-height: 100vh;
-  padding: 100px 0 120px;
-}
-.parl-hero-content {
-  width: min(100%, 500px);
-  text-align: left;
-  color: #fff;
-}
-.parl-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #fff;
-  background: rgba(200,16,46,0.9);
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-.parl-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 800;
-  color: #fff;
-  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.62);
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-.parl-title span {
-  display: block;
-  white-space: nowrap;
-}
-.parl-desc {
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  color: rgba(255, 255, 255, 0.96);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.72);
-  line-height: 1.7;
-  max-width: 480px;
-  margin-bottom: 40px;
-}
-.parl-hero-stats {
-  display: flex;
-  gap: 40px;
-}
-.parl-hero-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.stat-num {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.72);
-  line-height: 1;
-}
-.stat-label {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.72);
-  margin-top: 4px;
-  font-weight: 500;
+  object-position: center center;
 }
 
-/* Layout */
-.parl-layout {
-  display: flex;
-  gap: 60px;
-  position: relative;
-}
-.parl-sidebar {
-  width: 200px;
-  flex-shrink: 0;
-}
-.parl-cards {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
-/* Timeline */
-.parl-timeline {
-  position: sticky;
-  top: 150px;
-  padding-left: 20px;
-}
-.timeline-item {
-  position: relative;
-  padding-bottom: 40px;
-  padding-left: 30px;
-  opacity: 0.6;
-  transition: all 0.3s ease;
-}
-.timeline-item.active {
-  opacity: 1;
-}
-.timeline-dot {
+.parliament-hero-overlay {
   position: absolute;
-  left: -5px;
-  top: 5px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  background: white;
-  transition: all 0.3s ease;
-}
-.timeline-item.active .timeline-dot {
-  background: var(--primary);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(200, 16, 46, 0.1);
-}
-.timeline-line {
-  position: absolute;
-  left: 0;
-  top: 25px;
-  bottom: -5px;
-  width: 2px;
-  background: #eaeaea;
-}
-.timeline-item:last-child .timeline-line {
-  display: none;
-}
-.timeline-num {
-  font-size: 1.8rem;
-  font-weight: 800;
-  color: #101828;
-  line-height: 1;
-  margin-bottom: 5px;
-  transition: color 0.3s ease;
-}
-.timeline-item.active .timeline-num {
-  color: var(--primary);
-}
-.timeline-title {
-  font-size: 0.85rem;
-  color: #475467;
-  line-height: 1.4;
-  font-weight: 600;
-}
-.timeline-scroll-indicator {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  color: #667085;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-left: -5px;
-}
-.timeline-scroll-indicator i {
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
-}
-
-/* Cards */
-.parl-card {
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  position: relative;
-  overflow: hidden;
-}
-.parl-card-bg-num {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12rem;
-  font-weight: 900;
-  color: rgba(200, 16, 46, 0.03);
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(3, 10, 22, 0.35) 50%,
+    rgba(3, 10, 22, 0.50) 100%
+  );
   z-index: 1;
-  pointer-events: none;
-  line-height: 1;
 }
-.parl-card-inner {
-  display: flex;
+
+.parliament-hero-container {
   position: relative;
   z-index: 2;
-  background: white;
-  border: 1px solid #f0f0f0;
-  border-radius: 20px;
-}
-.parl-card-inner.row-reverse {
-  flex-direction: row-reverse;
-}
-.parl-card-img {
-  flex: 0 0 35%;
-  min-height: 250px;
-}
-.parl-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px 0 0 20px;
-}
-.parl-card-inner.row-reverse .parl-card-img img {
-  border-radius: 0 20px 20px 0;
-}
-.parl-card-content {
-  flex: 1;
-  padding: 30px 40px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
 }
-.parl-card-tag {
+
+.parliament-hero-content {
+  max-width: 680px;
+}
+
+.parliament-hero-label {
   display: inline-block;
-  color: var(--primary);
+  background: rgba(200, 16, 46, 0.95);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 24px;
 }
-.parl-card-title {
-  font-size: 1.4rem;
+
+.parliament-hero-title {
+  font-size: clamp(2.25rem, 4vw, 3.5rem);
+  line-height: 1.15;
   font-weight: 700;
-  color: #101828;
-  margin-bottom: 12px;
+  color: white;
+  margin-bottom: 24px;
+  font-family: var(--font-heading);
 }
-.parl-card-desc {
-  color: #475467;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 25px;
+
+.parliament-hero-title-accent {
+  color: #D90429;
 }
-.parl-card-meta-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  border-top: 1px solid #f0f0f0;
-  padding-top: 20px;
+
+.parliament-hero-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 32px;
+  max-width: 600px;
 }
-.parl-card-meta {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #667085;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-.meta-divider {
-  color: #d0d5dd;
-}
-.text-primary {
-  color: var(--primary);
-}
-.btn-read-more {
+
+.parliament-hero-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 1px solid var(--primary);
+  gap: 10px;
+  background: #D90429;
+  color: white;
+  padding: 14px 32px;
   border-radius: 8px;
-  color: var(--primary);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s;
-}
-.btn-read-more:hover {
-  background: var(--primary);
-  color: white;
-}
-
-/* Pagination */
-.parl-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 40px;
-  flex-wrap: wrap;
-}
-.page-btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid #eaecf0;
-  background: white;
-  color: #475467;
-  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9rem;
-}
-.page-btn:hover:not(:disabled) {
-  background: #fdf5f5;
-  border-color: var(--primary);
-  color: var(--primary);
-}
-.page-btn.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(200,16,46,0.3);
-}
-.page-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-.page-dots {
-  color: #667085;
-  font-weight: 600;
-  padding: 0 5px;
-  user-select: none;
-}
-.parl-page-info {
-  text-align: center;
-  color: #667085;
-  font-size: 0.85rem;
-  margin-top: 14px;
 }
 
-/* CTA */
-.parl-cta-section {
-  padding: 60px 0;
+.parliament-hero-button:hover {
+  background: #B8032A;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(217, 4, 41, 0.3);
 }
-.parl-cta-content {
-  background: #fdf5f5;
+
+.parliament-hero-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ========================================
+   STATS SECTION
+   ======================================== */
+
+.parliament-stats {
+  background: white;
+  padding: 60px 0;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.parliament-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+}
+
+.parliament-stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: #F9FAFB;
   border-radius: 12px;
-  padding: 30px 40px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.parliament-stat-card.animate-in {
+  animation: slideUp 0.6s ease forwards;
+}
+
+@keyframes slideUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.parliament-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.parliament-stat-icon {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #D90429 0%, #B8032A 100%);
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  color: white;
 }
-.parl-cta-text {
+
+.parliament-stat-content {
+  flex: 1;
+}
+
+.parliament-stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-family: var(--font-heading);
+}
+
+.parliament-stat-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4B5563;
+  line-height: 1.4;
+}
+
+.parliament-stat-subtext {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin-top: 4px;
+}
+
+/* ========================================
+   JOURNEY SECTION
+   ======================================== */
+
+.parliament-journey {
+  padding: 80px 0 60px;
+  background: white;
+}
+
+.parliament-journey-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.parliament-journey-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+  font-family: var(--font-heading);
+}
+
+.parliament-journey-subtitle {
+  font-size: 1.1rem;
+  color: #6B7280;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.parliament-tenure-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.parliament-tenure-card {
   display: flex;
   align-items: center;
   gap: 20px;
+  padding: 28px;
+  background: white;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
 }
-.parl-cta-icon {
-  font-size: 2.5rem;
-  color: var(--primary);
+
+.parliament-tenure-card:hover {
+  border-color: #D90429;
+  box-shadow: 0 8px 24px rgba(217, 4, 41, 0.1);
+  transform: translateY(-2px);
 }
-.parl-cta-text h3 {
-  font-size: 1.3rem;
-  color: #101828;
-  margin-bottom: 5px;
+
+.parliament-tenure-card.active {
+  background: linear-gradient(135deg, #D90429 0%, #B8032A 100%);
+  border-color: #D90429;
+  box-shadow: 0 8px 24px rgba(217, 4, 41, 0.25);
 }
-.parl-cta-text p {
-  color: #475467;
-  margin: 0;
+
+.parliament-tenure-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(217, 4, 41, 0.1);
+  color: #D90429;
+  transition: all 0.3s ease;
+}
+
+.parliament-tenure-card.active .parliament-tenure-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.parliament-tenure-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.parliament-tenure-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+  font-family: var(--font-heading);
+}
+
+.parliament-tenure-card.active .parliament-tenure-label {
+  color: white;
+}
+
+.parliament-tenure-period {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.parliament-tenure-card.active .parliament-tenure-period {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.parliament-tenure-badge {
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.parliament-tenure-badge.completed {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.parliament-tenure-badge.current {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+.parliament-tenure-card.active .parliament-tenure-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* ========================================
+   FILTERS SECTION
+   ======================================== */
+
+.parliament-filters {
+  padding: 60px 0;
+  background: #F9FAFB;
+  border-top: 1px solid #E5E7EB;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.parliament-search {
+  margin-bottom: 32px;
+}
+
+.parliament-search-input-wrapper {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.parliament-search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+  pointer-events: none;
+}
+
+.parliament-search-input {
+  width: 100%;
+  padding: 16px 20px 16px 52px;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.parliament-search-input:focus {
+  outline: none;
+  border-color: #D90429;
+  box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.1);
+}
+
+.parliament-filter-section {
+  margin-bottom: 28px;
+}
+
+.parliament-filter-section:last-child {
+  margin-bottom: 0;
+}
+
+.parliament-filter-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.parliament-category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.parliament-chip {
+  padding: 10px 20px;
+  border: 2px solid #E5E7EB;
+  border-radius: 50px;
+  background: white;
+  color: #4B5563;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.parliament-chip:hover {
+  border-color: #D90429;
+  color: #D90429;
+}
+
+.parliament-chip.active {
+  background: #D90429;
+  border-color: #D90429;
+  color: white;
+}
+
+.parliament-date-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 300px;
+}
+
+.parliament-date-filter svg {
+  color: #6B7280;
+  flex-shrink: 0;
+}
+
+.parliament-date-select {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
   font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Animations */
-.animate-hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-.fade-in-up {
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s ease-out;
-}
-.slide-in-right {
-  transform: translateX(50px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out, visibility 0.6s ease-out;
-}
-.animate-show {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: translate(0, 0) !important;
+.parliament-date-select:focus {
+  outline: none;
+  border-color: #D90429;
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-  .parl-hero-content { max-width: 100%; }
-  .parl-layout { flex-direction: column; gap: 30px; }
-  .parl-sidebar { width: 100%; display: none; }
-  .parl-card-inner, .parl-card-inner.row-reverse { flex-direction: column; }
-  .parl-card-img {
-    flex: 0 0 auto;
-    min-height: 220px;
-  }
-  .parl-card-img img { border-radius: 20px 20px 0 0; }
-  .parl-card-bg-num { display: none; }
-  .parl-hero-stats { 
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    width: 100%;
-  }
-  .parl-hero-stat {
-    align-items: center;
-    text-align: center;
+/* Active Filters */
+.parliament-active-filters {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #E5E7EB;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.parliament-active-filters-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #6B7280;
+}
+
+.parliament-active-filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: #D90429;
+  color: white;
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.parliament-active-filter-tag button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.parliament-active-filter-tag button:hover {
+  opacity: 1;
+}
+
+/* ========================================
+   CONTENT LAYOUT
+   ======================================== */
+
+.parliament-main-content {
+  min-width: 0;
+}
+
+/* ========================================
+   ACTIVITIES SECTION
+   ======================================== */
+
+.parliament-activities-header {
+  margin-bottom: 40px;
+}
+
+.parliament-activities-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+  font-family: var(--font-heading);
+}
+
+.parliament-activities-subtitle {
+  font-size: 1rem;
+  color: #6B7280;
+}
+
+.parliament-activities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 48px;
+}
+
+/* Activity Card */
+.parliament-activity-card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.parliament-activity-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.parliament-card-image-wrapper {
+  position: relative;
+  padding-top: 60%;
+  overflow: hidden;
+  background: #F3F4F6;
+}
+
+.parliament-card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* The Health Governance photo is portrait-oriented; show the complete image instead of cropping it. */
+.parliament-card-image--health-governance {
+  object-fit: contain;
+  object-position: center;
+}
+
+.parliament-activity-card:hover .parliament-card-image {
+  transform: scale(1.05);
+}
+
+.parliament-card-date-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.parliament-card-body {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.parliament-card-category-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 12px;
+  background: rgba(217, 4, 41, 0.1);
+  color: #D90429;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.parliament-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  font-family: var(--font-heading);
+}
+
+.parliament-card-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #6B7280;
+  margin-bottom: 16px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.parliament-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.parliament-card-source-type {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.parliament-card-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: #D90429;
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin: 0 24px 24px;
+  border-radius: 8px;
+}
+
+.parliament-card-action:hover {
+  background: #B8032A;
+  transform: translateX(4px);
+}
+
+/* Loading, Error, Empty States */
+.parliament-loading,
+.parliament-error,
+.parliament-empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.parliament-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #E5E7EB;
+  border-top-color: #D90429;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.parliament-spinner-small {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #E5E7EB;
+  border-top-color: #D90429;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.parliament-error h3,
+.parliament-empty h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 20px 0 12px;
+}
+
+.parliament-error p,
+.parliament-empty p {
+  font-size: 1rem;
+  color: #6B7280;
+  max-width: 500px;
+  margin: 0 auto 24px;
+}
+
+.parliament-btn-retry {
+  padding: 12px 28px;
+  background: #D90429;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.parliament-btn-retry:hover {
+  background: #B8032A;
+}
+
+/* Pagination */
+.parliament-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.parliament-pagination-page,
+.parliament-pagination-arrow {
+  min-width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.parliament-pagination-page:hover:not(:disabled),
+.parliament-pagination-arrow:hover:not(:disabled),
+.parliament-pagination-page.active {
+  background: #D90429;
+  border-color: #D90429;
+  color: white;
+}
+
+.parliament-pagination-page:disabled,
+.parliament-pagination-arrow:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.parliament-pagination-ellipsis {
+  min-width: 24px;
+  color: #6B7280;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+/* Legacy load-more button */
+.parliament-btn-load-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 32px;
+  background: white;
+  border: 2px solid #D90429;
+  color: #D90429;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.parliament-btn-load-more:hover {
+  background: #D90429;
+  color: white;
+}
+
+.parliament-btn-load-more:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE
+   ======================================== */
+
+@media (max-width: 1280px) {
+  .parliament-activities-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
+
+@media (max-width: 1024px) {
+  .parliament-hero-content {
+    max-width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
-  .parl-hero { min-height: 75vh; padding: 80px 0 60px; align-items: center; }
-  .parl-hero-container { justify-content: flex-end; align-items: center; }
-  .parl-title { font-size: 1.875rem; line-height: 1.25; margin-bottom: 16px; }
-  .parl-desc { font-size: 0.875rem; line-height: 1.6; margin-bottom: 24px; }
-  .parl-hero-stats { 
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 16px !important;
+  .parliament-container {
+    padding: 0 16px;
   }
-  .parl-hero-stat { 
-    min-width: auto;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.18);
-    border-radius: 8px;
-  }
-  .stat-num { font-size: 1.5rem; }
-  .stat-label { font-size: 0.6875rem; }
-  .parl-card-content { padding: 24px 20px; }
-  .parl-card-title { font-size: 1.2rem; }
-  .parl-card-meta-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .parl-cta-content { flex-direction: column; text-align: center; gap: 20px; }
-  .parl-cta-text { flex-direction: column; text-align: center; }
-  .sticky-breadcrumb { font-size: 0.8rem; padding: 10px 0; }
   
-  /* Fix card rendering - ensure proper display */
-  .parl-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    min-height: auto;
+  /* Hero */
+  .parliament-hero {
+    min-height: clamp(640px, 92svh, 760px);
+    align-items: flex-end;
   }
-  .parl-card {
-    display: block;
-    width: 100%;
+
+  .parliament-hero-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 150%;
+    height: auto;
+    max-width: none;
+    object-fit: contain;
+    object-position: right top;
   }
-  .parl-pagination {
-    margin-top: 30px;
-    padding-top: 30px;
+
+  .parliament-hero-overlay {
+    background:
+      linear-gradient(180deg, rgba(3, 10, 22, 0.08) 0%, rgba(3, 10, 22, 0.24) 38%, rgba(3, 10, 22, 0.9) 74%, #030A16 100%),
+      linear-gradient(90deg, rgba(3, 10, 22, 0.78) 0%, rgba(3, 10, 22, 0.38) 54%, rgba(3, 10, 22, 0.08) 100%);
+  }
+  
+  .parliament-hero-container {
+    min-height: clamp(640px, 92svh, 760px);
+    align-items: flex-end;
+    padding-top: 0;
+    padding-bottom: 58px;
+  }
+
+  .parliament-hero-content {
+    width: min(100%, 440px);
+    max-width: 92%;
+    transform: translateY(-8px);
+  }
+  
+  .parliament-hero-title {
+    max-width: 12ch;
+    font-size: clamp(1.9rem, 7vw, 2.35rem);
+    line-height: 1.14;
+    margin-bottom: 16px;
+  }
+  
+  .parliament-hero-description {
+    max-width: 34ch;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .parliament-hero-label {
+    margin-bottom: 16px;
+  }
+
+  .parliament-hero-button {
+    min-height: 48px;
+    padding: 14px 28px;
+  }
+  
+  .parliament-hero-quote {
+    padding: 24px;
+  }
+  
+  .parliament-hero-quote-text {
+    font-size: 1rem;
+  }
+  
+  /* Stats */
+  .parliament-stats {
+    padding: 40px 0;
+  }
+  
+  .parliament-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .parliament-stat-card {
+    padding: 20px;
+  }
+  
+  /* Journey */
+  .parliament-journey {
+    padding: 60px 0 40px;
+  }
+  
+  .parliament-journey-title {
+    font-size: 2rem;
+  }
+  
+  .parliament-tenure-selector {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Filters */
+  .parliament-filters {
+    padding: 40px 0;
+  }
+  
+  .parliament-category-chips {
+    gap: 8px;
+  }
+  
+  .parliament-chip {
+    font-size: 0.8rem;
+    padding: 8px 16px;
+  }
+  
+  /* Activities */
+  .parliament-main-content {
+    padding: 40px 0;
+  }
+  
+  .parliament-activities-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .parliament-activities-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .parliament-hero {
+    min-height: max(650px, 92svh);
+  }
+
+  .parliament-hero-background {
+    width: 180%;
+  }
+
+  .parliament-hero-container {
+    min-height: max(650px, 92svh);
+    padding-bottom: 48px;
+  }
+
+  .parliament-hero-title {
+    font-size: clamp(1.8rem, 8vw, 2.05rem);
+  }
+  
+  .parliament-hero-label {
+    font-size: 0.7rem;
+    padding: 6px 16px;
+  }
+
+  .parliament-hero-description {
+    font-size: 0.9rem;
+  }
+  
+  .parliament-stat-value {
+    font-size: 2rem;
+  }
+  
+  .parliament-journey-title {
+    font-size: 1.75rem;
+  }
+  
+  .parliament-tenure-card {
+    padding: 20px;
   }
 }

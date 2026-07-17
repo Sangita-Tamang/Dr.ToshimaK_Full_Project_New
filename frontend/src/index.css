@@ -253,6 +253,35 @@ img { max-width: 100%; height: auto; display: block; }
 .top-bar-socials { display: flex; align-items: center; gap: 8px; }
 .top-bar-socials a { width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; background: #fff; border-radius: 50%; color: #fff; font-size: 0.72rem; transition: transform 0.2s ease, filter 0.2s ease; }
 .top-bar-socials a:hover { transform: translateY(-2px) scale(1.12); filter: brightness(1.18); }
+.social-icon-circle { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; box-shadow: 0 2px 7px rgba(0,0,0,0.18); }
+.top-bar-socials .social-icon-circle { width: 28px; height: 28px; font-size: 0.82rem; }
+
+/* Clear labels distinguish the two Facebook accounts without adding visual clutter. */
+.social-tooltip { position: relative; }
+.social-tooltip::after {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 50%;
+  z-index: 1300;
+  width: max-content;
+  max-width: min(250px, 80vw);
+  padding: 6px 9px;
+  border-radius: 6px;
+  background: #111827;
+  color: #fff;
+  content: attr(data-tooltip);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.25;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  white-space: nowrap;
+}
+.social-tooltip:hover::after,
+.social-tooltip:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+.top-bar-socials .social-tooltip::after { top: calc(100% + 9px); bottom: auto; }
 
 .main-header {
   position: sticky !important;

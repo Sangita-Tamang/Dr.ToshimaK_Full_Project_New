@@ -76,12 +76,11 @@ export default function Navbar() {
             </span>
           </div>
           <div className="top-bar-socials">
-            <a className="social-facebook" href={SOCIAL_LINKS.facebookPersonal} target="_blank" rel="noreferrer" aria-label="Facebook Personal" title="Facebook Personal"><i className="fa-brands fa-facebook-f"></i></a>
-            <a className="social-facebook" href={SOCIAL_LINKS.facebookSecretariat} target="_blank" rel="noreferrer" aria-label="Facebook Secretariat" title="Facebook Secretariat"><i className="fa-brands fa-facebook-f"></i></a>
-            <a className="social-linkedin" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
-            <a className="social-youtube" href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube"><i className="fa-brands fa-youtube"></i></a>
-            <a className="social-x" href={SOCIAL_LINKS.twitter} target="_blank" rel="noreferrer" aria-label="X (Twitter)" title="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932Zm-1.29 19.493h2.04L6.486 3.24H4.298L17.61 20.646Z" /></svg></a>
-            <a className="social-tiktok" href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok"><i className="fa-brands fa-tiktok"></i></a>
+            <a className="social-facebook social-tooltip social-icon-circle" href={SOCIAL_LINKS.facebookSecretariat} target="_blank" rel="noreferrer" aria-label="Dr. Toshima Karki Secretariat FB" title="Dr. Toshima Karki Secretariat FB" data-tooltip="Dr. Toshima Karki Secretariat FB"><i className="fa-brands fa-facebook-f"></i></a>
+            <a className="social-facebook social-tooltip social-icon-circle" href={SOCIAL_LINKS.facebookPersonal} target="_blank" rel="noreferrer" aria-label="Personal Facebook" title="Personal Facebook" data-tooltip="Personal Facebook"><i className="fa-brands fa-facebook-f"></i></a>
+            <a className="social-linkedin social-tooltip social-icon-circle" href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" title="LinkedIn" data-tooltip="LinkedIn"><i className="fa-brands fa-linkedin-in"></i></a>
+            <a className="social-youtube social-tooltip social-icon-circle" href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube" data-tooltip="YouTube"><i className="fa-brands fa-youtube"></i></a>
+            <a className="social-x social-tooltip social-icon-circle" href={SOCIAL_LINKS.twitter} target="_blank" rel="noreferrer" aria-label="Twitter" title="Twitter" data-tooltip="Twitter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.83L0 1.154h7.594l5.243 6.932 6.064-6.932Zm-1.29 19.493h2.04L6.486 3.24H4.298L17.61 20.646Z" /></svg></a>
           </div>
         </div>
       </div>

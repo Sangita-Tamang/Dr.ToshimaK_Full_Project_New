@@ -27,11 +27,11 @@ const BlogSchema = new mongoose.Schema({
   },
   authorImage: {
     type: String,
-    default: '/image/image4.png'
+    default: 'dr-tk/image4'
   },
   image: {
     type: String,
-    default: '/image/image1.png'
+    default: 'dr-tk/image1'
   },
   category: {
     type: String,

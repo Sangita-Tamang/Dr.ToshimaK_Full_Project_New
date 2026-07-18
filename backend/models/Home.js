@@ -28,7 +28,7 @@ const HomeSchema = new mongoose.Schema({
     },
     image: {
       type: String,
-      default: '/image/image10.png'
+      default: 'dr-tk/home.hero'
     },
     ctaTextEn: {
       type: String,

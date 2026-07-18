@@ -1,4 +1,13 @@
 const Settings = require('../models/Settings');
+const { normalizeImageUrl } = require('../services/cloudinary.service');
+
+const withImageUrls = (settings) => {
+  const data = settings.toObject();
+  data.logo = normalizeImageUrl(data.logo, { width: 300, crop: 'fit' });
+  data.seo.ogImage = normalizeImageUrl(data.seo.ogImage, { width: 1200, crop: 'fill', gravity: 'auto' });
+  data.seo.twitterCardImage = normalizeImageUrl(data.seo.twitterCardImage, { width: 1200, crop: 'fill', gravity: 'auto' });
+  return data;
+};
 
 // @desc    Get site settings
 // @route   GET /api/settings
@@ -9,7 +18,7 @@ exports.getSettings = async (req, res, next) => {
     if (!settings) {
       settings = await Settings.create({});
     }
-    res.status(200).json({ success: true, data: settings });
+    res.status(200).json({ success: true, data: withImageUrls(settings) });
   } catch (err) {
     next(err);
   }
@@ -29,7 +38,7 @@ exports.updateSettings = async (req, res, next) => {
         runValidators: true
       });
     }
-    res.status(200).json({ success: true, data: settings });
+    res.status(200).json({ success: true, data: withImageUrls(settings) });
   } catch (err) {
     next(err);
   }

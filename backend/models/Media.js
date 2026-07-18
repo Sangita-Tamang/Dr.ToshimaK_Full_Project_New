@@ -26,7 +26,7 @@ const MediaSchema = new mongoose.Schema({
   },
   thumbnail: {
     type: String,
-    default: '/image/image12.png'
+    default: 'dr-tk/image12'
   },
   duration: {
     type: String, // e.g. "12:34" or "1:02:45"

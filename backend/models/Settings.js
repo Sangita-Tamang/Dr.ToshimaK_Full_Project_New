@@ -31,7 +31,7 @@ const SettingsSchema = new mongoose.Schema({
   },
   logo: {
     type: String,
-    default: '/image/logo.png'
+    default: 'dr-tk/logo'
   },
   favicon: {
     type: String,
@@ -63,8 +63,8 @@ const SettingsSchema = new mongoose.Schema({
     metaDescriptionEn: { type: String, default: 'Official website of Dr. Toshima Karki - Member of Parliament, Medical Professional, and Social Activist.' },
     metaDescriptionNp: { type: String, default: 'डा. तोषिमा कार्कीको आधिकारिक वेबसाइट - संसद सदस्य, चिकित्सा पेशेवर र सामाजिक कार्यकर्ता।' },
     keywords: { type: String, default: 'Dr. Toshima Karki, Toshima Karki, Member of Parliament Nepal, RSP, Health Reform' },
-    ogImage: { type: String, default: '/image/image10.png' },
-    twitterCardImage: { type: String, default: '/image/image10.png' }
+    ogImage: { type: String, default: 'dr-tk/image10' },
+    twitterCardImage: { type: String, default: 'dr-tk/image10' }
   },
   homepageCounts: {
     featuredNews: { type: Number, default: 3 },

@@ -1,5 +1,5 @@
 const Parliament = require('../models/Parliament');
-const { getHeroUrl, IMAGE_PUBLIC_IDS } = require('../services/cloudinary.service');
+const { getHeroUrl, normalizeImageUrl, IMAGE_PUBLIC_IDS } = require('../services/cloudinary.service');
 
 // @desc    Get Parliament settings
 // @route   GET /api/parliament
@@ -17,7 +17,10 @@ exports.getParliamentSettings = async (req, res, next) => {
       heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.parliamentHero),
     };
 
-    res.status(200).json({ success: true, data: parliament, cloudinaryImages });
+    const data = parliament.toObject();
+    data.hero.image = normalizeImageUrl(data.hero.image, { width: 1920, crop: 'fill', gravity: 'auto' });
+    data.speeches = data.speeches.map((speech) => ({ ...speech, imageUrl: normalizeImageUrl(speech.imageUrl, { width: 800, height: 500, crop: 'fill', gravity: 'auto' }) }));
+    res.status(200).json({ success: true, data, cloudinaryImages });
   } catch (err) {
     next(err);
   }
@@ -37,7 +40,9 @@ exports.updateParliamentSettings = async (req, res, next) => {
         runValidators: true
       });
     }
-    res.status(200).json({ success: true, data: parliament });
+    const data = parliament.toObject();
+    data.hero.image = normalizeImageUrl(data.hero.image, { width: 1920, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

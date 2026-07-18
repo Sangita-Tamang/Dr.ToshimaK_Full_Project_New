@@ -2,6 +2,7 @@ const Ministry = require('../models/Ministry');
 const {
   getHeroUrl,
   getContributionImageUrl,
+  normalizeImageUrl,
   IMAGE_PUBLIC_IDS,
 } = require('../services/cloudinary.service');
 
@@ -25,7 +26,13 @@ exports.getMinistrySettings = async (req, res, next) => {
       ),
     };
 
-    res.status(200).json({ success: true, data: ministry, cloudinaryImages });
+    const data = ministry.toObject();
+    data.hero.image = normalizeImageUrl(data.hero.image, { width: 1920, crop: 'fill', gravity: 'auto' });
+    data.contributions = data.contributions.map((item) => ({
+      ...item,
+      image: normalizeImageUrl(item.image, { width: 720, height: 480, crop: 'fill', gravity: 'auto' }),
+    }));
+    res.status(200).json({ success: true, data, cloudinaryImages });
   } catch (err) {
     next(err);
   }
@@ -45,7 +52,9 @@ exports.updateMinistrySettings = async (req, res, next) => {
         runValidators: true
       });
     }
-    res.status(200).json({ success: true, data: ministry });
+    const data = ministry.toObject();
+    data.hero.image = normalizeImageUrl(data.hero.image, { width: 1920, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

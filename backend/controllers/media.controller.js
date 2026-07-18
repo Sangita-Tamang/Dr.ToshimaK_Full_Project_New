@@ -3,6 +3,7 @@ const {
   getGalleryImageUrl,
   IMAGE_PUBLIC_IDS,
   getHeroUrl,
+  normalizeImageUrl,
 } = require('../services/cloudinary.service');
 
 // @desc    Get all media items
@@ -53,7 +54,11 @@ exports.getMediaList = async (req, res, next) => {
       count: media.length,
       total,
       cloudinaryImages,
-      data: media
+      data: media.map((item) => {
+        const data = item.toObject();
+        data.thumbnail = normalizeImageUrl(data.thumbnail, { width: 800, height: 450, crop: 'fill', gravity: 'auto' });
+        return data;
+      })
     });
 
   } catch (err) {
@@ -70,7 +75,9 @@ exports.getMedia = async (req, res, next) => {
     if (!media) {
       return res.status(404).json({ success: false, error: 'Media item not found' });
     }
-    res.status(200).json({ success: true, data: media });
+    const data = media.toObject();
+    data.thumbnail = normalizeImageUrl(data.thumbnail, { width: 1200, height: 675, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -82,7 +89,9 @@ exports.getMedia = async (req, res, next) => {
 exports.createMedia = async (req, res, next) => {
   try {
     const media = await Media.create(req.body);
-    res.status(201).json({ success: true, data: media });
+    const data = media.toObject();
+    data.thumbnail = normalizeImageUrl(data.thumbnail, { width: 800, height: 450, crop: 'fill', gravity: 'auto' });
+    res.status(201).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -100,7 +109,9 @@ exports.updateMedia = async (req, res, next) => {
     if (!media) {
       return res.status(404).json({ success: false, error: 'Media item not found' });
     }
-    res.status(200).json({ success: true, data: media });
+    const data = media.toObject();
+    data.thumbnail = normalizeImageUrl(data.thumbnail, { width: 800, height: 450, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

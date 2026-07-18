@@ -24,6 +24,25 @@ const CLOUD_FOLDER = 'dr-tk';
  * @returns {string} Fully qualified Cloudinary URL
  */
 export const getCloudinaryUrl = (publicId, options = {}) => {
+  if (!publicId || typeof publicId !== 'string') return '';
+
+  // API responses may already be Cloudinary delivery URLs. Never append them
+  // to another Cloudinary URL; only add automatic delivery transforms if they
+  // are missing.
+  if (/^https:\/\/res\.cloudinary\.com\//i.test(publicId)) {
+    if (publicId.includes('f_auto') && publicId.includes('q_auto')) return publicId;
+    return publicId.replace('/upload/', '/upload/f_auto,q_auto/');
+  }
+
+  // Keep non-Cloudinary remote URLs intact (for example, an external video
+  // thumbnail) and translate legacy local image references during migration.
+  if (/^https?:\/\//i.test(publicId) || publicId.startsWith('data:') || publicId.startsWith('blob:')) return publicId;
+  if (!publicId.startsWith('dr-tk/')) {
+    const fileName = publicId.split('?')[0].split('#')[0].split('/').pop().replace(/\.[^.]+$/, '');
+    const aliases = { 'parliament.hero': 'parliment.hero', 'parliment.hero': 'parliment.hero' };
+    publicId = `${CLOUD_FOLDER}/${aliases[fileName] || fileName}`;
+  }
+
   if (!CLOUD_NAME) {
     console.warn('[cloudinaryService] VITE_CLOUDINARY_CLOUD_NAME is not set.');
     return '';

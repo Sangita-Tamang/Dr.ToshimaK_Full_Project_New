@@ -15,7 +15,7 @@ const MinistrySchema = new mongoose.Schema({
     titleNp: { type: String, default: 'सहानुभूति सहितको नेतृत्व। उद्देश्यपूर्ण सुधार।' },
     descriptionEn: { type: String, default: 'Dedicated to building an equitable, accessible, and people-centered healthcare system through policy reform, innovation, and compassionate governance.' },
     descriptionNp: { type: String, default: 'नीतिगत सुधार, नवप्रवर्तन र सहानुभूतिपूर्ण सुशासन मार्फत समतामूलक, पहुँचयोग्य र जनमुखी स्वास्थ्य सेवा प्रणाली निर्माणमा समर्पित।' },
-    image: { type: String, default: '/image/image2.png' }
+    image: { type: String, default: 'dr-tk/ministry.hero' }
   },
   stats: {
     livesImpacted: { type: String, default: '1M+' },

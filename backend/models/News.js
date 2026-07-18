@@ -29,7 +29,7 @@ const NewsSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: '/image/image13.png'
+    default: 'dr-tk/image13'
   },
   link: {
     type: String

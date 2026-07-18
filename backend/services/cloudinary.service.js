@@ -63,6 +63,7 @@ const IMAGE_PUBLIC_IDS = {
  * @returns {string} Fully qualified Cloudinary URL
  */
 const getImageUrl = (publicId, options = {}) => {
+  if (!publicId) return '';
   const transformation = {
     fetch_format: 'auto',
     quality: 'auto',
@@ -73,6 +74,48 @@ const getImageUrl = (publicId, options = {}) => {
     transformation: [transformation],
     secure: true,
   });
+};
+
+/**
+ * Convert legacy local paths, Cloudinary public IDs, and existing Cloudinary
+ * URLs into a delivery URL.  Database records may contain any of these values
+ * while the application is being migrated, but public API responses must
+ * always be usable image URLs.
+ */
+const getPublicIdFromLegacyPath = (value) => {
+  const path = value.split('?')[0].split('#')[0];
+  const fileName = path.split('/').pop().replace(/\.[^.]+$/, '');
+  const aliases = {
+    'parliament.hero': 'parliment.hero',
+    'parliment.hero': 'parliment.hero',
+  };
+  return `${CLOUD_FOLDER}/${aliases[fileName] || fileName}`;
+};
+
+const isCloudinaryUrl = (value) => /^https:\/\/res\.cloudinary\.com\//i.test(value);
+
+const getPublicIdFromCloudinaryUrl = (value) => {
+  const segments = new URL(value).pathname.split('/').filter(Boolean);
+  const uploadIndex = segments.indexOf('upload');
+  if (uploadIndex === -1) return null;
+
+  const assetSegments = segments.slice(uploadIndex + 1)
+    .filter((segment) => !/^v\d+$/.test(segment))
+    .filter((segment, index) => index > 0 || !/^(?:[a-z]{1,3}_[^/]+|c_[^/]+|g_[^/]+)(?:,|$)/.test(segment));
+
+  if (!assetSegments.length) return null;
+  assetSegments[assetSegments.length - 1] = assetSegments[assetSegments.length - 1].replace(/\.[^.]+$/, '');
+  return assetSegments.join('/');
+};
+
+const normalizeImageUrl = (value, options = {}) => {
+  if (!value || typeof value !== 'string') return value || '';
+  if (isCloudinaryUrl(value)) {
+    const publicId = getPublicIdFromCloudinaryUrl(value);
+    return publicId ? getImageUrl(publicId, options) : value;
+  }
+  if (/^https?:\/\//i.test(value) || value.startsWith('data:') || value.startsWith('blob:')) return value;
+  return getImageUrl(value.startsWith('dr-tk/') ? value : getPublicIdFromLegacyPath(value), options);
 };
 
 // ─── Preset helpers ───────────────────────────────────────────────────────────
@@ -150,6 +193,7 @@ const getContributionImageUrl = (index) => {
 module.exports = {
   IMAGE_PUBLIC_IDS,
   getImageUrl,
+  normalizeImageUrl,
   getHeroUrl,
   getGalleryUrl,
   getContributionUrl,

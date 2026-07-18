@@ -1,4 +1,5 @@
 const Blog = require('../models/Blog');
+const { normalizeImageUrl } = require('../services/cloudinary.service');
 
 // @desc    Get all blog posts
 // @route   GET /api/blogs
@@ -49,7 +50,12 @@ exports.getBlogs = async (req, res, next) => {
       count: blogs.length,
       total,
       pagination,
-      data: blogs
+      data: blogs.map((item) => {
+        const data = item.toObject();
+        data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+        data.authorImage = normalizeImageUrl(data.authorImage, { width: 160, height: 160, crop: 'fill', gravity: 'face' });
+        return data;
+      })
     });
   } catch (err) {
     next(err);
@@ -69,7 +75,10 @@ exports.getBlog = async (req, res, next) => {
     blog.views += 1;
     await blog.save();
     
-    res.status(200).json({ success: true, data: blog });
+    const data = blog.toObject();
+    data.image = normalizeImageUrl(data.image, { width: 1200, height: 675, crop: 'fill', gravity: 'auto' });
+    data.authorImage = normalizeImageUrl(data.authorImage, { width: 160, height: 160, crop: 'fill', gravity: 'face' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -81,7 +90,9 @@ exports.getBlog = async (req, res, next) => {
 exports.createBlog = async (req, res, next) => {
   try {
     const blog = await Blog.create(req.body);
-    res.status(201).json({ success: true, data: blog });
+    const data = blog.toObject();
+    data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+    res.status(201).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -99,7 +110,9 @@ exports.updateBlog = async (req, res, next) => {
     if (!blog) {
       return res.status(404).json({ success: false, error: 'Blog post not found' });
     }
-    res.status(200).json({ success: true, data: blog });
+    const data = blog.toObject();
+    data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

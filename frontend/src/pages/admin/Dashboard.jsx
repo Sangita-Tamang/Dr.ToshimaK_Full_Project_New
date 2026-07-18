@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../services/api';
 import defaultLogo from '../../assets/images/logo.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
 
 // Import CSS
 import './Dashboard.css';
@@ -826,7 +827,7 @@ export default function Dashboard() {
                           {blogs.slice(0, 3).map(post => (
                             <div key={post._id} className="published-item">
                               <div className="published-item-left">
-                                <img src={post.image || '/image/image1.png'} className="published-item-thumb" alt="" />
+                                <img src={getCloudinaryUrl(post.image || 'dr-tk/image1')} className="published-item-thumb" alt="" />
                                 <div className="published-item-info">
                                   <div className="published-item-title">{post.titleEn}</div>
                                   <div className="published-item-meta">
@@ -840,7 +841,7 @@ export default function Dashboard() {
                           {news.slice(0, 2).map(n => (
                             <div key={n._id} className="published-item">
                               <div className="published-item-left">
-                                <img src={n.image || '/image/image13.png'} className="published-item-thumb" alt="" />
+                                <img src={getCloudinaryUrl(n.image || 'dr-tk/image13')} className="published-item-thumb" alt="" />
                                 <div className="published-item-info">
                                   <div className="published-item-title">{n.titleEn}</div>
                                   <div className="published-item-meta">
@@ -1747,7 +1748,7 @@ export default function Dashboard() {
                           .map(item => (
                             <tr key={item._id}>
                               <td>
-                                <img src={item.image || '/image/image13.png'} alt="" style={{ width: 44, height: 32, borderRadius: 2, objectFit: 'cover' }} />
+                                <img src={getCloudinaryUrl(item.image || 'dr-tk/image13')} alt="" style={{ width: 44, height: 32, borderRadius: 2, objectFit: 'cover' }} />
                               </td>
                               <td style={{ fontWeight: 600, color: 'var(--secondary)' }}>{item.titleEn}</td>
                               <td><span className="badge-tag news">{item.category || 'General'}</span></td>
@@ -1821,7 +1822,7 @@ export default function Dashboard() {
                           .map(item => (
                             <tr key={item._id}>
                               <td>
-                                <img src={item.image || '/image/image1.png'} alt="" style={{ width: 44, height: 32, borderRadius: 2, objectFit: 'cover' }} />
+                                <img src={getCloudinaryUrl(item.image || 'dr-tk/image1')} alt="" style={{ width: 44, height: 32, borderRadius: 2, objectFit: 'cover' }} />
                               </td>
                               <td style={{ fontWeight: 600, color: 'var(--secondary)' }}>{item.titleEn}</td>
                               <td><span className="badge-tag blog">{item.category || 'Healthcare'}</span></td>
@@ -1892,7 +1893,7 @@ export default function Dashboard() {
                           .map(item => (
                             <tr key={item._id}>
                               <td>
-                                <img src={item.thumbnail || '/image/image12.png'} alt="" style={{ width: 44, height: 32, borderRadius: 2, objectFit: 'cover' }} />
+                                <img src={getCloudinaryUrl(item.thumbnail || 'dr-tk/image12')} alt="" style={{ width: 44, height: 32, borderRadius: 2, objectFit: 'cover' }} />
                               </td>
                               <td style={{ fontWeight: 600, color: 'var(--secondary)' }}>{item.titleEn}</td>
                               <td><span className="badge-tag media">{item.type}</span></td>

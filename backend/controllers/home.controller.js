@@ -1,5 +1,5 @@
 const Home = require('../models/Home');
-const { getHeroUrl, IMAGE_PUBLIC_IDS } = require('../services/cloudinary.service');
+const { getHeroUrl, normalizeImageUrl, IMAGE_PUBLIC_IDS } = require('../services/cloudinary.service');
 
 // @desc    Get Home settings
 // @route   GET /api/home
@@ -17,7 +17,9 @@ exports.getHomeSettings = async (req, res, next) => {
       heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.homeHero),
     };
 
-    res.status(200).json({ success: true, data: home, cloudinaryImages });
+    const data = home.toObject();
+    data.hero.image = normalizeImageUrl(data.hero.image, { width: 1920, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data, cloudinaryImages });
   } catch (err) {
     next(err);
   }
@@ -37,7 +39,9 @@ exports.updateHomeSettings = async (req, res, next) => {
         runValidators: true
       });
     }
-    res.status(200).json({ success: true, data: home });
+    const data = home.toObject();
+    data.hero.image = normalizeImageUrl(data.hero.image, { width: 1920, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

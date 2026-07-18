@@ -27,11 +27,11 @@ const AboutSchema = new mongoose.Schema({
   },
   signatureImage: {
     type: String,
-    default: '/image/signature.png'
+      default: 'dr-tk/signature'
   },
   profileImage: {
     type: String,
-    default: '/image/image5.png' // Matches desktop photo sitting at desk
+      default: 'dr-tk/image5'
   },
   atAGlance: [
     {

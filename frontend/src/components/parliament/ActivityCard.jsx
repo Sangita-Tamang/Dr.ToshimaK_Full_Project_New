@@ -21,13 +21,17 @@ export default function ActivityCard({ activity, imageIndex = 0 }) {
   const title = activity.title[contentLanguage] || activity.title.en;
   const description = activity.description[contentLanguage] || activity.description.en;
   const category = activity.category[contentLanguage] || activity.category.en;
+  const image = getCloudinaryUrl(
+    activity.image || `dr-tk/image${(imageIndex % CARD_IMAGES.length) + 1}`,
+    { width: 600, height: 400 }
+  );
   
   return (
     <article className="parliament-activity-card">
       {/* Image */}
       <div className="parliament-card-image-wrapper">
         <OptimizedImage
-          src={CARD_IMAGES[imageIndex % CARD_IMAGES.length]}
+          src={image}
           alt={title}
           className={`parliament-card-image ${activity.category.en === 'Health Governance' ? 'parliament-card-image--health-governance' : ''}`}
           lazy={true}

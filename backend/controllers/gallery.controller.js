@@ -1,5 +1,5 @@
 const Gallery = require('../models/Gallery');
-const { getGalleryUrl } = require('../services/cloudinary.service');
+const { getGalleryUrl, normalizeImageUrl } = require('../services/cloudinary.service');
 
 /**
  * Transforms a Cloudinary URL or public ID into an optimized gallery URL.
@@ -9,9 +9,7 @@ const { getGalleryUrl } = require('../services/cloudinary.service');
 const normalizeGalleryUrl = (mediaUrl) => {
   if (!mediaUrl) return mediaUrl;
   // Already a full Cloudinary URL — return unchanged
-  if (mediaUrl.startsWith('https://res.cloudinary.com')) return mediaUrl;
-  // Treat as public ID and generate optimized URL
-  return getGalleryUrl(mediaUrl);
+  return normalizeImageUrl(mediaUrl, { width: 800, crop: 'fill', gravity: 'auto' });
 };
 
 
@@ -70,7 +68,9 @@ exports.getGalleryItem = async (req, res, next) => {
     if (!item) {
       return res.status(404).json({ success: false, error: 'Gallery item not found' });
     }
-    res.status(200).json({ success: true, data: item });
+    const data = item.toObject();
+    data.mediaUrl = normalizeGalleryUrl(data.mediaUrl);
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -82,7 +82,9 @@ exports.getGalleryItem = async (req, res, next) => {
 exports.createGalleryItem = async (req, res, next) => {
   try {
     const item = await Gallery.create(req.body);
-    res.status(201).json({ success: true, data: item });
+    const data = item.toObject();
+    data.mediaUrl = normalizeGalleryUrl(data.mediaUrl);
+    res.status(201).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -100,7 +102,9 @@ exports.updateGalleryItem = async (req, res, next) => {
     if (!item) {
       return res.status(404).json({ success: false, error: 'Gallery item not found' });
     }
-    res.status(200).json({ success: true, data: item });
+    const data = item.toObject();
+    data.mediaUrl = normalizeGalleryUrl(data.mediaUrl);
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

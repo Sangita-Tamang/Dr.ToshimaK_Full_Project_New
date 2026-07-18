@@ -1,4 +1,11 @@
 const ParliamentActivity = require('../models/ParliamentActivity');
+const { normalizeImageUrl } = require('../services/cloudinary.service');
+
+const withImageUrl = (activity, options = { width: 800, height: 500, crop: 'fill', gravity: 'auto' }) => {
+  const data = activity.toObject ? activity.toObject() : activity;
+  data.image = normalizeImageUrl(data.image, options);
+  return data;
+};
 
 // @desc    Get all parliament activities with filtering
 // @route   GET /api/parliament/activities
@@ -63,7 +70,7 @@ exports.getActivities = async (req, res, next) => {
       total,
       page: parseInt(page),
       pages: Math.ceil(total / parseInt(limit)),
-      data: activities
+      data: activities.map(withImageUrl)
     });
   } catch (err) {
     next(err);
@@ -89,7 +96,7 @@ exports.getActivity = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: activity
+      data: withImageUrl(activity, { width: 1200, height: 675, crop: 'fill', gravity: 'auto' })
     });
   } catch (err) {
     next(err);
@@ -110,7 +117,7 @@ exports.createActivity = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: activity
+      data: withImageUrl(activity)
     });
   } catch (err) {
     next(err);
@@ -147,7 +154,7 @@ exports.updateActivity = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: activity
+      data: withImageUrl(activity)
     });
   } catch (err) {
     next(err);
@@ -250,7 +257,7 @@ exports.getFeaturedActivities = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: activities.length,
-      data: activities
+      data: activities.map(withImageUrl)
     });
   } catch (err) {
     next(err);

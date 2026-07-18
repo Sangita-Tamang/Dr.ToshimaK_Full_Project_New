@@ -4,6 +4,7 @@ const {
   getPortraitUrl,
   getBannerUrl,
   getGalleryUrl,
+  normalizeImageUrl,
   IMAGE_PUBLIC_IDS,
 } = require('../services/cloudinary.service');
 
@@ -27,7 +28,10 @@ exports.getAboutSettings = async (req, res, next) => {
       storyImage:      getPortraitUrl(IMAGE_PUBLIC_IDS.image4),
     };
 
-    res.status(200).json({ success: true, data: about, cloudinaryImages });
+    const data = about.toObject();
+    data.profileImage = normalizeImageUrl(data.profileImage, { width: 600, height: 600, crop: 'fill', gravity: 'face' });
+    data.signatureImage = normalizeImageUrl(data.signatureImage, { width: 500, crop: 'fit' });
+    res.status(200).json({ success: true, data, cloudinaryImages });
   } catch (err) {
     next(err);
   }
@@ -47,7 +51,9 @@ exports.updateAboutSettings = async (req, res, next) => {
         runValidators: true
       });
     }
-    res.status(200).json({ success: true, data: about });
+    const data = about.toObject();
+    data.profileImage = normalizeImageUrl(data.profileImage, { width: 600, height: 600, crop: 'fill', gravity: 'face' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

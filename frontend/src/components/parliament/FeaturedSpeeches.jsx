@@ -79,7 +79,7 @@ export default function FeaturedSpeeches({ tenure }) {
             >
               <div className="parliament-featured-thumbnail">
                 <img
-                  src={speech.image || getCloudinaryUrl('dr-tk/image2', { width: 400 })}
+                  src={getCloudinaryUrl(speech.image || 'dr-tk/image2', { width: 400, height: 240 })}
                   alt=""
                   loading="lazy"
                 />

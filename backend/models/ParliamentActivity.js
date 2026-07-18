@@ -53,7 +53,7 @@ const ParliamentActivitySchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    default: '/assets/images/parliament-activity-default.jpg'
+    default: 'dr-tk/image11'
   },
   sourceUrl: {
     type: String,

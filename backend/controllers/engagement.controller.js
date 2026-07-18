@@ -1,4 +1,12 @@
 const Engagement = require('../models/Engagement');
+const { normalizeImageUrl } = require('../services/cloudinary.service');
+
+const withImageUrl = (engagement) => {
+  if (!engagement) return engagement;
+  const data = engagement.toObject ? engagement.toObject() : engagement;
+  data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+  return data;
+};
 
 const EDITABLE_FIELDS = [
   'title',
@@ -33,7 +41,7 @@ exports.getUpcomingEngagement = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: engagement || null
+      data: withImageUrl(engagement)
     });
   } catch (err) {
     next(err);
@@ -49,7 +57,7 @@ exports.getAllEngagements = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: engagements.length,
-      data: engagements
+      data: engagements.map(withImageUrl)
     });
   } catch (err) {
     next(err);
@@ -62,7 +70,7 @@ exports.getAllEngagements = async (req, res, next) => {
 exports.createEngagement = async (req, res, next) => {
   try {
     const engagement = await Engagement.create(engagementPayload(req.body));
-    res.status(201).json({ success: true, data: engagement });
+    res.status(201).json({ success: true, data: withImageUrl(engagement) });
   } catch (err) {
     next(err);
   }
@@ -80,7 +88,7 @@ exports.updateEngagement = async (req, res, next) => {
     if (!engagement) {
       return res.status(404).json({ success: false, error: 'Engagement not found' });
     }
-    res.status(200).json({ success: true, data: engagement });
+    res.status(200).json({ success: true, data: withImageUrl(engagement) });
   } catch (err) {
     next(err);
   }

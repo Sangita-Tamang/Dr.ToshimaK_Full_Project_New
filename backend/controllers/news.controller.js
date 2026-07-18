@@ -2,6 +2,7 @@ const News = require('../models/News');
 const {
   getHeroUrl,
   getGalleryImageUrl,
+  normalizeImageUrl,
   IMAGE_PUBLIC_IDS,
 } = require('../services/cloudinary.service');
 
@@ -61,7 +62,11 @@ exports.getNews = async (req, res, next) => {
       total,
       pagination,
       cloudinaryImages,
-      data: news
+      data: news.map((item) => {
+        const data = item.toObject();
+        data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+        return data;
+      })
     });
   } catch (err) {
     next(err);
@@ -77,7 +82,9 @@ exports.getSingleNews = async (req, res, next) => {
     if (!news) {
       return res.status(404).json({ success: false, error: 'News article not found' });
     }
-    res.status(200).json({ success: true, data: news });
+    const data = news.toObject();
+    data.image = normalizeImageUrl(data.image, { width: 1200, height: 675, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -89,7 +96,9 @@ exports.getSingleNews = async (req, res, next) => {
 exports.createNews = async (req, res, next) => {
   try {
     const news = await News.create(req.body);
-    res.status(201).json({ success: true, data: news });
+    const data = news.toObject();
+    data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+    res.status(201).json({ success: true, data });
   } catch (err) {
     next(err);
   }
@@ -107,7 +116,9 @@ exports.updateNews = async (req, res, next) => {
     if (!news) {
       return res.status(404).json({ success: false, error: 'News article not found' });
     }
-    res.status(200).json({ success: true, data: news });
+    const data = news.toObject();
+    data.image = normalizeImageUrl(data.image, { width: 800, height: 500, crop: 'fill', gravity: 'auto' });
+    res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
   }

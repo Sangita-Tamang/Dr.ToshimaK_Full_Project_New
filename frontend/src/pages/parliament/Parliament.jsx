@@ -8,9 +8,11 @@ import ParliamentJourney from '../../components/parliament/ParliamentJourney';
 import ParliamentFilters from '../../components/parliament/ParliamentFilters';
 import ParliamentActivities from '../../components/parliament/ParliamentActivities';
 import axios from 'axios';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
 import './Parliament.css';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5050/api';
+const PARLIAMENT_OG_IMAGE = getCloudinaryUrl('dr-tk/parliment.hero', { width: 1200, height: 630 });
 
 const FALLBACK_ACTIVITIES = [
   ['Parliamentary Discussion on Healthcare Issues', 'स्वास्थ्य मुद्दाहरूमा संसदीय छलफल', 'Raised important healthcare concerns in Parliament, focusing on improving healthcare accessibility, strengthening public health services, and supporting evidence-based healthcare policy development in Nepal.', 'स्वास्थ्य सेवामा पहुँच सुधार, सार्वजनिक स्वास्थ्य सेवा सुदृढीकरण र प्रमाणमा आधारित स्वास्थ्य नीति विकासमा केन्द्रित हुँदै संसदमा महत्वपूर्ण स्वास्थ्य सरोकारहरू उठाइयो।', 'Health Policy', 'स्वास्थ्य नीति', 2024, 'https://hr.parliament.gov.np/en/video/18557'],
@@ -186,7 +188,7 @@ export default function Parliament() {
             : 'ललितपुर निर्वाचन क्षेत्र नं. ३ को प्रतिनिधित्व गर्ने सांसद डा. तोशिमा कार्कीको संसदीय कार्य, भाषण र नीति पहलहरू।'
           }
         />
-        <meta property="og:image" content="/assets/images/parliment.hero.png" />
+        <meta property="og:image" content={PARLIAMENT_OG_IMAGE} />
         <meta property="og:url" content={`https://toshimakarki.gov.np${isNepali ? '/ne' : ''}/parliament`} />
         
         {/* Twitter Card */}
@@ -205,7 +207,7 @@ export default function Parliament() {
             : 'संसदीय कार्य र विधायी पहलहरू अन्वेषण गर्नुहोस्।'
           }
         />
-        <meta name="twitter:image" content="/assets/images/parliment.hero.png" />
+        <meta name="twitter:image" content={PARLIAMENT_OG_IMAGE} />
         
         {/* Canonical & Alternate */}
         <link rel="canonical" href={`https://toshimakarki.gov.np${isNepali ? '/ne' : ''}/parliament`} />

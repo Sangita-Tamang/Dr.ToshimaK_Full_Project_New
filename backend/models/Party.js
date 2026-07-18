@@ -52,7 +52,7 @@ const PartySchema = new mongoose.Schema({
     ctaTextNp: { type: String, default: 'थप जानकारी' },
     ctaLink: { type: String, default: '/party#about' },
     logoImage: { type: String, default: '' },
-    backgroundImage: { type: String, default: '/image/image17.png' }
+    backgroundImage: { type: String, default: 'dr-tk/party.hero' }
   },
   about: {
     historyEn: { type: String, default: 'Rastriya Swatantra Party (RSP) is a national political party in Nepal that advocates for good governance, transparency, accountability, and citizen-centered leadership.' },
@@ -143,8 +143,8 @@ const PartySchema = new mongoose.Schema({
     metaDescriptionEn: { type: String, default: 'Official page for the Rastriya Swatantra Party and Dr. Toshima Karki’s leadership in transparent and accountable governance.' },
     metaDescriptionNp: { type: String, default: 'राष्ट्रिय स्वतन्त्र पार्टी र डा. तोषिमा कार्कीको पारदर्शी र जवाफदेही नेतृत्वको आधिकारिक पृष्ठ।' },
     keywords: { type: String, default: 'Rastriya Swatantra Party, RSP, Dr. Toshima Karki, Nepal politics, public leadership' },
-    ogImage: { type: String, default: '/image/image10.png' },
-    twitterImage: { type: String, default: '/image/image10.png' },
+    ogImage: { type: String, default: 'dr-tk/image10' },
+    twitterImage: { type: String, default: 'dr-tk/image10' },
     canonicalUrl: { type: String, default: '/party' },
     slug: { type: String, default: 'party' }
   },

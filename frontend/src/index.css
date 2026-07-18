@@ -34,7 +34,7 @@ img { max-width: 100%; height: auto; display: block; }
 .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .section-padding { padding: 80px 0; }
 /* Reduce top padding on pages that go straight to content (no hero section) */
-.page-fade-in > main > .section-padding:first-child {
+main.page-fade-in > .section-padding:first-child {
   padding-top: 40px;
 }
 .bg-light { background-color: var(--light-gray); }
@@ -1579,17 +1579,24 @@ img {
 
 /* Page Transitions */
 .page-fade-in {
-  animation: pageFadeIn 0.4s ease-out forwards;
+  /* Keep content painted while route chunks load: animating from opacity 0
+     made each navigation briefly look like a flash of blank white. */
+  animation: pageFadeIn 180ms ease-out both;
+  will-change: opacity;
 }
 
 @keyframes pageFadeIn {
   0% {
-    opacity: 0;
-    transform: translateY(10px);
+    opacity: 0.94;
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade-in {
+    animation: none;
   }
 }
 

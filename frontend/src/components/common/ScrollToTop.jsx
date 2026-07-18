@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 /**
@@ -8,7 +8,9 @@ import { useLocation } from 'react-router-dom';
 export default function ScrollToTop() {
   const { pathname } = useLocation();
 
-  useEffect(() => {
+  // Reset before the browser paints the new route so the previous page's
+  // scroll position never flashes during navigation.
+  useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 

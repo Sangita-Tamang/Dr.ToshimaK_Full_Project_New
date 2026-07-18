@@ -130,7 +130,6 @@ export default function Gallery() {
                           <div style={{ padding: '14px 18px' }}>
                             <h4 style={{ fontSize: '0.95rem', marginBottom: 4, color: '#101828' }}>{title}</h4>
                             <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-                              <span className="card-badge" style={{ background: 'var(--primary)', fontSize: '0.7rem', padding: '2px 8px', borderRadius: 100, color: '#fff', marginRight: 8 }}>{item.category}</span>
                               {formatDate(item.date, { year: 'numeric', month: 'short', day: 'numeric' })}
                             </p>
                           </div>

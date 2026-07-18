@@ -1,4 +1,9 @@
 const Ministry = require('../models/Ministry');
+const {
+  getHeroUrl,
+  getContributionImageUrl,
+  IMAGE_PUBLIC_IDS,
+} = require('../services/cloudinary.service');
 
 // @desc    Get Ministry settings
 // @route   GET /api/ministry
@@ -10,7 +15,17 @@ exports.getMinistrySettings = async (req, res, next) => {
       // Create default settings if none exist
       ministry = await Ministry.create({});
     }
-    res.status(200).json({ success: true, data: ministry });
+
+    // Inject optimized Cloudinary image URLs
+    // contributionImages maps to images 1–8 (matching the CONTRIBUTIONS array on the frontend)
+    const cloudinaryImages = {
+      heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.ministryHero),
+      contributionImages: Array.from({ length: 8 }, (_, i) =>
+        getContributionImageUrl(i + 1)
+      ),
+    };
+
+    res.status(200).json({ success: true, data: ministry, cloudinaryImages });
   } catch (err) {
     next(err);
   }

@@ -3,7 +3,8 @@ import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import contactService from '../../services/contactService';
 import { useLanguage } from '../../context/LanguageContext';
-import img4 from '../../assets/images/image4.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+const img4 = getCloudinaryUrl('dr-tk/image4', { width: 360, height: 400 });
 
 export default function Interview() {
   const { t, lang } = useLanguage();
@@ -41,7 +42,7 @@ export default function Interview() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="page-fade-in">
         <section className="section-padding">
           <div className="container">
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: 60, alignItems: 'start' }} className="contact-bottom-grid">

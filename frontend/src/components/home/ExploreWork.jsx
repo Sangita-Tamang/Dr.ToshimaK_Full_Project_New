@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
-import img1 from '../../assets/images/image1.png';
-import img11 from '../../assets/images/image11.png';
-import img12 from '../../assets/images/image12.png';
-import img3 from '../../assets/images/image3.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+import OptimizedImage from '../common/OptimizedImage';
+
+
+const img1 = getCloudinaryUrl('dr-tk/image1', { width: 800 });
+const img11 = getCloudinaryUrl('dr-tk/image11', { width: 800 });
+const img12 = getCloudinaryUrl('dr-tk/image12', { width: 800 });
+const img3 = getCloudinaryUrl('dr-tk/image3', { width: 800 });
 
 export default function ExploreWork() {
   const { t } = useLanguage();
@@ -65,7 +69,7 @@ export default function ExploreWork() {
           {WORK_CARDS.map((card) => (
             <div className="card" key={card.title} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <div className="card-img-container">
-                <img src={card.img} alt={card.title} />
+                <OptimizedImage src={card.img} alt={card.title} lazy={true} fill={true} />
               </div>
               <div className="card-body" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                 <div className="card-icon" style={{ width: 48, height: 48, background: 'rgba(200,16,46,0.08)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', marginBottom: 20 }}>

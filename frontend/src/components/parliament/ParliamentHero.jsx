@@ -1,20 +1,28 @@
 import React from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import heroImage from '../../assets/images/parliment.hero.png';
+import OptimizedImage from '../common/OptimizedImage';
 
-export default function ParliamentHero() {
+export default function ParliamentHero({ heroUrl }) {
   const { t } = useLanguage();
   
   return (
     <section className="parliament-hero">
       {/* Background Image */}
       <div className="parliament-hero-backdrop">
-        <img 
-          src={heroImage} 
-          alt="" 
-          className="parliament-hero-background"
-          loading="eager"
-        />
+        {heroUrl ? (
+          <OptimizedImage 
+            src={heroUrl} 
+            alt="" 
+            className="parliament-hero-background"
+            lazy={false}
+            priority={true}
+            fill={true}
+            objectFit="cover"
+            objectPosition="center center"
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', background: '#1a2332' }} />
+        )}
         <div className="parliament-hero-overlay"></div>
       </div>
       
@@ -41,21 +49,6 @@ export default function ParliamentHero() {
               'ललितपुर निर्वाचन क्षेत्र नं. ३ बाट प्रतिनिधित्व गर्ने सांसद डा. तोशिमा कार्की प्रमाणमा आधारित नीति निर्माण, स्वास्थ्य सुधार, सुशासन र नागरिक केन्द्रित विकासका लागि निरन्तर कार्यरत हुनुहुन्छ।'
             )}
           </p>
-          
-          <a 
-            href="#activities" 
-            className="parliament-hero-button"
-          >
-            <svg 
-              width="20" 
-              height="20" 
-              viewBox="0 0 20 20" 
-              fill="currentColor"
-            >
-              <path d="M6.3 2.84A1 1 0 0 0 5 3.73v12.54a1 1 0 0 0 1.54.83l10-6.27a1 1 0 0 0 0-1.66l-10-6.33Z" />
-            </svg>
-            <span>{t('Watch Speech', 'भाषण हेर्नुहोस्')}</span>
-          </a>
         </div>
       </div>
     </section>

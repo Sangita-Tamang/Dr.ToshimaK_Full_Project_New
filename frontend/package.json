@@ -26,7 +26,10 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.4",
+    "sharp": "^0.35.3",
+    "svgo": "^4.0.2",
     "terser": "^5.49.0",
-    "vite": "^5.0.0"
+    "vite": "^5.0.0",
+    "vite-plugin-image-optimizer": "^2.0.3"
   }
 }

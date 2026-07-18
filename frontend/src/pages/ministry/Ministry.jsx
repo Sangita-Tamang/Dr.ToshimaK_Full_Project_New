@@ -2,17 +2,9 @@ import { useEffect, useState } from 'react';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import { useLanguage } from '../../context/LanguageContext';
+import { useCachedApi } from '../../hooks/useCachedApi';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import './Ministry.css';
-
-import ministryHeroBg from '../../assets/images/ministry.hero.png';
-import img1 from '../../assets/images/image1.png';
-import img2 from '../../assets/images/image2.png';
-import img3 from '../../assets/images/image3.png';
-import img4 from '../../assets/images/image4.png';
-import img5 from '../../assets/images/image5.png';
-import img6 from '../../assets/images/image6.png';
-import img7 from '../../assets/images/image7.png';
-import img8 from '../../assets/images/image8.png';
 
 const CONTRIBUTIONS = [
   {
@@ -23,7 +15,7 @@ const CONTRIBUTIONS = [
     titleNp: 'राष्ट्रिय ट्रमा नीति र आपतकालीन स्वास्थ्य सेवा सुधार',
     descEn: 'Calling for a national trauma policy and a coordinated emergency care system so that timely treatment is available when it matters most.',
     descNp: 'समयमै उपचार उपलब्ध होस् भन्ने उद्देश्यले राष्ट्रिय ट्रमा नीति र समन्वित आपतकालीन सेवा प्रणालीका लागि आवाज।',
-    image: img1,
+    imageIndex: 0,
     url: 'https://english.ratopati.com/story/63620/mp-karki-demands-immediate-formulation-of-national-trauma-policy'
   },
   {
@@ -34,7 +26,7 @@ const CONTRIBUTIONS = [
     titleNp: 'स्वास्थ्य सेवाको पहुँच र किफायतता',
     descEn: 'Advocating for people-centred healthcare that reduces financial barriers and brings essential services closer to every community.',
     descNp: 'आर्थिक बाधा घटाउँदै अत्यावश्यक सेवा हरेक समुदायसम्म पुर्‍याउने जनकेन्द्रित स्वास्थ्य सेवाको वकालत।',
-    image: img2,
+    image: null, imageIndex: 1,
     url: 'https://hr.parliament.gov.np/en/video/21055'
   },
   {
@@ -45,7 +37,7 @@ const CONTRIBUTIONS = [
     titleNp: 'सार्वजनिक स्वास्थ्य प्रणाली सुधार',
     descEn: 'Strengthening public hospitals, frontline services, and accountable systems that can deliver reliable care throughout Nepal.',
     descNp: 'नेपालभर भरपर्दो सेवा दिन सक्ने सार्वजनिक अस्पताल, अग्रपङ्क्तिका सेवा र उत्तरदायी प्रणाली सुदृढ गर्ने पहल।',
-    image: img3,
+    image: null, imageIndex: 2,
     url: 'https://hr.parliament.gov.np/index.php/en/video/21282'
   },
   {
@@ -56,7 +48,7 @@ const CONTRIBUTIONS = [
     titleNp: 'औषधि नियमन र बिरामी सुरक्षा',
     descEn: 'Bringing medical insight to the standards, oversight, and safeguards that protect patients and promote confidence in care.',
     descNp: 'बिरामीको सुरक्षा र स्वास्थ्य सेवाप्रति विश्वास बढाउने मापदण्ड, अनुगमन र सुरक्षाका उपायमा चिकित्सकीय दृष्टिकोण।',
-    image: img4,
+    image: null, imageIndex: 3,
     url: 'https://hr.parliament.gov.np/en/video/18557'
   },
   {
@@ -67,7 +59,7 @@ const CONTRIBUTIONS = [
     titleNp: 'स्वास्थ्य नीतिमा चिकित्सकीय विशेषज्ञता',
     descEn: 'Championing practical, evidence-informed health policy shaped by clinical experience and the realities faced by patients.',
     descNp: 'क्लिनिकल अनुभव र बिरामीले भोग्ने वास्तविकतामा आधारित व्यावहारिक, प्रमाणमुखी स्वास्थ्य नीतिको समर्थन।',
-    image: img5,
+    image: null, imageIndex: 4,
     url: 'https://www.youtube.com/watch?v=iNo5kzZUKZs'
   },
   {
@@ -78,7 +70,7 @@ const CONTRIBUTIONS = [
     titleNp: 'जनस्वास्थ्य पैरवी',
     descEn: 'Keeping public health, prevention, and the dignity of patients at the centre of national conversations and public action.',
     descNp: 'राष्ट्रिय बहस र सार्वजनिक कार्यको केन्द्रमा जनस्वास्थ्य, रोकथाम र बिरामीको सम्मानलाई राख्ने निरन्तर प्रयास।',
-    image: img6,
+    image: null, imageIndex: 5,
     url: 'https://www.youtube.com/watch?v=B85s2EoC9v0'
   },
   {
@@ -89,7 +81,7 @@ const CONTRIBUTIONS = [
     titleNp: 'संसदीय स्वास्थ्य छलफल',
     descEn: 'Raising health-sector priorities in parliamentary debate and connecting public concerns with accountable policy action.',
     descNp: 'संसदीय छलफलमा स्वास्थ्य क्षेत्रका प्राथमिकता उठाउँदै जनचासोलाई उत्तरदायी नीतिगत कामसँग जोड्ने प्रयास।',
-    image: img7,
+    image: null, imageIndex: 6,
     url: 'https://hr.parliament.gov.np/en/video/22715'
   },
   {
@@ -100,7 +92,7 @@ const CONTRIBUTIONS = [
     titleNp: 'स्वास्थ्य सेवा रूपान्तरणको दृष्टि',
     descEn: 'A long-term vision for a fairer, stronger healthcare system—built through reform, public dialogue, and service to people.',
     descNp: 'सुधार, सार्वजनिक संवाद र जनसेवाबाट निर्माण हुने थप न्यायपूर्ण र बलियो स्वास्थ्य प्रणालीको दीर्घकालीन दृष्टि।',
-    image: img8,
+    image: null, imageIndex: 7,
     url: 'https://english.nepalnews.com/s/politics/toshima-karki-advocates-transformation-of-rastriya-swatantra-party/'
   }
 ];
@@ -110,9 +102,17 @@ const CARDS_PER_PAGE = 4;
 export default function Ministry() {
   const { t, lang } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
+  const { data: apiData } = useCachedApi('/ministry');
+  const cloudImages = apiData?.cloudinaryImages?.contributionImages || [];
+  const heroImage = apiData?.cloudinaryImages?.heroImage || '';
   const tt = (en, np) => (lang === 'np' ? np : en);
-  const totalPages = Math.ceil(CONTRIBUTIONS.length / CARDS_PER_PAGE);
-  const visibleContributions = CONTRIBUTIONS.slice(
+  // Inject Cloudinary URLs into contributions
+  const CONTRIBUTIONS_WITH_IMAGES = CONTRIBUTIONS.map(item => ({
+    ...item,
+    image: cloudImages[item.imageIndex] || item.image || null,
+  }));
+  const totalPages = Math.ceil(CONTRIBUTIONS_WITH_IMAGES.length / CARDS_PER_PAGE);
+  const visibleContributions = CONTRIBUTIONS_WITH_IMAGES.slice(
     (currentPage - 1) * CARDS_PER_PAGE,
     currentPage * CARDS_PER_PAGE
   );
@@ -143,10 +143,12 @@ export default function Ministry() {
   return (
     <>
       <Navbar />
-      <main className="ministry-page">
+      <main className="page-fade-in ministry-page">
         <section className="min-hero">
           <div className="min-hero-bg" aria-hidden="true">
-            <img src={ministryHeroBg} alt="" loading="eager" decoding="async" fetchPriority="high" />
+            {heroImage && (
+              <OptimizedImage src={heroImage} alt="" lazy={false} priority={true} objectFit="cover" />
+            )}
           </div>
           <div className="min-hero-gradient" aria-hidden="true" />
 
@@ -179,7 +181,7 @@ export default function Ministry() {
               {visibleContributions.map((item, index) => (
                 <article key={item.id} className={`min-contrib-card animate-hidden fade-in-up ${index % 2 ? 'is-reversed' : ''}`}>
                   <div className="min-contrib-image">
-                    <img src={item.image} alt={tt(item.titleEn, item.titleNp)} loading="lazy" />
+                    <OptimizedImage src={item.image} alt={tt(item.titleEn, item.titleNp)} lazy={true} objectFit="cover" />
                   </div>
                   <div className="min-contrib-body">
                     <div className="min-contrib-meta">

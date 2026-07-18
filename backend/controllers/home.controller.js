@@ -1,4 +1,5 @@
 const Home = require('../models/Home');
+const { getHeroUrl, IMAGE_PUBLIC_IDS } = require('../services/cloudinary.service');
 
 // @desc    Get Home settings
 // @route   GET /api/home
@@ -10,7 +11,13 @@ exports.getHomeSettings = async (req, res, next) => {
       // Create default settings if none exist
       home = await Home.create({});
     }
-    res.status(200).json({ success: true, data: home });
+
+    // Inject optimized Cloudinary image URLs
+    const cloudinaryImages = {
+      heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.homeHero),
+    };
+
+    res.status(200).json({ success: true, data: home, cloudinaryImages });
   } catch (err) {
     next(err);
   }

@@ -1,4 +1,9 @@
 const Media = require('../models/Media');
+const {
+  getGalleryImageUrl,
+  IMAGE_PUBLIC_IDS,
+  getHeroUrl,
+} = require('../services/cloudinary.service');
 
 // @desc    Get all media items
 // @route   GET /api/media
@@ -28,12 +33,29 @@ exports.getMediaList = async (req, res, next) => {
     query = query.skip(startIndex).limit(limit);
     const media = await query;
 
+    // Inject Cloudinary image URLs for fallback thumbnails
+    const cloudinaryImages = {
+      heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.image12),
+      thumbnails: [
+        getGalleryImageUrl(12), // img12 - interviews
+        getGalleryImageUrl(1),  // img1
+        getGalleryImageUrl(4),  // img4
+        getGalleryImageUrl(11), // img11 - TV
+        getGalleryImageUrl(6),  // img6 - speeches
+        getGalleryImageUrl(8),  // img8
+        getGalleryImageUrl(2),  // img2
+        getGalleryImageUrl(13), // img13 - interviews
+      ],
+    };
+
     res.status(200).json({
       success: true,
       count: media.length,
       total,
+      cloudinaryImages,
       data: media
     });
+
   } catch (err) {
     next(err);
   }

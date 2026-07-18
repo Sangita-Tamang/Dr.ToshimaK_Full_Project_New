@@ -2,16 +2,18 @@ import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import { useLanguage } from '../../context/LanguageContext';
 import { useEffect } from 'react';
+import { useCachedApi } from '../../hooks/useCachedApi';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import './About.css';
-
-import img4 from '../../assets/images/image4.png';
-import img5 from '../../assets/images/image5.png';
-import img6 from '../../assets/images/image6.png';
-import img3 from '../../assets/images/image3.png';
-import aboutHeroBg from '../../assets/images/about.hero.png';
 
 export default function About() {
   const { t } = useLanguage();
+  const { data: apiData } = useCachedApi('/about');
+  const cloudImg = apiData?.cloudinaryImages || {};
+  const heroImage = cloudImg.heroImage || '';
+  const storyImage = cloudImg.storyImage || cloudImg.profileImage || '';
+  const quoteBgImage = cloudImg.quoteBgImage || '';
+  const lookingAheadImage = cloudImg.lookingAheadImage || '';
 
   // Scroll to top on mount
   useEffect(() => {
@@ -84,17 +86,20 @@ export default function About() {
   return (
     <>
       <Navbar />
-      <main className="about-page">
+      <main className="page-fade-in about-page">
 
         {/* ── HERO ── */}
         <section className="about-hero">
           <div className="about-hero-bg">
-            <img
-              src={aboutHeroBg}
-              alt=""
-              loading="eager"
-              fetchpriority="high"
-            />
+            {heroImage && (
+              <OptimizedImage
+                src={heroImage}
+                alt=""
+                lazy={false}
+                priority={true}
+                objectFit="cover"
+              />
+            )}
           </div>
           <div className="about-hero-gradient"></div>
           <div className="container about-hero-container">
@@ -144,7 +149,7 @@ export default function About() {
               </p>
             </div>
             <div className="about-story-img">
-              <img src={img5} alt="Dr. Toshima at work" />
+              {storyImage && <OptimizedImage src={storyImage} alt="Dr. Toshima at work" lazy={true} objectFit="cover" />}
               <div className="about-story-badge">
                 <i className="fas fa-award"></i>
                 <span>{t('Member of Parliament', 'संसद सदस्य')}</span>
@@ -240,7 +245,7 @@ export default function About() {
         </section>
 
         {/* ── QUOTE BANNER ── */}
-        <div className="about-quote-banner" style={{ backgroundImage: `url(${img3})` }}>
+        <div className="about-quote-banner" style={quoteBgImage ? { backgroundImage: `url(${quoteBgImage})` } : {}}>
           <div className="about-quote-overlay"></div>
           <div className="container about-quote-inner">
             <i className="fas fa-quote-left about-quote-icon"></i>
@@ -279,7 +284,7 @@ export default function About() {
               </div>
             </div>
             <div className="about-looking-img">
-              <img src={img6} alt="Looking Ahead" />
+              {lookingAheadImage && <img src={lookingAheadImage} alt="Looking Ahead" loading="lazy" />}
             </div>
           </div>
         </section>

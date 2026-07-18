@@ -15,5 +15,8 @@ module.exports = {
   SMTP_EMAIL: process.env.SMTP_EMAIL || '',
   SMTP_PASSWORD: process.env.SMTP_PASSWORD || '',
   FROM_EMAIL: process.env.FROM_EMAIL || 'info@toshimakarki.gov.np',
-  FROM_NAME: process.env.FROM_NAME || 'Dr. Toshima Karki Official Office'
+  FROM_NAME: process.env.FROM_NAME || 'Dr. Toshima Karki Official Office',
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME || '',
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY || '',
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET || '',
 };

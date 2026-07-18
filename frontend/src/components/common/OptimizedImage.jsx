@@ -3,8 +3,21 @@ import PropTypes from 'prop-types';
 import { generateBlurPlaceholder } from '../../utils/imageOptimization';
 
 /**
+ * Inject q_auto,f_auto into Cloudinary URLs that don't already have them.
+ * Non-Cloudinary URLs pass through unchanged.
+ */
+function optimizeCloudinaryUrl(url) {
+  if (!url || !url.includes('res.cloudinary.com')) return url;
+  // Already has q_auto and f_auto — no change needed
+  if (url.includes('q_auto') && url.includes('f_auto')) return url;
+  // Insert transforms after /upload/
+  return url.replace('/upload/', '/upload/f_auto,q_auto/');
+}
+
+/**
  * Enhanced Optimized Image Component
- * Features: Lazy loading, blur placeholder, error handling, responsive sizing
+ * Features: Lazy loading, blur placeholder, error handling, responsive sizing,
+ *           automatic Cloudinary q_auto/f_auto transforms
  */
 const OptimizedImage = memo(({ 
   src, 
@@ -17,11 +30,13 @@ const OptimizedImage = memo(({
   lazy = true,
   fadeIn = true,
   priority = false,
+  fill = false,
   width,
   height,
   onLoad,
   ...props 
 }) => {
+  const optimizedSrc = optimizeCloudinaryUrl(src);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(!lazy || priority);
   const [hasError, setHasError] = useState(false);
@@ -74,9 +89,11 @@ const OptimizedImage = memo(({
   const placeholder = generateBlurPlaceholder();
 
   const containerStyle = {
-    position: 'relative',
+    position: fill ? 'absolute' : 'relative',
     width: '100%',
-    paddingBottom: aspectRatio === 'auto' ? 0 : aspectRatio,
+    height: fill ? '100%' : 'auto',
+    inset: fill ? 0 : 'auto',
+    aspectRatio: (!fill && aspectRatio !== 'auto') ? aspectRatio.replace('/', ' / ') : 'auto',
     overflow: 'hidden',
     backgroundColor: '#f0f0f0',
     ...style,
@@ -84,8 +101,8 @@ const OptimizedImage = memo(({
 
   const imgStyle = {
     width: '100%',
-    height: aspectRatio === 'auto' ? 'auto' : '100%',
-    position: aspectRatio === 'auto' ? 'relative' : 'absolute',
+    height: fill ? '100%' : (aspectRatio === 'auto' ? 'auto' : '100%'),
+    position: (fill || aspectRatio !== 'auto') ? 'absolute' : 'relative',
     top: 0,
     left: 0,
     objectFit,
@@ -133,7 +150,7 @@ const OptimizedImage = memo(({
       {/* Actual image */}
       {isInView && !hasError && (
         <img
-          src={src}
+          src={optimizedSrc}
           alt={alt}
           style={imgStyle}
           onLoad={handleLoad}
@@ -183,6 +200,7 @@ OptimizedImage.propTypes = {
   lazy: PropTypes.bool,
   fadeIn: PropTypes.bool,
   priority: PropTypes.bool,
+  fill: PropTypes.bool,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onLoad: PropTypes.func,

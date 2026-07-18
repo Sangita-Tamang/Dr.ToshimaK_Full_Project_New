@@ -1,4 +1,11 @@
 const About = require('../models/About');
+const {
+  getHeroUrl,
+  getPortraitUrl,
+  getBannerUrl,
+  getGalleryUrl,
+  IMAGE_PUBLIC_IDS,
+} = require('../services/cloudinary.service');
 
 // @desc    Get About page settings
 // @route   GET /api/about
@@ -10,7 +17,17 @@ exports.getAboutSettings = async (req, res, next) => {
       // Create default settings if none exist
       about = await About.create({});
     }
-    res.status(200).json({ success: true, data: about });
+
+    // Inject optimized Cloudinary image URLs
+    const cloudinaryImages = {
+      heroImage:       getHeroUrl(IMAGE_PUBLIC_IDS.aboutHero),
+      profileImage:    getPortraitUrl(IMAGE_PUBLIC_IDS.image5),
+      quoteBgImage:    getBannerUrl(IMAGE_PUBLIC_IDS.image3),
+      lookingAheadImage: getGalleryUrl(IMAGE_PUBLIC_IDS.image6),
+      storyImage:      getPortraitUrl(IMAGE_PUBLIC_IDS.image4),
+    };
+
+    res.status(200).json({ success: true, data: about, cloudinaryImages });
   } catch (err) {
     next(err);
   }

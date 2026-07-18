@@ -36,12 +36,14 @@ const FALLBACK_ACTIVITIES = [
 
 export default function Parliament() {
   const { t, lang } = useLanguage();
+  const isNepali = lang === 'np';
   
   // State
   const [activeTenure, setActiveTenure] = useState('first');
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [heroImage, setHeroImage] = useState(null);
   
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -49,10 +51,20 @@ export default function Parliament() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   
-  // Fetch activities
+  // Fetch activities and hero
   useEffect(() => {
     fetchActivities();
   }, [activeTenure, searchQuery, selectedDate, page]);
+
+  useEffect(() => {
+    axios.get(`${API_BASE}/parliament`)
+      .then(res => {
+        if (res.data?.cloudinaryImages?.heroImage) {
+          setHeroImage(res.data.cloudinaryImages.heroImage);
+        }
+      })
+      .catch(err => console.error('Failed to fetch parliament settings', err));
+  }, []);
 
   const getFilteredFallbackActivities = () => FALLBACK_ACTIVITIES.filter((activity) => {
     const matchesTenure = activity.tenure === activeTenure;
@@ -123,26 +135,36 @@ export default function Parliament() {
     setSelectedDate(date);
     setPage(1);
   };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    const container = document.querySelector('.parliament-container');
+    if (container) {
+      container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
   
   return (
     <>
       <Helmet>
         <title>
-          {lang === 'en' 
+          {!isNepali
             ? 'Parliament - Dr. Toshima Karki | Member of Parliament Lalitpur-3'
             : 'संसद - डा. तोशिमा कार्की | सांसद ललितपुर-३'
           }
         </title>
         <meta 
           name="description" 
-          content={lang === 'en'
+          content={!isNepali
             ? 'Explore Dr. Toshima Karki\'s parliamentary work, speeches, debates, and policy initiatives as Member of Parliament representing Lalitpur Constituency No. 3. Evidence-based policymaking, healthcare reform, and citizen-centered governance.'
             : 'ललितपुर निर्वाचन क्षेत्र नं. ३ को प्रतिनिधित्व गर्ने सांसद डा. तोशिमा कार्कीको संसदीय कार्य, भाषण, बहस र नीति पहलहरू अन्वेषण गर्नुहोस्। प्रमाणमा आधारित नीति निर्माण, स्वास्थ्य सुधार र नागरिक केन्द्रित शासन।'
           }
         />
         <meta 
           name="keywords" 
-          content={lang === 'en'
+          content={!isNepali
             ? 'Dr. Toshima Karki, Parliament Nepal, Member of Parliament, Lalitpur-3, Parliamentary Speeches, Healthcare Policy, Political Leadership, Nepal Congress, Legislative Work'
             : 'डा. तोशिमा कार्की, नेपाल संसद, सांसद, ललितपुर-३, संसदीय भाषण, स्वास्थ्य नीति, राजनीतिक नेतृत्व, नेपाली कांग्रेस, विधायी कार्य'
           }
@@ -152,33 +174,33 @@ export default function Parliament() {
         <meta property="og:type" content="website" />
         <meta 
           property="og:title" 
-          content={lang === 'en'
+          content={!isNepali
             ? 'Parliament - Dr. Toshima Karki'
             : 'संसद - डा. तोशिमा कार्की'
           }
         />
         <meta 
           property="og:description" 
-          content={lang === 'en'
+          content={!isNepali
             ? 'Parliamentary work, speeches, and policy initiatives of Dr. Toshima Karki, Member of Parliament representing Lalitpur Constituency No. 3.'
             : 'ललितपुर निर्वाचन क्षेत्र नं. ३ को प्रतिनिधित्व गर्ने सांसद डा. तोशिमा कार्कीको संसदीय कार्य, भाषण र नीति पहलहरू।'
           }
         />
         <meta property="og:image" content="/assets/images/parliment.hero.png" />
-        <meta property="og:url" content={`https://toshimakarki.gov.np${lang === 'ne' ? '/ne' : ''}/parliament`} />
+        <meta property="og:url" content={`https://toshimakarki.gov.np${isNepali ? '/ne' : ''}/parliament`} />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta 
           name="twitter:title" 
-          content={lang === 'en'
+          content={!isNepali
             ? 'Parliament - Dr. Toshima Karki'
             : 'संसद - डा. तोशिमा कार्की'
           }
         />
         <meta 
           name="twitter:description" 
-          content={lang === 'en'
+          content={!isNepali
             ? 'Explore parliamentary work and legislative initiatives.'
             : 'संसदीय कार्य र विधायी पहलहरू अन्वेषण गर्नुहोस्।'
           }
@@ -186,15 +208,15 @@ export default function Parliament() {
         <meta name="twitter:image" content="/assets/images/parliment.hero.png" />
         
         {/* Canonical & Alternate */}
-        <link rel="canonical" href={`https://toshimakarki.gov.np${lang === 'ne' ? '/ne' : ''}/parliament`} />
+        <link rel="canonical" href={`https://toshimakarki.gov.np${isNepali ? '/ne' : ''}/parliament`} />
         <link rel="alternate" hrefLang="en" href="https://toshimakarki.gov.np/parliament" />
         <link rel="alternate" hrefLang="ne" href="https://toshimakarki.gov.np/ne/parliament" />
         <link rel="alternate" hrefLang="x-default" href="https://toshimakarki.gov.np/parliament" />
       </Helmet>
       
       <Navbar />
-      <main className="parliament-page">
-        <ParliamentHero />
+      <main className="page-fade-in parliament-page">
+        <ParliamentHero heroUrl={heroImage} />
         
         <div className="parliament-container">
           <ParliamentJourney 
@@ -217,7 +239,7 @@ export default function Parliament() {
             activeTenure={activeTenure}
             page={page}
             totalPages={totalPages}
-            onPageChange={setPage}
+            onPageChange={handlePageChange}
           />
         </div>
       </main>

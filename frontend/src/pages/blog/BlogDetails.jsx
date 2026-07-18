@@ -6,8 +6,9 @@ import Loader from '../../components/common/Loader';
 import blogService from '../../services/blogService';
 import { formatDate } from '../../utils/formatDate';
 import { useLanguage } from '../../context/LanguageContext';
-import img1 from '../../assets/images/image1.png';
-import img4 from '../../assets/images/image4.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+const img1 = getCloudinaryUrl('dr-tk/image1', { width: 800 });
+const img4 = getCloudinaryUrl('dr-tk/image4', { width: 400, height: 400 });
 
 export default function BlogDetails() {
   const { id } = useParams();
@@ -109,7 +110,7 @@ export default function BlogDetails() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="page-fade-in">
         <section className="section-padding">
           <div className="container" style={{ maxWidth: 800 }}>
             <Link to="/blog" style={{ color: 'var(--primary)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 24 }}>

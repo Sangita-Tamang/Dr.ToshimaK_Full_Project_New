@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { useEffect } from 'react';
-import heroBackground from '../../assets/images/home.hero.png';
+import { useCachedApi } from '../../hooks/useCachedApi';
 import OptimizedImage from '../common/OptimizedImage';
 
 export default function Hero() {
   const { t } = useLanguage();
+  const { data } = useCachedApi('/home');
+  const heroImage = data?.cloudinaryImages?.heroImage || '';
+
 
   // Intersection Observer for animations
   useEffect(() => {
@@ -37,15 +40,17 @@ export default function Hero() {
   return (
     <section className="hero-section">
       <div className="hero-backdrop" aria-hidden="true">
-        <OptimizedImage 
-          src={heroBackground} 
-          alt="" 
-          className="hero-background" 
-          lazy={false}
-          priority={true}
-          objectFit="cover"
-          objectPosition="center top"
-        />
+        {heroImage && (
+          <OptimizedImage
+            src={heroImage}
+            alt=""
+            className="hero-background"
+            lazy={false}
+            priority={true}
+            objectFit="cover"
+            objectPosition="center top"
+          />
+        )}
         <div className="hero-overlay" />
       </div>
 

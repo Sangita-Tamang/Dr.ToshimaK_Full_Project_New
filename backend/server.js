@@ -64,6 +64,7 @@ const internshipRoutes = require('./routes/internship.routes');
 const internshipApplicationRoutes = require('./routes/internship-application.routes');
 const debugRoutes = require('./routes/debug.routes');
 const engagementRoutes = require('./routes/engagement.routes');
+const imagesRoutes = require('./routes/images.routes');
 
 
 const app = express();
@@ -114,6 +115,7 @@ app.use('/api/internships', internshipRoutes);
 app.use('/api/internship-applications', internshipApplicationRoutes);
 app.use('/api/debug', debugRoutes);
 app.use('/api/engagements', engagementRoutes);
+app.use('/api/images', imagesRoutes);
 
 
 // Error handler

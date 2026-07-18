@@ -3,19 +3,9 @@ import { Suspense, lazy } from 'react';
 import { useAuth } from '../context/AuthContext';
 import ScrollToTop from '../components/common/ScrollToTop';
 
-// Loading component for lazy-loaded routes
+// Loading component for lazy-loaded routes - Top progress bar prevents screen blinking
 const PageLoader = () => (
-  <div style={{
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    background: '#fcfcfc'
-  }}>
-    <div className="loader">
-      <div className="spinner"></div>
-    </div>
-  </div>
+  <div className="top-progress-bar"></div>
 );
 
 // Lazy load pages for better performance

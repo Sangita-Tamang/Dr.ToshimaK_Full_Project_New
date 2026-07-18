@@ -3,14 +3,17 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import { useLanguage } from '../../context/LanguageContext';
+import OptimizedImage from '../../components/common/OptimizedImage';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
 import './HealthContributions.css';
 
-import templeBg from '../../assets/images/temple_bg.jpg';
-import portraitImg from '../../assets/images/image10.png'; // Red blazer portrait
-import imgHealthInsurance from '../../assets/images/image1.png';
-import imgRural from '../../assets/images/image6.png';
-import imgEmergency from '../../assets/images/image2.png';
-import imgCovid from '../../assets/images/image13.png';
+// All images served from Cloudinary (f_auto, q_auto auto-applied by getCloudinaryUrl)
+const templeBg      = getCloudinaryUrl('dr-tk/temple_bg', { width: 1920 });
+const portraitImg   = getCloudinaryUrl('dr-tk/image10', { width: 600, height: 700 });
+const imgHealthInsurance = getCloudinaryUrl('dr-tk/image1', { width: 720, height: 480 });
+const imgRural      = getCloudinaryUrl('dr-tk/image6', { width: 720, height: 480 });
+const imgEmergency  = getCloudinaryUrl('dr-tk/image2', { width: 720, height: 480 });
+const imgCovid      = getCloudinaryUrl('dr-tk/image13', { width: 720, height: 480 });
 
 export default function HealthContributions() {
   const { t } = useLanguage();
@@ -93,7 +96,7 @@ export default function HealthContributions() {
   return (
     <>
       <Navbar />
-      <main className="health-contributions-page">
+      <main className="page-fade-in health-contributions-page">
         {/* Sticky Breadcrumb */}
         <div className="sticky-breadcrumb">
           <div className="container">
@@ -119,7 +122,14 @@ export default function HealthContributions() {
               </p>
             </div>
             <div className="hc-hero-image animate-hidden slide-in-right">
-              <img src={portraitImg} alt="Dr. Toshima Karki" />
+              <OptimizedImage
+                src={portraitImg}
+                alt="Dr. Toshima Karki"
+                lazy={false}
+                priority={true}
+                objectFit="contain"
+                style={{ maxWidth: '100%', maxHeight: 450, display: 'block' }}
+              />
             </div>
           </div>
         </section>
@@ -153,8 +163,8 @@ export default function HealthContributions() {
                 const isEven = i % 2 !== 0;
                 return (
                   <div key={i} className={`hc-initiative-row ${isEven ? 'row-reverse' : ''}`}>
-                    <div className={`hc-initiative-img-col animate-hidden ${isEven ? 'slide-in-right' : 'slide-in-left'}`}>
-                      <img src={item.img} alt={item.title} />
+                    <div className={`hc-initiative-img-col animate-hidden ${isEven ? 'slide-in-right' : 'slide-in-left'}`} style={{ position: 'relative' }}>
+                      <OptimizedImage src={item.img} alt={item.title} lazy={true} fill={true} objectFit="cover" />
                     </div>
                     <div className={`hc-initiative-content-col animate-hidden ${isEven ? 'slide-in-left' : 'slide-in-right'}`}>
                       <div className="hc-initiative-header">

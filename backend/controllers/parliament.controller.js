@@ -1,4 +1,5 @@
 const Parliament = require('../models/Parliament');
+const { getHeroUrl, IMAGE_PUBLIC_IDS } = require('../services/cloudinary.service');
 
 // @desc    Get Parliament settings
 // @route   GET /api/parliament
@@ -10,7 +11,13 @@ exports.getParliamentSettings = async (req, res, next) => {
       // Create default settings if none exist
       parliament = await Parliament.create({});
     }
-    res.status(200).json({ success: true, data: parliament });
+
+    // Inject optimized Cloudinary image URLs
+    const cloudinaryImages = {
+      heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.parliamentHero),
+    };
+
+    res.status(200).json({ success: true, data: parliament, cloudinaryImages });
   } catch (err) {
     next(err);
   }

@@ -1,4 +1,9 @@
 const News = require('../models/News');
+const {
+  getHeroUrl,
+  getGalleryImageUrl,
+  IMAGE_PUBLIC_IDS,
+} = require('../services/cloudinary.service');
 
 // @desc    Get all news
 // @route   GET /api/news
@@ -44,11 +49,18 @@ exports.getNews = async (req, res, next) => {
       pagination.prev = { page: page - 1, limit };
     }
 
+    // Inject Cloudinary image URLs
+    const cloudinaryImages = {
+      heroImage: getHeroUrl(IMAGE_PUBLIC_IDS.image13),
+      newsImages: Array.from({ length: 15 }, (_, i) => getGalleryImageUrl(i + 1)),
+    };
+
     res.status(200).json({
       success: true,
       count: news.length,
       total,
       pagination,
+      cloudinaryImages,
       data: news
     });
   } catch (err) {

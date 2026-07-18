@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { NAV_LINKS, SOCIAL_LINKS } from '../../utils/constants';
-import logoImg from '../../assets/images/logo.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+const logoImg = getCloudinaryUrl('dr-tk/logo', { width: 400 });
 
 export default function Footer() {
   const { t } = useLanguage();

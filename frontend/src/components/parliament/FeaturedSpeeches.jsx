@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
 import axios from 'axios';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5050/api';
 
 export default function FeaturedSpeeches({ tenure }) {
   const { t, lang } = useLanguage();
+  const contentLanguage = lang === 'np' ? 'ne' : 'en';
   const [speeches, setSpeeches] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -29,7 +31,7 @@ export default function FeaturedSpeeches({ tenure }) {
   
   const formatDate = (date) => {
     const d = new Date(date);
-    return d.toLocaleDateString(lang === 'ne' ? 'ne-NP' : 'en-US', {
+    return d.toLocaleDateString(contentLanguage === 'ne' ? 'ne-NP' : 'en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
@@ -64,8 +66,8 @@ export default function FeaturedSpeeches({ tenure }) {
       
       <div className="parliament-featured-list">
         {speeches.map((speech) => {
-          const title = speech.title[lang] || speech.title.en;
-          const category = speech.category[lang] || speech.category.en;
+          const title = speech.title[contentLanguage] || speech.title.en;
+          const category = speech.category[contentLanguage] || speech.category.en;
           
           return (
             <a
@@ -77,7 +79,7 @@ export default function FeaturedSpeeches({ tenure }) {
             >
               <div className="parliament-featured-thumbnail">
                 <img
-                  src={speech.image || '/assets/images/parliament-default.jpg'}
+                  src={speech.image || getCloudinaryUrl('dr-tk/image2', { width: 400 })}
                   alt=""
                   loading="lazy"
                 />

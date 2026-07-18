@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import Loader from '../../components/common/Loader';
@@ -8,12 +9,15 @@ import blogService from '../../services/blogService';
 import { formatDate, truncate } from '../../utils/formatDate';
 import { useLanguage } from '../../context/LanguageContext';
 
-import img1 from '../../assets/images/image1.png';
-import img2 from '../../assets/images/image2.png';
-import img3 from '../../assets/images/image3.png';
-import img4 from '../../assets/images/image4.png';
-import img5 from '../../assets/images/image5.png';
-import img6 from '../../assets/images/image6.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+
+// Fallback images from Cloudinary (f_auto, q_auto auto-applied)
+const img1 = getCloudinaryUrl('dr-tk/image1', { width: 800 });
+const img2 = getCloudinaryUrl('dr-tk/image2', { width: 800 });
+const img3 = getCloudinaryUrl('dr-tk/image3', { width: 800 });
+const img4 = getCloudinaryUrl('dr-tk/image4', { width: 400, height: 400 });
+const img5 = getCloudinaryUrl('dr-tk/image5', { width: 800 });
+const img6 = getCloudinaryUrl('dr-tk/image6', { width: 800 });
 
 const ITEMS_PER_PAGE = 6;
 
@@ -211,7 +215,13 @@ export default function Blog() {
                     return (
                       <div className="card" key={blog._id} style={{ display: 'flex', flexDirection: 'column' }}>
                         <div className="card-img-container" style={{ position: 'relative' }}>
-                          <img src={blog.image || img1} alt={title} />
+                          <OptimizedImage
+                            src={blog.image || img1}
+                            alt={title}
+                            lazy={true}
+                            fill={true}
+                            style={{ objectFit: 'cover' }}
+                          />
                           <span className="card-badge" style={{ background: 'var(--primary)' }}>{category}</span>
                         </div>
                         <div className="card-body" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>

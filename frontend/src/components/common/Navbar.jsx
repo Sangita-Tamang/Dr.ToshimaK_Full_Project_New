@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { SOCIAL_LINKS } from '../../utils/constants';
-import logoImg from '../../assets/images/logo.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+const logoImg = getCloudinaryUrl('dr-tk/logo', { width: 400 });
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

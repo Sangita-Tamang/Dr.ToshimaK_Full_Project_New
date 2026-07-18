@@ -3,24 +3,31 @@ import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import Loader from '../../components/common/Loader';
 import Pagination from '../../components/common/Pagination';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import mediaService from '../../services/mediaService';
 import { useLanguage } from '../../context/LanguageContext';
-
-import img1 from '../../assets/images/image1.png';
-import img2 from '../../assets/images/image2.png';
-import img4 from '../../assets/images/image4.png';
-import img6 from '../../assets/images/image6.png';
-import img8 from '../../assets/images/image8.png';
-import img11 from '../../assets/images/image11.png';
-import img12 from '../../assets/images/image12.png';
-import img13 from '../../assets/images/image13.png';
+import { getCloudinaryUrl } from '../../services/cloudinaryService';
+import { useNavigate } from 'react-router-dom';
 
 const ITEMS_PER_PAGE = 6;
 
-const REAL_MEDIA = [
+// Fallback Cloudinary thumbnails if backend media items don't have thumbnails
+const FALLBACK_THUMBNAILS = [
+  getCloudinaryUrl('dr-tk/image12', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image1', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image4', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image11', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image6', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image8', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image2', { width: 600 }),
+  getCloudinaryUrl('dr-tk/image13', { width: 600 }),
+];
+
+// Static fallback data with Cloudinary thumbnail references
+const FALLBACK_MEDIA = [
   {
     _id: 'm1',
-    thumbnail: img12,
+    thumbnailIndex: 0,
     type: 'Interviews',
     titleEn: 'Healthcare Vision Interview: Public Expectations',
     titleNp: 'स्वास्थ्य क्षेत्रको दृष्टिकोण अन्तर्वार्ता: जनअपेक्षा',
@@ -31,7 +38,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm2',
-    thumbnail: img1,
+    thumbnailIndex: 1,
     type: 'Interviews',
     titleEn: 'Health Sector Reform Blueprint Interview',
     titleNp: 'स्वास्थ्य क्षेत्र सुधारको खाका अन्तर्वार्ता',
@@ -42,7 +49,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm3',
-    thumbnail: img4,
+    thumbnailIndex: 2,
     type: 'Interviews',
     titleEn: 'Health Ministry Leadership & Expertise Discussion',
     titleNp: 'स्वास्थ्य मन्त्रालयको नेतृत्व र विज्ञता सम्बन्धी छलफल',
@@ -53,7 +60,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm4',
-    thumbnail: img11,
+    thumbnailIndex: 3,
     type: 'TV Programs',
     titleEn: 'Toshima Karki Media Interviews Collection',
     titleNp: 'तोसिमा कार्की मिडिया अन्तर्वार्ता संग्रह',
@@ -64,7 +71,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm5',
-    thumbnail: img6,
+    thumbnailIndex: 4,
     type: 'Speeches',
     titleEn: 'Toshima Karki Health Sector Policy & Reform Discussions',
     titleNp: 'तोसिमा कार्की स्वास्थ्य क्षेत्र नीति र सुधार छलफल',
@@ -75,7 +82,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm6',
-    thumbnail: img8,
+    thumbnailIndex: 5,
     type: 'Speeches',
     titleEn: 'Toshima Karki Parliament Speech Videos Collection',
     titleNp: 'तोसिमा कार्की संसद सम्बोधन भिडियो संग्रह',
@@ -86,7 +93,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm7',
-    thumbnail: img2,
+    thumbnailIndex: 6,
     type: 'TV Programs',
     titleEn: 'Hospital and Healthcare Visits & Public Address',
     titleNp: 'अस्पताल तथा स्वास्थ्य सेवा अनुगमन र सार्वजनिक सम्बोधन',
@@ -97,7 +104,7 @@ const REAL_MEDIA = [
   },
   {
     _id: 'm8',
-    thumbnail: img13,
+    thumbnailIndex: 7,
     type: 'Interviews',
     titleEn: 'Maternal Healthcare & Campaign Blueprint Discussion',
     titleNp: 'मातृ स्वास्थ्य र अभियानको मार्गचित्र सम्बन्धी छलफल',
@@ -109,24 +116,36 @@ const REAL_MEDIA = [
 ];
 
 const PLATFORMS = [
-  { icon: 'fab fa-youtube', color: '#FF0000', labelEn: 'YouTube', labelNp: 'यूट्यूब', subEn: 'Watch Speeches', subNp: 'भाषणहरू हेर्नुहोस्' },
-  { icon: 'fas fa-newspaper', color: '#4A90E2', labelEn: 'News', labelNp: 'समाचार', subEn: 'Read Articles', subNp: 'लेखहरू पढ्नुहोस्' },
-  { icon: 'fab fa-tiktok', color: '#010101', labelEn: 'TikTok', labelNp: 'टिकटक', subEn: 'Follow Updates', subNp: 'अपडेटहरू पछ्याउनुहोस्' },
-  { icon: 'fas fa-podcast', color: '#8A2BE2', labelEn: 'Podcasts', labelNp: 'पोडकास्ट', subEn: 'Listen Now', subNp: 'अहिले सुन्नुहोस्' }
+  { icon: 'fab fa-facebook', color: '#1877F2', labelEn: 'Facebook', labelNp: 'फेसबुक', subEn: 'Official Page', subNp: 'आधिकारिक पेज', link: 'https://www.facebook.com/share/1JehU2Mjcu/' },
+  { icon: 'fab fa-youtube', color: '#FF0000', labelEn: 'YouTube', labelNp: 'यूट्यूब', subEn: 'Watch Speeches', subNp: 'भाषणहरू हेर्नुहोस्', link: 'https://www.youtube.com/@Dr.Toshima_Karki_Secretariat' },
+  { icon: 'fab fa-x-twitter', color: '#000000', labelEn: 'Twitter/X', labelNp: 'ट्विटर/एक्स', subEn: 'Latest Updates', subNp: 'पछिल्लो अपडेटहरू', link: 'https://x.com/ToshimaKarkiDr' },
+  { icon: 'fab fa-linkedin', color: '#0A66C2', labelEn: 'LinkedIn', labelNp: 'लिंक्डइन', subEn: 'Follow Updates', subNp: 'अपडेटहरू पछ्याउनुहोस्', link: 'https://www.linkedin.com/in/dr-toshima-karki-471511166/' },
+  { icon: 'fas fa-newspaper', color: '#4A90E2', labelEn: 'News', labelNp: 'समाचार', subEn: 'Read Articles', subNp: 'लेखहरू पढ्नुहोस्', internalLink: '/news' }
 ];
 
 export default function Media() {
   const { t, lang } = useLanguage();
-  const [media, setMedia] = useState(REAL_MEDIA);
+  const [media, setMedia] = useState(FALLBACK_MEDIA);
+  const [cloudinaryThumbnails, setCloudinaryThumbnails] = useState(FALLBACK_THUMBNAILS);
+  const [heroImage, setHeroImage] = useState('');
   const [loading, setLoading] = useState(false);
   const [activeType, setActiveType] = useState('all');
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const topRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     mediaService.getAll({ limit: 50 })
-      .then(data => { if (data?.data?.length) setMedia(data.data); })
+      .then(data => {
+        if (data?.data?.length) setMedia(data.data);
+        if (data?.cloudinaryImages?.thumbnails?.length) {
+          setCloudinaryThumbnails(data.cloudinaryImages.thumbnails);
+        }
+        if (data?.cloudinaryImages?.heroImage) {
+          setHeroImage(data.cloudinaryImages.heroImage);
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -160,6 +179,19 @@ export default function Media() {
 
   const tt = (en, np) => lang === 'np' ? np : en;
 
+  const getThumbnail = (item, index) => {
+    let url = '';
+    if (item.thumbnail && !item.thumbnail.startsWith('blob:')) url = item.thumbnail;
+    else if (item.imageUrl) url = item.imageUrl;
+    else if (item.mediaUrl) url = item.mediaUrl;
+    else if (typeof item.thumbnailIndex === 'number') {
+      url = cloudinaryThumbnails[item.thumbnailIndex] || cloudinaryThumbnails[index % (cloudinaryThumbnails.length || 1)];
+    } else {
+      url = cloudinaryThumbnails[index % (cloudinaryThumbnails.length || 1)] || '';
+    }
+    return getCloudinaryUrl(url);
+  };
+
   const uniqueTypes = ['all', 'Interviews', 'Speeches', 'TV Programs'];
 
   return (
@@ -168,7 +200,12 @@ export default function Media() {
       <main ref={topRef}>
         {/* HERO */}
         <section className="light-hero">
-          <div className="light-hero-bg" style={{ backgroundImage: `url(${img12})` }} />
+          <div
+            className="light-hero-bg"
+            style={heroImage ? { backgroundImage: `url(${heroImage})` } : {
+              backgroundImage: `url(${cloudinaryThumbnails[0] || ''})`
+            }}
+          />
           <div className="container">
             <div className="light-hero-content">
               <span className="light-hero-tag">{t('MEDIA', 'मिडिया')}</span>
@@ -188,7 +225,15 @@ export default function Media() {
             {/* Platforms */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 20, marginBottom: 50 }}>
               {PLATFORMS.map(p => (
-                <div key={p.labelEn} className="card" style={{ padding: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+                <div 
+                  key={p.labelEn} 
+                  className="card" 
+                  style={{ padding: 20, textAlign: 'center', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}
+                  onClick={() => {
+                    if (p.link) window.open(p.link, '_blank', 'noopener,noreferrer');
+                    else if (p.internalLink) navigate(p.internalLink);
+                  }}
+                >
                   <i className={p.icon} style={{ fontSize: '2rem', color: p.color }}></i>
                   <strong>{tt(p.labelEn, p.labelNp)}</strong>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{tt(p.subEn, p.subNp)}</span>
@@ -229,13 +274,20 @@ export default function Media() {
                     <p className="text-muted text-center" style={{ gridColumn: '1/-1' }}>
                       {t('No media items found.', 'कुनै मिडिया सामग्री फेला परेन।')}
                     </p>
-                  ) : paginatedMedia.map(item => {
+                  ) : paginatedMedia.map((item, idx) => {
                     const title = tt(item.titleEn, item.titleNp);
                     const source = tt(item.sourceEn, item.sourceNp);
+                    const thumbSrc = getThumbnail(item, startIdx + idx);
                     return (
                       <div className="card" key={item._id} style={{ display: 'flex', flexDirection: 'column' }}>
                         <div className="card-img-container" style={{ position: 'relative' }}>
-                          <img src={item.thumbnail || img11} alt={title} />
+                          <OptimizedImage
+                            src={thumbSrc}
+                            alt={title}
+                            lazy={true}
+                            fill={true}
+                            objectFit="cover"
+                          />
                           <a href={item.link} target="_blank" rel="noreferrer" className="play-overlay"><i className="fas fa-play"></i></a>
                           <span className="card-badge" style={{ background: 'var(--primary)' }}>{t(item.type, item.type)}</span>
                         </div>
@@ -246,7 +298,7 @@ export default function Media() {
                             {source && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}><i className="far fa-play-circle"></i> {source}</span>}
                           </div>
                           <a href={item.link} target="_blank" rel="noreferrer" className="card-link" style={{ marginTop: 12, display: 'inline-block' }}>
-                            {t('Watch Video &rarr;', 'भिडियो हेर्नुहोस् &rarr;')}
+                            {t('Watch Video →', 'भिडियो हेर्नुहोस् →')}
                           </a>
                         </div>
                       </div>

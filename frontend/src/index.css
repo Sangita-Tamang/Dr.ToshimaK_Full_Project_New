@@ -33,6 +33,10 @@ img { max-width: 100%; height: auto; display: block; }
 
 .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 .section-padding { padding: 80px 0; }
+/* Reduce top padding on pages that go straight to content (no hero section) */
+.page-fade-in > main > .section-padding:first-child {
+  padding-top: 40px;
+}
 .bg-light { background-color: var(--light-gray); }
 
 /* Buttons */
@@ -698,12 +702,26 @@ img { max-width: 100%; height: auto; display: block; }
   body { overflow-x: hidden; }
   * { max-width: 100%; }
   
-  /* Touch-friendly spacing */
-  .btn, button, a { 
+  /* Touch-friendly spacing — exclude pagination buttons */
+  .btn, a { 
     min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+  button:not(.page-btn):not(.filter-tab):not(.language-toggle):not(.logo-preview-trigger):not(.logo-lightbox-close) {
+    min-height: 44px;
+  }
+  /* Pagination stays compact on mobile */
+  .page-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
   }
 }
 
@@ -1557,4 +1575,103 @@ img {
   .min-hero-bg img {
     object-position: 82% top !important;
   }
+}
+
+/* Page Transitions */
+.page-fade-in {
+  animation: pageFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes pageFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Top Progress Bar Loader */
+.top-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--primary);
+  z-index: 9999;
+  animation: progressLoad 1s infinite linear;
+  transform-origin: left;
+}
+
+@keyframes progressLoad {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* Pagination Styling */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+.page-btn {
+  width: 40px !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding: 0 !important;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.page-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #fdf2f2;
+}
+.page-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 10px rgba(200, 16, 46, 0.2);
+}
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+.page-dots {
+  color: #64748b;
+  font-weight: 600;
+  padding: 0 4px;
+}
+.page-info {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-top: -20px;
+  margin-bottom: 40px;
 }

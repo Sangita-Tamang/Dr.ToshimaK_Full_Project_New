@@ -2,15 +2,15 @@ import { useEffect, useState, useMemo, useCallback } from 'react';
 import Navbar from '../../components/common/Navbar';
 import Footer from '../../components/common/Footer';
 import Loader from '../../components/common/Loader';
+import OptimizedImage from '../../components/common/OptimizedImage';
 import { useLanguage } from '../../context/LanguageContext';
 import partyService from '../../services/partyService';
-import partyHeroBg from '../../assets/images/party.hero.png';
-import fallbackPortrait from '../../assets/images/image10.png';
 import './Party.css';
 
 export default function Party() {
   const { lang, t } = useLanguage();
   const [partyData, setPartyData] = useState(null);
+  const [cloudinaryImages, setCloudinaryImages] = useState({});
   const [loading, setLoading] = useState(true);
 
   // Scroll to top on mount
@@ -23,6 +23,7 @@ export default function Party() {
       try {
         const res = await partyService.getSettings();
         setPartyData(res?.data || {});
+        setCloudinaryImages(res?.cloudinaryImages || {});
       } catch {
         // The page has complete local copy and image fallbacks, so an
         // unavailable API must not leave a first-time visitor on a blank page.
@@ -81,7 +82,7 @@ export default function Party() {
     return (
       <>
         <Navbar />
-        <main className="party-page"><Loader /></main>
+        <main className="page-fade-in party-page"><Loader /></main>
         <Footer />
       </>
     );
@@ -93,21 +94,27 @@ export default function Party() {
   const role = partyData?.role || {};
   const journey = partyData?.journey || [];
   const website = partyData?.officialWebsite || {};
+  const partyHeroBg = cloudinaryImages?.heroImage || '';
+  const fallbackPortrait = cloudinaryImages?.fallbackPortrait || '';
 
   return (
     <>
       <Navbar />
-      <main className="party-page">
+      <main className="page-fade-in party-page">
         {/* ===================== HERO ===================== */}
         <section className="party-hero-v2 section-padding">
           <div className="party-hero-bg" aria-hidden="true">
-            <img 
-              src={partyHeroBg} 
-              alt="" 
-              loading="eager" 
-              fetchPriority="high"
-              decoding="async"
-            />
+            {partyHeroBg && (
+              <OptimizedImage
+                src={partyHeroBg}
+                alt=""
+                lazy={false}
+                priority={true}
+                fill={true}
+                objectFit="cover"
+                objectPosition="center"
+              />
+            )}
           </div>
           <span className="hero-dots" aria-hidden="true">
             {Array.from({ length: 15 }).map((_, i) => <span key={i} />)}
@@ -194,13 +201,11 @@ export default function Party() {
         <section className="section-padding party-section" id="role">
           <div className="container split-grid role-split">
             <div className="role-photo animate-fade-up">
-              <img
+              <OptimizedImage
                 src={role.photo || hero.backgroundImage || fallbackPortrait}
                 alt={tt('Dr. Toshima Karki', 'डा. तोषिमा कार्की')}
-                onError={(event) => {
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src = fallbackPortrait;
-                }}
+                lazy={true}
+                objectFit="cover"
               />
             </div>
             <div className="section-copy animate-fade-up delay-1">

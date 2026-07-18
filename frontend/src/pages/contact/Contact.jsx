@@ -129,7 +129,7 @@ export default function Contact() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="page-fade-in">
         <section className="section-padding bg-light">
           <div className="container">
             <div className="section-header center">

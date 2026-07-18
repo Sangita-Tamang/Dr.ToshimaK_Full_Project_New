@@ -1,4 +1,9 @@
 const Party = require('../models/Party');
+const {
+  getHeroUrl,
+  getPortraitUrl,
+  IMAGE_PUBLIC_IDS,
+} = require('../services/cloudinary.service');
 
 // @desc    Get Party page settings
 // @route   GET /api/party
@@ -9,7 +14,14 @@ exports.getPartySettings = async (req, res, next) => {
     if (!party) {
       party = await Party.create({});
     }
-    res.status(200).json({ success: true, data: party });
+
+    // Inject optimized Cloudinary image URLs
+    const cloudinaryImages = {
+      heroImage:       getHeroUrl(IMAGE_PUBLIC_IDS.partyHero),
+      fallbackPortrait: getPortraitUrl(IMAGE_PUBLIC_IDS.image10),
+    };
+
+    res.status(200).json({ success: true, data: party, cloudinaryImages });
   } catch (err) {
     next(err);
   }

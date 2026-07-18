@@ -24,7 +24,14 @@ const ParliamentActivitySchema = new mongoose.Schema({
         'Health Governance',
         'Citizen Issues',
         'Healthcare Reform',
-        'Parliamentary Representation'
+        'Parliamentary Representation',
+        'Education Policy',
+        'Infrastructure',
+        'Social Welfare',
+        'Committee Work',
+        'Good Governance',
+        'Health Innovation',
+        'Youth Development'
       ]
     },
     ne: { type: String, required: true }

@@ -572,7 +572,7 @@ export default function Dashboard() {
       </aside>
 
       {/* ── MAIN CONTENT ── */}
-      <main className="admin-main">
+      <main className="page-fade-in admin-main">
         {/* HEADER */}
         <header className="admin-header">
           <div className="admin-header-left">

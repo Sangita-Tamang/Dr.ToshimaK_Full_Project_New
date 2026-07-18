@@ -1,4 +1,19 @@
 const Gallery = require('../models/Gallery');
+const { getGalleryUrl } = require('../services/cloudinary.service');
+
+/**
+ * Transforms a Cloudinary URL or public ID into an optimized gallery URL.
+ * If the value is already a full res.cloudinary.com URL, we leave it as-is
+ * (the DB may already store optimized URLs). Otherwise we treat it as a public ID.
+ */
+const normalizeGalleryUrl = (mediaUrl) => {
+  if (!mediaUrl) return mediaUrl;
+  // Already a full Cloudinary URL — return unchanged
+  if (mediaUrl.startsWith('https://res.cloudinary.com')) return mediaUrl;
+  // Treat as public ID and generate optimized URL
+  return getGalleryUrl(mediaUrl);
+};
+
 
 // @desc    Get all gallery items
 // @route   GET /api/gallery
@@ -28,11 +43,18 @@ exports.getGalleryList = async (req, res, next) => {
     query = query.skip(startIndex).limit(limit);
     const items = await query;
 
+    // Normalize each item's mediaUrl to an optimized Cloudinary URL
+    const normalizedItems = items.map(item => {
+      const obj = item.toObject();
+      obj.mediaUrl = normalizeGalleryUrl(obj.mediaUrl);
+      return obj;
+    });
+
     res.status(200).json({
       success: true,
-      count: items.length,
+      count: normalizedItems.length,
       total,
-      data: items
+      data: normalizedItems
     });
   } catch (err) {
     next(err);
